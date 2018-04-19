@@ -1,5 +1,5 @@
 --player_module
-player = {x, y};
+player = {};
 json = require("modules/json");
 
 function player.init(ico, jsondat)
@@ -10,6 +10,8 @@ function player.init(ico, jsondat)
   player.frames = {};
   player.frames[0] = love.graphics.newQuad(0,0,32,32,player.icon:getDimensions())
   player.frames[1] = love.graphics.newQuad(32,0,32,32,player.icon:getDimensions())
+  player.x = 0;
+  player.y = 0;
   --[[
   player.cels = {};
   for i,v in ipairs(player.data.frames) do
