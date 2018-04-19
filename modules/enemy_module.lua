@@ -19,6 +19,7 @@ function enemy.init(ico, jsondat,x,y)
   enemy.frames[1] = love.graphics.newQuad(32,0,32,32,enemy.icon:getDimensions())
   enemy.x = x;
   enemy.y = y;
+  enemy.speed = 20;
   --[[
   player.cels = {};
   for i,v in ipairs(player.data.frames) do
@@ -34,13 +35,16 @@ end
 
 function enemy.decideMovement(playerx,playery)
   local deltay = lookat(enemy.x, enemy.y, playerx, playery);
+  print(deltay);
   if enemy.x > playerx then
-    enemy.x = enemy.x - 1;
+    enemy.x = enemy.x - 1 * enemy.speed;
+    enemy.y = enemy.y + deltay * enemy.speed;
   else
-    enemy.x = enemy.x + 1;
+    enemy.x = enemy.x + 1 * enemy.speed;
+    enemy.y = enemy.y + deltay * enemy.speed;
   end
 
-  enemy.y = enemy.y + deltay;
+  
 end
 
 function enemy.animate(action)
