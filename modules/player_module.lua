@@ -12,6 +12,7 @@ function player.init(ico, jsondat, x, y)
   player.frames[1] = love.graphics.newQuad(32,0,32,32,player.icon:getDimensions())
   player.x = x;
   player.y = y;
+  player.speed = 2;
   --[[
   player.cels = {};
   for i,v in ipairs(player.data.frames) do
@@ -26,8 +27,8 @@ end
 
 
 function player.decideMovement(x,y)
-  player.x = player.x + x;
-  player.y = player.y + y;
+  player.x = player.x + (x*player.speed);
+  player.y = player.y + (y*player.speed);
 end
 
 function player.animate(action)

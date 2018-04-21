@@ -19,7 +19,7 @@ function enemy.init(ico, jsondat,x,y)
   enemy.frames[1] = love.graphics.newQuad(32,0,32,32,enemy.icon:getDimensions())
   enemy.x = x;
   enemy.y = y;
-  enemy.speed = 2;
+  enemy.speed = 1;
   --[[
   player.cels = {};
   for i,v in ipairs(player.data.frames) do
