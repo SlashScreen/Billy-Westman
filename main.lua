@@ -9,8 +9,8 @@ function love.load()
   testenemy = require "modules/enemy_module";
   
   --jsonfile = require "assets/billywestman.json";
-  player.init(love.graphics.newImage("assets/billywestman.png"), nil, window.x/2, window.y/2);
-  testenemy.init(love.graphics.newImage("assets/billywestman.png"), nil, 100, 100);
+  player.init(love.graphics.newImage("assets/billywestman.png"), nil, 300, 300);
+  testenemy.init(love.graphics.newImage("assets/billywestman.png"), nil, 200, 150);
   
   crosshair = love.graphics.newImage("assets/crosshair.png");
   
@@ -20,17 +20,30 @@ end
 
 function love.update(dt)
   --player.animate("walk");
+  testenemy.decideMovement(player.x,player.y,dt);
   playerWalkTimer = playerWalkTimer + dt
   if playerWalkTimer > .5 then
     player.animate("walk");
     testenemy.animate("walk");
-    testenemy.decideMovement(player.x,player.y,dt);
 
     playerWalkTimer = 0;
   end
-end
 
+if love.keyboard.isDown("w") then
+  player.decideMovement(0,1);
+end
+if love.keyboard.isDown("s") then
+  player.decideMovement(0,-1);
+end
+if love.keyboard.isDown("a") then
+  player.decideMovement(-1,0);
+end
+if love.keyboard.isDown("d") then
+  player.decideMovement(1,0);
+end
+end
 function love.draw()
+  --window.y/2,window.x/2
   love.graphics.draw(player.icon,player.frames[player.increment],player.x-16,player.y-16,0,zoom);
   love.graphics.draw(testenemy.icon,testenemy.frames[testenemy.increment],testenemy.x-16,testenemy.y-16,0,zoom);
   love.graphics.draw(crosshair, love.mouse.getX()-(crosshair:getWidth()/2), love.mouse.getY()-(crosshair:getHeight()/2))

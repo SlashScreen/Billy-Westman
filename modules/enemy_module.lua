@@ -19,7 +19,7 @@ function enemy.init(ico, jsondat,x,y)
   enemy.frames[1] = love.graphics.newQuad(32,0,32,32,enemy.icon:getDimensions())
   enemy.x = x;
   enemy.y = y;
-  enemy.speed = 20;
+  enemy.speed = 2;
   --[[
   player.cels = {};
   for i,v in ipairs(player.data.frames) do
@@ -62,6 +62,7 @@ end
   end
   enemy.x = enemy.x + (deltax * enemy.speed);
   enemy.y = enemy.y + (deltay * enemy.speed);
+  print(enemy.x, enemy.y, playerx, playery);
 end
 
 function enemy.animate(action)
