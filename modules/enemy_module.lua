@@ -32,19 +32,36 @@ function enemy.init(ico, jsondat,x,y)
   ]]--
 end
 
+function lerp (a,b,t)
+  return a + (b - a) * t;
+end
 
-function enemy.decideMovement(playerx,playery)
-  local deltay = lookat(enemy.x, enemy.y, playerx, playery);
-  print(deltay);
-  if enemy.x > playerx then
-    enemy.x = enemy.x - 1 * enemy.speed;
-    enemy.y = enemy.y + deltay * enemy.speed;
-  else
-    enemy.x = enemy.x + 1 * enemy.speed;
-    enemy.y = enemy.y + deltay * enemy.speed;
+
+
+function enemy.decideMovement(playerx,playery,dt)
+  --[[
+  local deltax = lerp(enemy.x, player.x, .5);
+  local deltay = lerp(enemy.y, player.y, .5);
+  enemy.x = enemy.x + deltax;
+  enemy.y = enemy.y + deltay;
+  ]]--
+  local deltax = 0;
+  local deltay = 0;
+  if (enemy.x < playerx) then
+    deltax = 1;
+  else if (enemy.x > playerx) then
+    deltax = -1;
   end
+end
 
-  
+  if (enemy.y < playery) then
+    deltay = 1;
+  else if (enemy.y > playery) then
+    deltay = -1;
+  end
+  end
+  enemy.x = enemy.x + (deltax * enemy.speed);
+  enemy.y = enemy.y + (deltay * enemy.speed);
 end
 
 function enemy.animate(action)
