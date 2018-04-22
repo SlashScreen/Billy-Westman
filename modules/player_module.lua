@@ -28,7 +28,7 @@ end
 
 function player.decideMovement(x,y)
   player.x = player.x + (x*player.speed);
-  player.y = player.y + (y*player.speed);
+  player.y = player.y - (y*player.speed);
 end
 
 function player.animate(action)

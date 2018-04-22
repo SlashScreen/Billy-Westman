@@ -7,7 +7,12 @@ function lookat(x1,y1,x2,y2)
   return ygo;
 end
 
-
+function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
+  return x1 < x2+w2 and
+         x2 < x1+w1 and
+         y1 < y2+h2 and
+         y2 < y1+h1
+end
 
 function enemy.init(ico, jsondat,x,y)
   enemy.icon = ico;
@@ -20,6 +25,7 @@ function enemy.init(ico, jsondat,x,y)
   enemy.x = x;
   enemy.y = y;
   enemy.speed = 1;
+  enemy.alive = 1;
   --[[
   player.cels = {};
   for i,v in ipairs(player.data.frames) do
@@ -31,6 +37,13 @@ function enemy.init(ico, jsondat,x,y)
   print(player.frames);
   ]]--
 end
+
+function enemy.die()
+  enemy.alive = 0;
+  print ("dead");
+end
+
+
 
 function lerp (a,b,t)
   return a + (b - a) * t;
@@ -62,7 +75,7 @@ end
   end
   enemy.x = enemy.x + (deltax * enemy.speed);
   enemy.y = enemy.y + (deltay * enemy.speed);
-  print(enemy.x, enemy.y, playerx, playery);
+  --print(enemy.x, enemy.y, playerx, playery);
 end
 
 function enemy.animate(action)
@@ -78,4 +91,12 @@ function enemy.animate(action)
   end
   
 end
+
+function enemy.isHit(x,y,ox,oy,wx,wy)
+  if CheckCollision(enemy.x-ox+(wx/2),enemy.y-oy+(wy/2),32, 32,x,y,2,2) then  --x < enemy.x-16-ox+(wx/2) and x > enemy.x+16-ox+(wx/2) and y > enemy.y-16-oy+(wy/2) and y < enemy.y+16-oy+(wy/2) then 
+    enemy.die();
+  end
+end
+
+
 return enemy;

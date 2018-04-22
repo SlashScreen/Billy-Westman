@@ -41,10 +41,16 @@ end
 if love.keyboard.isDown("d") then
   player.decideMovement(1,0);
 end
+if love.mouse.isDown(1) then
+  testenemy.isHit(love.mouse.getX(), love.mouse.getY(), player.x, player.y, window.x, window.y);
+end
+
 end
 function love.draw()
   --window.y/2,window.x/2
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16,window.y/2-16,0,zoom);
+  if testenemy.alive == 1 then
   love.graphics.draw(testenemy.icon,testenemy.frames[testenemy.increment],testenemy.x-16-player.x+window.x/2,testenemy.y-16-player.y+window.y/2,0,zoom);
+  end
   love.graphics.draw(crosshair, love.mouse.getX()-(crosshair:getWidth()/2), love.mouse.getY()-(crosshair:getHeight()/2))
 end
