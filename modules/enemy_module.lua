@@ -14,6 +14,13 @@ function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
          y2 < y1+h1
 end
 
+function enemy.create (o)
+  o = o or {}   -- create object if user does not provide one
+      setmetatable(o, enemy)
+      o.__index = enemy
+      return o
+    end
+
 function enemy.init(ico, jsondat,x,y)
   enemy.icon = ico;
   enemy.json = jsondat;
@@ -40,7 +47,7 @@ end
 
 function enemy.die()
   enemy.alive = 0;
-  print ("dead");
+  print ("dead", enemy.x, enemy.y);
 end
 
 
