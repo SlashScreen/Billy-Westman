@@ -21,7 +21,7 @@ function enemy.create (o)
       return o
     end
 
-function enemy.init(ico, jsondat,x,y)
+function enemy.init(ico, jsondat,x,y, id)
   enemy.icon = ico;
   enemy.json = jsondat;
   --player.data = json.decode(player.jsondat);
@@ -33,6 +33,7 @@ function enemy.init(ico, jsondat,x,y)
   enemy.y = y;
   enemy.speed = 1;
   enemy.alive = 1;
+  enemy.id = id;
   --[[
   player.cels = {};
   for i,v in ipairs(player.data.frames) do

@@ -12,12 +12,15 @@ function love.load()
   player.init(love.graphics.newImage("assets/billywestman.png"), nil, 300, 300);
   --testenemy.init(love.graphics.newImage("assets/billywestman.png"), nil, 200, 150);
   enemies = {};
-  enemies[0] = baseenemy
-  enemies[1] = baseenemy
+  enemies[2] = baseenemy;
+  enemies[1] = baseenemy;
+  
+  --enemies[2] = setmetatable(enemies[2], { __index = baseenemy });
+  --enemies[1] = setmetatable(enemies[1], { __index = baseenemy });
   --setmetatable(enemies[1], {__index = testenemy});
   --setmetatable(enemies[2], {__index = testenemy});
-  enemies[0].init(love.graphics.newImage("assets/billywestman.png"), nil, 200, 150);
-  enemies[1].init(love.graphics.newImage("assets/billywestman.png"), nil, -100, 150);
+  enemies[2].init(love.graphics.newImage("assets/billywestman.png"), nil, 200, 150, "Enemy2");
+  enemies[1].init(love.graphics.newImage("assets/billywestman.png"), nil, -100, 150, "Enemy1");
   
   crosshair = love.graphics.newImage("assets/crosshair.png");
   
@@ -35,10 +38,11 @@ function love.update(dt)
     player.animate("walk");
     --testenemy.animate("walk");
     enemies[1].animate("walk");
-    enemies[0].animate("walk");
+    enemies[2].animate("walk");
     playerWalkTimer = 0;
   end
 for i, v in ipairs(enemies) do -- main interaction IG
+    print (#enemies);
     enemies[i].decideMovement(player.x,player.y,dt);
     if love.mouse.isDown(1) then
   
@@ -69,6 +73,7 @@ function love.draw()
   --window.y/2,window.x/2
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16,window.y/2-16,0,zoom);
   for i, v in ipairs(enemies) do
+    print (enemies[i].alive, enemies[i].id);
     if enemies[i].alive == 1 then
   --love.graphics.draw(testenemy.icon,testenemy.frames[testenemy.increment],testenemy.x-16-player.x+window.x/2,testenemy.y-16-player.y+window.y/2,0,zoom);
   love.graphics.draw(enemies[i].icon,enemies[i].frames[enemies[i].increment],enemies[i].x-16-player.x+window.x/2,enemies[i].y-16-player.y+window.y/2,0,zoom);
