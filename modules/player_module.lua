@@ -2,7 +2,7 @@
 player = {};
 json = require("modules/json");
 
-function player.init(ico, jsondat, x, y)
+function player:init(ico, jsondat, x, y)
   player.icon = ico;
   player.json = jsondat;
   --player.data = json.decode(player.jsondat);
@@ -26,12 +26,12 @@ function player.init(ico, jsondat, x, y)
 end
 
 
-function player.decideMovement(x,y)
+function player:decideMovement(x,y)
   player.x = player.x + (x*player.speed);
   player.y = player.y - (y*player.speed);
 end
 
-function player.animate(action)
+function player:animate(action)
   if action == "walk" then
     --put in the animation thing
     if player.increment == 1 then

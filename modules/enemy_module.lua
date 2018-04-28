@@ -14,26 +14,26 @@ function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
          y2 < y1+h1
 end
 
-function enemy.create (o)
+function enemy:create (o)
   o = o or {}   -- create object if user does not provide one
-      setmetatable(o, enemy)
-      o.__index = enemy
+      setmetatable(o, self)
+      o.__index = self
       return o
     end
 
-function enemy.init(ico, jsondat,x,y, id)
-  enemy.icon = ico;
-  enemy.json = jsondat;
+function enemy:init(ico, jsondat,x,y, id)
+  self.icon = ico;
+  self.json = jsondat;
   --player.data = json.decode(player.jsondat);
-  enemy.increment = 0;
-  enemy.frames = {};
-  enemy.frames[0] = love.graphics.newQuad(0,0,32,32,enemy.icon:getDimensions())
-  enemy.frames[1] = love.graphics.newQuad(32,0,32,32,enemy.icon:getDimensions())
-  enemy.x = x;
-  enemy.y = y;
-  enemy.speed = 1;
-  enemy.alive = 1;
-  enemy.id = id;
+  self.increment = 0;
+  self.frames = {};
+  self.frames[0] = love.graphics.newQuad(0,0,32,32,self.icon:getDimensions())
+  self.frames[1] = love.graphics.newQuad(32,0,32,32,self.icon:getDimensions())
+  self.x = x;
+  self.y = y;
+  self.speed = 1;
+  self.alive = 1;
+  self.id = id;
   --[[
   player.cels = {};
   for i,v in ipairs(player.data.frames) do
@@ -46,9 +46,9 @@ function enemy.init(ico, jsondat,x,y, id)
   ]]--
 end
 
-function enemy.die()
-  enemy.alive = 0;
-  print ("dead", enemy.x, enemy.y);
+function enemy:die()
+  self.alive = 0;
+  print ("dead", self.x, self.y);
 end
 
 
@@ -59,7 +59,7 @@ end
 
 
 
-function enemy.decideMovement(playerx,playery,dt)
+function enemy:decideMovement(playerx,playery,dt)
   --[[
   local deltax = lerp(enemy.x, player.x, .5);
   local deltay = lerp(enemy.y, player.y, .5);
@@ -68,31 +68,31 @@ function enemy.decideMovement(playerx,playery,dt)
   ]]--
   local deltax = 0;
   local deltay = 0;
-  if (enemy.x < playerx) then
+  if (self.x < playerx) then
     deltax = 1;
-  else if (enemy.x > playerx) then
+  else if (self.x > playerx) then
     deltax = -1;
   end
 end
 
-  if (enemy.y < playery) then
+  if (self.y < playery) then
     deltay = 1;
-  else if (enemy.y > playery) then
+  else if (self.y > playery) then
     deltay = -1;
   end
   end
-  enemy.x = enemy.x + (deltax * enemy.speed);
-  enemy.y = enemy.y + (deltay * enemy.speed);
+  self.x = self.x + (deltax * self.speed);
+  self.y = self.y + (deltay * self.speed);
   --print(enemy.x, enemy.y, playerx, playery);
 end
 
-function enemy.animate(action)
+function enemy:animate(action)
   if action == "walk" then
     --put in the animation thing
-    if enemy.increment == 1 then
-      enemy.increment = 0;
+    if self.increment == 1 then
+      self.increment = 0;
     else
-      enemy.increment = enemy.increment+1;
+      self.increment = self.increment+1;
     end
     
     
@@ -100,9 +100,9 @@ function enemy.animate(action)
   
 end
 
-function enemy.isHit(x,y,ox,oy,wx,wy)
-  if CheckCollision(enemy.x-ox+(wx/2),enemy.y-oy+(wy/2),32, 32,x,y,2,2) then  --x < enemy.x-16-ox+(wx/2) and x > enemy.x+16-ox+(wx/2) and y > enemy.y-16-oy+(wy/2) and y < enemy.y+16-oy+(wy/2) then 
-    enemy.die();
+function enemy:isHit(x,y,ox,oy,wx,wy)
+  if CheckCollision(self.x-ox+(wx/2),self.y-oy+(wy/2),32, 32,x,y,2,2) then  --x < enemy.x-16-ox+(wx/2) and x > enemy.x+16-ox+(wx/2) and y > enemy.y-16-oy+(wy/2) and y < enemy.y+16-oy+(wy/2) then 
+    self:die();
   end
 end
 
