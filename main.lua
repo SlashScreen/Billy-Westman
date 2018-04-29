@@ -23,10 +23,12 @@ function love.load()
 
   enemies[2] = makeObj(baseenemy)
   enemies[1] = makeObj(baseenemy)
+  enemies[3] = makeObj(baseenemy)
   --setmetatable(enemies[1], {__index = testenemy});
   --setmetatable(enemies[2], {__index = testenemy});
   enemies[2]:init(love.graphics.newImage("assets/billywestman.png"), nil, 200, 150, "Enemy2");
   enemies[1]:init(love.graphics.newImage("assets/billywestman.png"), nil, -100, 150, "Enemy1");
+  enemies[3]:init(love.graphics.newImage("assets/billywestman.png"), nil, 100, 0, "Enemy3");
   
   crosshair = love.graphics.newImage("assets/crosshair.png");
   
@@ -43,8 +45,9 @@ function love.update(dt)
   if playerWalkTimer > .5 then
     player:animate("walk");
     --testenemy.animate("walk");
-    enemies[1]:animate("walk");
-    enemies[2]:animate("walk");
+    for i = 1, #enemies do
+      enemies[i]:animate("walk");
+    end
     playerWalkTimer = 0;
   end
 for i = 1, #enemies do -- main interaction IG
