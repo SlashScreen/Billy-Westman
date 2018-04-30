@@ -7,29 +7,28 @@ function love.load()
   
   player = require "modules/player_module";
   baseenemy = require "modules/enemy_module";
+  json = require "modules/json"
+  TownSpawnList = json.decode("assets/spawntable.json")
   
-  --jsonfile = require "assets/billywestman.json";
   player:init(love.graphics.newImage("assets/billywestman.png"), nil, 300, 300);
-  --testenemy.init(love.graphics.newImage("assets/billywestman.png"), nil, 200, 150);
+  billywestmanimg = love.graphics.newImage("assets/billywestman.png");
+  spawnlist = {
+    {name = "Enemy1",x = -100, y=150,image = billywestmanimg, class=baseenemy},
+    {name = "Enemy2",x = 200, y=150,image = billywestmanimg, class=baseenemy},
+    {name = "Enemy3",x = 100, y=0,image = billywestmanimg, class=baseenemy},
+    {name = "Enemy4",x = 0, y=300,image = billywestmanimg, class=baseenemy}
+    };
   
   enemies = {};
-  --enemies[2] = baseenemy;
-  --enemies[1] = baseenemy;
   local function makeObj(class)
     local mt = { __index = class }
     local obj = setmetatable({}, mt)
     return obj;
   end
-
-  enemies[2] = makeObj(baseenemy)
-  enemies[1] = makeObj(baseenemy)
-  enemies[3] = makeObj(baseenemy)
-  --setmetatable(enemies[1], {__index = testenemy});
-  --setmetatable(enemies[2], {__index = testenemy});
-  enemies[2]:init(love.graphics.newImage("assets/billywestman.png"), nil, 200, 150, "Enemy2");
-  enemies[1]:init(love.graphics.newImage("assets/billywestman.png"), nil, -100, 150, "Enemy1");
-  enemies[3]:init(love.graphics.newImage("assets/billywestman.png"), nil, 100, 0, "Enemy3");
-  
+  for i=1, #spawnlist do
+    enemies[i] = makeObj(spawnlist[i].class);
+    enemies[i]:init(spawnlist[i].image,nil,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name);
+  end
   crosshair = love.graphics.newImage("assets/crosshair.png");
   
   playerWalkTimer = 0;
