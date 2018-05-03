@@ -62,6 +62,7 @@ for i = 1, #enemies do -- main interaction IG
     if enemies[i].alive == 1 then
       for o,v in ipairs(bullets) do
         if enemies[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y) then
+          print("hit",v.x,v.y);
           table.remove(bullets,o);
         end
       end
@@ -95,8 +96,8 @@ function love.mousepressed(x, y, button)
 	if button == 1 then
 		local startX = player.x--window.x / 2
 		local startY = player.y--window.y / 2
-		local mouseX = x
-		local mouseY = y
+		local mouseX = player.x + x - window.x / 2
+		local mouseY = player.y + y - window.y / 2
  
 		local angle = math.atan2((mouseY - startY), (mouseX - startX))
  
@@ -120,7 +121,7 @@ function love.draw()
     
   end
   for i,v in ipairs(bullets) do
-    print(bullets[i].x,bullets[i].y);
+    --print(bullets[i].x,bullets[i].y);
 		love.graphics.draw(BulletImg, v.x-player.x+window.x/2, v.y-player.y+window.y/2)
 	end
   
