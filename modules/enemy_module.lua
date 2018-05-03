@@ -103,7 +103,10 @@ end
 function enemy:isHit(x,y,ox,oy,wx,wy)
   if CheckCollision(self.x-ox+(wx/2),self.y-oy+(wy/2),32, 32,x,y,2,2) then  --x < enemy.x-16-ox+(wx/2) and x > enemy.x+16-ox+(wx/2) and y > enemy.y-16-oy+(wy/2) and y < enemy.y+16-oy+(wy/2) then 
     self:die();
-  end
+    return true;
+  else
+    return false;
+    end
 end
 
 
