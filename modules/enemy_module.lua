@@ -100,8 +100,10 @@ function enemy:animate(action)
   
 end
 
-function enemy:isHit(x,y,ox,oy,wx,wy)
-  if CheckCollision(self.x-ox+(wx/2),self.y-oy+(wy/2),32, 32,x,y,2,2) then  --x < enemy.x-16-ox+(wx/2) and x > enemy.x+16-ox+(wx/2) and y > enemy.y-16-oy+(wy/2) and y < enemy.y+16-oy+(wy/2) then 
+function enemy:isHit(x,y,ox,oy,wx,wy,bw,bh)
+  if CheckCollision(self.x,self.y,32, 32,x,y,bw,bh) then
+    --x < enemy.x-16-ox+(wx/2) and x > enemy.x+16-ox+(wx/2) and y > enemy.y-16-oy+(wy/2) and y < enemy.y+16-oy+(wy/2) then 
+    --self.x-ox+(wx/2),self.y-oy+(wy/2),32, 32,x,y,2,2
     self:die();
     return true;
   else

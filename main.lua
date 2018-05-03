@@ -33,7 +33,7 @@ function love.load()
   end
   crosshair = love.graphics.newImage("assets/crosshair.png");
   
-  bulletSpeed = 250
+  bulletSpeed = 150
  
 	bullets = {}
   
@@ -61,7 +61,7 @@ for i = 1, #enemies do -- main interaction IG
     enemies[i]:decideMovement(player.x,player.y,dt);
     if enemies[i].alive == 1 then
       for o,v in ipairs(bullets) do
-        if enemies[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y) then
+        if enemies[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
           table.remove(bullets,o);
         end
@@ -71,8 +71,13 @@ for i = 1, #enemies do -- main interaction IG
   end
   
 for i,v in ipairs(bullets) do
+    v.t = v.t-dt;
 		v.x = v.x + (v.dx * dt)
 		v.y = v.y + (v.dy * dt)
+    if v.t < 0 then
+      table.remove(bullets,i);
+    end
+    
 	end
 
 end
@@ -103,8 +108,10 @@ function love.mousepressed(x, y, button)
  
 		local bulletDx = bulletSpeed * math.cos(angle)
 		local bulletDy = bulletSpeed * math.sin(angle)
+    
+    local bulletTime = 3;
  
-		table.insert(bullets, {x = startX, y = startY, dx = bulletDx, dy = bulletDy})
+		table.insert(bullets, {x = startX, y = startY, dx = bulletDx, dy = bulletDy, t = bulletTime})
 	end
 end
 
