@@ -40,12 +40,17 @@ function love.load()
   
   playerWalkTimer = 0;
   zoom = 1;
+  
+  sx = 0;
+  sy = 0;
 end
 
 function love.update(dt)
   --player.animate("walk");
   --testenemy.decideMovement(player.x,player.y,dt);
-  
+  if math.abs(sx) > 0 then
+    sx,sy = 0,0;
+end
   
   playerWalkTimer = playerWalkTimer + dt
   if playerWalkTimer > .5 then
@@ -64,6 +69,10 @@ for i = 1, #enemies do -- main interaction IG
         if enemies[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
           table.remove(bullets,o);
+          math.randomseed(player.x);
+          sx = math.random(-10,10);
+          sy = math.random(-10,10);
+          print(sx,sy);
         end
       end
       
@@ -96,6 +105,8 @@ if love.keyboard.isDown("d") then
 end
 
 
+
+
 end
 function love.mousepressed(x, y, button)
 	if button == 1 then
@@ -116,20 +127,21 @@ function love.mousepressed(x, y, button)
 end
 
 function love.draw()
-  
+            print(sx,sy);
+
   --window.y/2,window.x/2
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16,window.y/2-16,0,zoom);
   for i = 1, #enemies do
     --print (enemies[i].alive, enemies[i].id);
     if enemies[i].alive == 1 then
   
-  love.graphics.draw(enemies[i].icon,enemies[i].frames[enemies[i].increment],enemies[i].x-16-player.x+window.x/2,enemies[i].y-16-player.y+window.y/2,0,zoom);
+  love.graphics.draw(enemies[i].icon,enemies[i].frames[enemies[i].increment],enemies[i].x-16-player.x+window.x/2-sx,enemies[i].y-16-player.y+window.y/2-sy,0,zoom);
   end
     
   end
   for i,v in ipairs(bullets) do
     --print(bullets[i].x,bullets[i].y);
-		love.graphics.draw(BulletImg, v.x-player.x+window.x/2, v.y-player.y+window.y/2)
+		love.graphics.draw(BulletImg, v.x-player.x+window.x/2-sx, v.y-player.y+window.y/2-sy)
 	end
   
   love.graphics.draw(crosshair, love.mouse.getX()-(crosshair:getWidth()/2), love.mouse.getY()-(crosshair:getHeight()/2))
