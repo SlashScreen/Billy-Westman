@@ -1,10 +1,14 @@
 --main.lua
 function love.load()
+  local sti = require ("modules/Simple-Tiled-Implementation-master-2/sti");
   love.graphics.setBackgroundColor(255,255,255);
   love.graphics.setColor(0,0,0)
   window = {}
   window.x = love.graphics:getWidth();
   window.y = love.graphics:getHeight();
+  testmap = sti("assets/maps/westmantestzone.lua");
+  currentmap = testmap;
+  print(love.getVersion());
   
   player = require "modules/player_module";
   baseenemy = require "modules/enemy_module";
@@ -46,11 +50,10 @@ function love.load()
 end
 
 function love.update(dt)
-  --player.animate("walk");
-  --testenemy.decideMovement(player.x,player.y,dt);
+  testmap:update(dt)
   if math.abs(sx) > 0 then
     sx,sy = 0,0;
-end
+  end
   
   playerWalkTimer = playerWalkTimer + dt
   if playerWalkTimer > .5 then
@@ -72,14 +75,14 @@ for i = 1, #enemies do -- main interaction IG
           math.randomseed(player.x);
           sx = math.random(-10,10);
           sy = math.random(-10,10);
-          print(sx,sy);
+          --print(sx,sy);
         end
       end
       
       
   end
   
-for i,v in ipairs(bullets) do
+for i,v in ipairs(bullets) do --bullet script
     v.t = v.t-dt;
 		v.x = v.x + (v.dx * dt)
 		v.y = v.y + (v.dy * dt)
@@ -109,7 +112,7 @@ end
 
 end
 function love.mousepressed(x, y, button)
-	if button == 1 then
+	if button == 1 and player.ammo > 0 then
 		local startX = player.x--window.x / 2
 		local startY = player.y--window.y / 2
 		local mouseX = player.x + x - window.x / 2
@@ -123,14 +126,15 @@ function love.mousepressed(x, y, button)
     local bulletTime = 3;
  
 		table.insert(bullets, {x = startX, y = startY, dx = bulletDx, dy = bulletDy, t = bulletTime})
+    
+    player.ammo = player.ammo - 1;
 	end
 end
 
 function love.draw()
-            print(sx,sy);
-
+  testmap:draw(window.x/2-16-sx,window.y/2-16-sy);
   --window.y/2,window.x/2
-  love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16,window.y/2-16,0,zoom);
+  love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0,zoom);
   for i = 1, #enemies do
     --print (enemies[i].alive, enemies[i].id);
     if enemies[i].alive == 1 then
