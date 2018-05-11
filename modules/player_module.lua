@@ -13,6 +13,7 @@ function player:init(ico, jsondat, x, y)
   player.x = x;
   player.y = y;
   player.speed = 2;
+  player.ammo = 10;
   --[[
   player.cels = {};
   for i,v in ipairs(player.data.frames) do
