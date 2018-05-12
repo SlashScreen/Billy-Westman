@@ -108,9 +108,17 @@ if love.keyboard.isDown("d") then
   player:decideMovement(1,0);
 end
 
-
-
-
+if not love.mouse.isDown then
+  player.state = "PLAY";
+end
+if player.state == "PLAY" and player.ammo < 10 then
+    player.rechargetimer = player.rechargetimer + dt;
+    if player.rechargetimer < player.rechargelimit then
+        player.ammo = player.ammo+1;
+        player.rechargetimer = 0;
+        print(player.ammo,"ammorecharge", player.rechargetimer);
+    end
+  end
 end
 function love.mousepressed(x, y, button)
 	if button == 1 and player.ammo > 0 then
@@ -130,13 +138,8 @@ function love.mousepressed(x, y, button)
 		table.insert(bullets, {x = startX, y = startY, dx = bulletDx, dy = bulletDy, t = bulletTime})
     
     player.ammo = player.ammo - 1;
-	else
-    player.state = "PLAY";
+    print(player.ammo,"ammo");
   end
-  if player.state == "PLAY" and player.ammo < 10 then
-    player.ammo = player.ammo+1;
-  end
-  
 end
 
 function love.draw()

@@ -15,6 +15,8 @@ function player:init(ico, jsondat, x, y)
   player.speed = 2;
   player.maxammo = 10;
   player.ammo = player.maxammo;
+  player.rechargelimit = .3;
+  player.rechargetimer = 0;
   player.state = "PLAY";
   --[[
   player.cels = {};
