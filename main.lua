@@ -1,12 +1,13 @@
 --main.lua
 function love.load()
-  local sti = require ("modules/Simple-Tiled-Implementation-master-2/sti");
+  local sti = require ("modules/sti");
+  --Simple-Tiled-Implementation-master-2
   love.graphics.setBackgroundColor(255,255,255);
-  love.graphics.setColor(0,0,0)
+  love.graphics.setColor(1,1,1)
   window = {}
   window.x = love.graphics:getWidth();
   window.y = love.graphics:getHeight();
-  testmap = sti("assets/maps/westmantestzone.lua");
+  testmap = sti("assets/maps/testmap.lua");
   currentmap = testmap;
   print(love.getVersion());
   
@@ -132,7 +133,7 @@ function love.mousepressed(x, y, button)
 end
 
 function love.draw()
-  testmap:draw(window.x/2-16-sx,window.y/2-16-sy);
+  testmap:draw(-player.x-sx,-player.y-sy);
   --window.y/2,window.x/2
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0,zoom);
   for i = 1, #enemies do
