@@ -3,7 +3,7 @@ function love.load()
   local sti = require ("modules/sti");
   --Simple-Tiled-Implementation-master-2
   love.graphics.setBackgroundColor(255,255,255);
-  love.graphics.setColor(1,1,1)
+  love.graphics.setColor(1,1,1);
   window = {}
   window.x = love.graphics:getWidth();
   window.y = love.graphics:getHeight();
@@ -114,6 +114,7 @@ end
 end
 function love.mousepressed(x, y, button)
 	if button == 1 and player.ammo > 0 then
+    player.state = "FIRE";
 		local startX = player.x--window.x / 2
 		local startY = player.y--window.y / 2
 		local mouseX = player.x + x - window.x / 2
@@ -129,7 +130,13 @@ function love.mousepressed(x, y, button)
 		table.insert(bullets, {x = startX, y = startY, dx = bulletDx, dy = bulletDy, t = bulletTime})
     
     player.ammo = player.ammo - 1;
-	end
+	else
+    player.state = "PLAY";
+  end
+  if player.state == "PLAY" and player.ammo < 10 then
+    player.ammo = player.ammo+1;
+  end
+  
 end
 
 function love.draw()
