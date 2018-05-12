@@ -108,15 +108,16 @@ if love.keyboard.isDown("d") then
   player:decideMovement(1,0);
 end
 
-if not love.mouse.isDown then
+if not love.mouse.isDown(1) then
   player.state = "PLAY";
 end
+--print(player.state);
 if player.state == "PLAY" and player.ammo < 10 then
     player.rechargetimer = player.rechargetimer + dt;
-    if player.rechargetimer < player.rechargelimit then
+    if player.rechargetimer > player.rechargelimit then
         player.ammo = player.ammo+1;
-        player.rechargetimer = 0;
         print(player.ammo,"ammorecharge", player.rechargetimer);
+        player.rechargetimer = 0;
     end
   end
 end
