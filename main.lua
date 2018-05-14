@@ -59,14 +59,12 @@ function love.update(dt)
   playerWalkTimer = playerWalkTimer + dt
   if playerWalkTimer > .5 then
     player:animate("walk");
-    --testenemy.animate("walk");
     for i = 1, #enemies do
       enemies[i]:animate("walk");
     end
     playerWalkTimer = 0;
   end
 for i = 1, #enemies do -- main interaction IG
-    --print (#enemies);
     enemies[i]:decideMovement(player.x,player.y,dt);
     if enemies[i].alive == 1 then
       for o,v in ipairs(bullets) do
@@ -94,6 +92,9 @@ for i,v in ipairs(bullets) do --bullet script
 	end
 
 end
+  if player.state == "FIRE" then
+    player.rechargetimer = 0;
+  end
   
 if love.keyboard.isDown("w") then
   player:decideMovement(0,1);
@@ -145,19 +146,15 @@ end
 
 function love.draw()
   testmap:draw(-player.x-sx,-player.y-sy);
-  --window.y/2,window.x/2
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0,zoom);
   for i = 1, #enemies do
-    --print (enemies[i].alive, enemies[i].id);
-    if enemies[i].alive == 1 then
-  
-  love.graphics.draw(enemies[i].icon,enemies[i].frames[enemies[i].increment],enemies[i].x-16-player.x+window.x/2-sx,enemies[i].y-16-player.y+window.y/2-sy,0,zoom);
+    if enemies[i].alive == 1 then --if alive then
+      love.graphics.draw(enemies[i].icon,enemies[i].frames[enemies[i].increment],enemies[i].x-16-player.x+window.x/2-sx,enemies[i].y-16-player.y+window.y/2-sy,0,zoom); --draw enemies
   end
     
   end
   for i,v in ipairs(bullets) do
-    --print(bullets[i].x,bullets[i].y);
-		love.graphics.draw(BulletImg, v.x-player.x+window.x/2-sx, v.y-player.y+window.y/2-sy)
+		love.graphics.draw(BulletImg, v.x-player.x+window.x/2-sx, v.y-player.y+window.y/2-sy) --draw bullet
 	end
   
   love.graphics.draw(crosshair, love.mouse.getX()-(crosshair:getWidth()/2), love.mouse.getY()-(crosshair:getHeight()/2))
