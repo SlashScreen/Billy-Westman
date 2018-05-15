@@ -1,0 +1,2 @@
+--testworld.lua
+--proof of concept for having multiple worlds without cluttering poor main.lua
