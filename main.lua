@@ -8,6 +8,7 @@ function love.load()
   window.x = love.graphics:getWidth();
   window.y = love.graphics:getHeight();
   testmap = sti("assets/maps/testmap.lua");
+  testworld = require "testworld"
   currentmap = testmap;
   print(love.getVersion());
   
@@ -184,4 +185,5 @@ function love.draw()
 	end
   
   love.graphics.draw(crosshair, love.mouse.getX()-(crosshair:getWidth()/2), love.mouse.getY()-(crosshair:getHeight()/2))
+  testworld:draw();
 end
