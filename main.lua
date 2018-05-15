@@ -13,19 +13,25 @@ function love.load()
   
   player = require "modules/player_module";
   baseenemy = require "modules/enemy_module";
+  trigger = require "modules/trigger_module";
   json = require "modules/json"
   --TownSpawnList = json.decode("assets/spawntable.json")
   
-  player:init(love.graphics.newImage("assets/billywestman.png"), nil, 300, 300);
+  player:init(love.graphics.newImage("assets/billywestman.png"), nil, 0, 0);
   billywestmanimg = love.graphics.newImage("assets/billywestman.png");
   BulletImg = love.graphics.newImage("assets/BillyWestmanBullet.png");
+  OTTriggerF = love.graphics.newImage("assets/OneTimeTrigger1False.png");
+  OTTriggerT = love.graphics.newImage("assets/OneTimeTrigger1True.png");
+  TTriggerF = love.graphics.newImage("assets/ToggleTrigger1-False.png");
+  TTriggerT = love.graphics.newImage("assets/ToggleTrigger1-True.png");
   spawnlist = {
     {name = "Enemy1",x = -100, y=150,image = billywestmanimg, class=baseenemy},
     {name = "Enemy2",x = 200, y=150,image = billywestmanimg, class=baseenemy},
     {name = "Enemy3",x = 100, y=0,image = billywestmanimg, class=baseenemy},
     {name = "Enemy4",x = 0, y=300,image = billywestmanimg, class=baseenemy}
-    };
-  
+  };
+  triggerlist = {{id = "Test 1", x = -100, y = 0, imgs = {TTriggerF,TTriggerT}, state = 0, btype = "TOGGLE", linkedto={nil}}}
+  triggers = {};
   enemies = {};
   local function makeObj(class)
     local mt = { __index = class }
@@ -35,6 +41,10 @@ function love.load()
   for i=1, #spawnlist do
     enemies[i] = makeObj(spawnlist[i].class);
     enemies[i]:init(spawnlist[i].image,nil,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name);
+  end
+  for i=1, #triggerlist do
+    triggers[i] = makeObj(trigger);
+    triggers[i]:init(triggerlist[i].x,triggerlist[i].y,triggerlist[i].state,triggerlist[i].btype,triggerlist[i].imgs,triggerlist[i].id,triggerlist[i].linkedto);
   end
   crosshair = love.graphics.newImage("assets/crosshair.png");
   
@@ -151,7 +161,10 @@ function love.draw()
     if enemies[i].alive == 1 then --if alive then
       love.graphics.draw(enemies[i].icon,enemies[i].frames[enemies[i].increment],enemies[i].x-16-player.x+window.x/2-sx,enemies[i].y-16-player.y+window.y/2-sy,0,zoom); --draw enemies
   end
-    
+  for i = 1, #triggers do
+    love.graphics.draw(triggers[i].imgs[triggers[i].state + 1],triggers[i].x-16-player.x+window.x/2-sx,triggers[i].y-16-player.y+window.y/2-sy, 0, zoom);
+  end
+  
   end
   for i,v in ipairs(bullets) do
 		love.graphics.draw(BulletImg, v.x-player.x+window.x/2-sx, v.y-player.y+window.y/2-sy) --draw bullet

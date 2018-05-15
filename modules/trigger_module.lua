@@ -1,12 +1,13 @@
 --trigger_module.lua
 trigger = {};
-function trigger:init(x,y,state,btype,imgs,linkedto)
+function trigger:init(x,y,state,btype,imgs,id,linkedto)
   trigger.x = x;
   trigger.y = y;
   trigger.state = state;
   trigger.type = btype;
+  trigger.id = id;
   trigger.linkedto = linkedto;
-  trigger.img = imgs;
+  trigger.imgs = imgs;
 end
 function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
   return x1 < x2+w2 and
