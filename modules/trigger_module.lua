@@ -18,7 +18,7 @@ end
 function trigger:isHit(x,y,ox,oy,wx,wy,bw,bh)
   if CheckCollision(self.x,self.y,32, 32,x,y,bw,bh) then
     if trigger.type == "ONCE" then
-      trigger.state = true;
+      trigger.state = 1;
     end
     if trigger.type == "TOGGLE" then
       trigger.state = not trigger.state;

@@ -59,7 +59,9 @@ function love.load()
   sx = 0;
   sy = 0;
 end
-
+function bool_to_number(value)
+  return value and 1 or 0
+end
 function love.update(dt)
   testmap:update(dt)
   if math.abs(sx) > 0 then
@@ -90,7 +92,18 @@ for i = 1, #enemies do -- main interaction IG
       
       
   end
-  
+  for i = 1, #triggers do -- main interaction for Triggers
+      for o,v in ipairs(bullets) do
+        if triggers[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
+          print("hit",v.x,v.y);
+          table.remove(bullets,o);
+          math.randomseed(player.x);
+          sx = math.random(-10,10);
+          sy = math.random(-10,10);
+          --print(sx,sy);
+        end
+      end
+  end
 for i,v in ipairs(bullets) do --bullet script
     v.t = v.t-dt;
 		v.x = v.x + (v.dx * dt)
@@ -162,7 +175,7 @@ function love.draw()
       love.graphics.draw(enemies[i].icon,enemies[i].frames[enemies[i].increment],enemies[i].x-16-player.x+window.x/2-sx,enemies[i].y-16-player.y+window.y/2-sy,0,zoom); --draw enemies
   end
   for i = 1, #triggers do
-    love.graphics.draw(triggers[i].imgs[triggers[i].state + 1],triggers[i].x-16-player.x+window.x/2-sx,triggers[i].y-16-player.y+window.y/2-sy, 0, zoom);
+    love.graphics.draw(triggers[i].imgs[bool_to_number(triggers[i].state) + 1],triggers[i].x-16-player.x+window.x/2-sx,triggers[i].y-16-player.y+window.y/2-sy, 0, zoom);
   end
   
   end
