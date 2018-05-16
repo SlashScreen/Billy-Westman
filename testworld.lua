@@ -102,6 +102,10 @@ for i = 1, #enemies do -- main interaction IG
       
   end
   for i = 1, #triggers do -- main interaction for Triggers
+    if triggers[i].id == "Test 1" then
+      testworld:setChange("westham");
+    end
+    
       for o,v in ipairs(bullets) do
         if triggers[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
@@ -202,6 +206,9 @@ function testworld:canChange()
   end
   
 end
-
+function testworld:setChange(gotomap)
+  testworld.changemapConditionsMet = 1
+  testworld.goto = gotomap;
+end
 
 return testworld;
