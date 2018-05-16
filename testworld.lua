@@ -13,6 +13,9 @@ function testworld:load()
   currentmap = testmap;
   print(love.getVersion());
   
+  testworld.changemapConditionsMet = 0;
+  testworld.goto = "";
+  
   player = require "modules/player_module";
   baseenemy = require "modules/enemy_module";
   trigger = require "modules/trigger_module";
@@ -32,7 +35,11 @@ function testworld:load()
     {name = "Enemy3",x = 100, y=0,image = billywestmanimg, class=baseenemy},
     {name = "Enemy4",x = 0, y=300,image = billywestmanimg, class=baseenemy}
   };
-  triggerlist = {{id = "Test 1", x = -100, y = 0, imgs = {TTriggerF,TTriggerT}, state = 0, btype = "TOGGLE", linkedto={nil}}}
+  triggerlist = {
+    {id = "Test 1", x = -100, y = 0, imgs = {TTriggerF,TTriggerT}, state = 0, btype = "TOGGLE", linkedto={nil}},
+    
+  }
+  --{id = "Test 2", x = 100, y = 0, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil}}
   triggers = {};
   enemies = {};
   local function makeObj(class)
@@ -186,5 +193,15 @@ function testworld:draw()
   
   love.graphics.draw(crosshair, love.mouse.getX()-(crosshair:getWidth()/2), love.mouse.getY()-(crosshair:getHeight()/2))
 end
+
+function testworld:canChange()
+  if testworld.changemapConditionsMet == 1 then
+    return true, testworld.goto;
+  else
+    return false, testworld.goto
+  end
+  
+end
+
 
 return testworld;

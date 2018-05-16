@@ -1,13 +1,30 @@
 --main.lua
 function love.load()
   testworld = require "testworld"
-  testworld:load();
+  currentworld = testworld;
+  currentworld:load();
 end
 function love.update(dt)
-  testworld:update(dt);
+  currentworld:update(dt);
+  canchange, goToMap = currentworld:canChange();
+  if canchange then
+    if goToMap == "test" then
+      currentworld = testworld;
+    else if goToMap == "westham" then
+      print("westham");
+    else if goToMap == "mines" then
+      print("mines");
+    else if goToMap == "gulch" then
+      print("gulch");
+    end
+  
+  end
+end
 end
 
+end
+end
 
 function love.draw()
-  testworld:draw();
+  currentworld:draw();
 end
