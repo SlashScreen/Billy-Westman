@@ -3,6 +3,7 @@ function love.load()
   testworld = require "testworld"
   currentworld = testworld;
   currentworld:load();
+  love.mouse.setVisible(false);
 end
 function love.update(dt)
   currentworld:update(dt);

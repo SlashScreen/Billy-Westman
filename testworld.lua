@@ -14,7 +14,8 @@ function testworld:load()
   testmap = sti("assets/maps/testmap.lua", {"bump"});
   currentmap = testmap;
   bumpWorld = bump.newWorld();
-  testmap:bump_init(bumpWorld);
+  bumptiles = testmap:bump_init(bumpWorld);
+  --print(#bumptiles);
   print(love.getVersion());
   
   testworld.changemapConditionsMet = 0;

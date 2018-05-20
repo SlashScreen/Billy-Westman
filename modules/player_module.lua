@@ -20,27 +20,19 @@ function self:init(ico, jsondat, x, y, world)
   self.rechargetimer = 0;
   self.state = "PLAY";
   self.World:add(self, self.x, self.y, 32, 32)
-  --[[
-  player.cels = {};
-  for i,v in ipairs(player.data.frames) do
-    player.frames[i] = player.data.frames[i];
-  end
-  for o,k in ipairs(player.frames) do
-    player.cels[o] = love.graphics.newQuad(player.frames[o].frame,player.icon:getDimensions()) --player.data.frames[i];
-  end
-  print(player.frames);
-  ]]--
 end
 
 
 function self:decideMovement(x,y)
   self.x = self.x + (x*self.speed);
   self.y = self.y - (y*self.speed);
-  local ax, ay, cols, len = self.World:move(player, self.x, self.y)
+  local ax, ay, cols, len = self.World:move(self, self.x, self.y)
     self.x = ax
     self.y = ay
-    print(len);
     self.World:update(self, self.x, self.y,32,32);
+    for i=1,len do
+    print('collided with ' .. tostring(cols[i].other))
+  end
 end
 
 function self:animate(action)
