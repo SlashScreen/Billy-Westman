@@ -1,5 +1,6 @@
 --testworld.lua
 --proof of concept for having multiple worlds without cluttering poor main.lua
+--TODO: Do Colission
 testworld = {};
 function testworld:load()
   local sti = require ("modules/sti");
