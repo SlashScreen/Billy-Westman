@@ -1,23 +1,25 @@
 --player_module
-player = {};
+self = {};
 json = require("modules/json");
 
-function player:init(ico, jsondat, x, y)
-  player.icon = ico;
-  player.json = jsondat;
+function self:init(ico, jsondat, x, y, world)
+  self.World = world;
+  self.icon = ico;
+  self.json = jsondat;
   --player.data = json.decode(player.jsondat);
-  player.increment = 0;
-  player.frames = {};
-  player.frames[0] = love.graphics.newQuad(0,0,32,32,player.icon:getDimensions())
-  player.frames[1] = love.graphics.newQuad(32,0,32,32,player.icon:getDimensions())
-  player.x = x;
-  player.y = y;
-  player.speed = 2;
-  player.maxammo = 10;
-  player.ammo = player.maxammo;
-  player.rechargelimit = 1;
-  player.rechargetimer = 0;
-  player.state = "PLAY";
+  self.increment = 0;
+  self.frames = {};
+  self.frames[0] = love.graphics.newQuad(0,0,32,32,self.icon:getDimensions())
+  self.frames[1] = love.graphics.newQuad(32,0,32,32,self.icon:getDimensions())
+  self.x = x;
+  self.y = y;
+  self.speed = 2;
+  self.maxammo = 10;
+  self.ammo = self.maxammo;
+  self.rechargelimit = 1;
+  self.rechargetimer = 0;
+  self.state = "PLAY";
+  self.World:add(self, self.x, self.y, 32, 32)
   --[[
   player.cels = {};
   for i,v in ipairs(player.data.frames) do
@@ -31,22 +33,25 @@ function player:init(ico, jsondat, x, y)
 end
 
 
-function player:decideMovement(x,y)
-  player.x = player.x + (x*player.speed);
-  player.y = player.y - (y*player.speed);
+function self:decideMovement(x,y)
+  self.x = self.x + (x*self.speed);
+  self.y = self.y - (y*self.speed);
+  local ax, ay, cols, len = self.World:move(player, self.x, self.y)
+    self.x = ax
+    self.y = ay
 end
 
-function player:animate(action)
+function self:animate(action)
   if action == "walk" then
     --put in the animation thing
-    if player.increment == 1 then
-      player.increment = 0;
+    if self.increment == 1 then
+      self.increment = 0;
     else
-      player.increment = player.increment+1;
+      self.increment = self.increment+1;
     end
     
     
   end
   
 end
-return player
+return self

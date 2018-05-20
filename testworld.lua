@@ -26,7 +26,7 @@ function testworld:load()
   json = require "modules/json"
   --TownSpawnList = json.decode("assets/spawntable.json")
   
-  player:init(love.graphics.newImage("assets/billywestman.png"), nil, 0, 0);
+  player:init(love.graphics.newImage("assets/billywestman.png"), nil, 0, 0, bumpWorld);
   billywestmanimg = love.graphics.newImage("assets/billywestman.png");
   BulletImg = love.graphics.newImage("assets/BillyWestmanBullet.png");
   OTTriggerF = love.graphics.newImage("assets/OneTimeTrigger1False.png");
