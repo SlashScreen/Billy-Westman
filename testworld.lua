@@ -4,14 +4,17 @@
 testworld = {};
 function testworld:load()
   local sti = require ("modules/sti");
+  local bump = require ("modules/bump");
   --Simple-Tiled-Implementation-master-2
   love.graphics.setBackgroundColor(255,255,255);
   love.graphics.setColor(1,1,1);
   window = {}
   window.x = love.graphics:getWidth();
   window.y = love.graphics:getHeight();
-  testmap = sti("assets/maps/testmap.lua");
+  testmap = sti("assets/maps/testmap.lua", {"bump"});
   currentmap = testmap;
+  bumpWorld = bump.newWorld();
+  testmap:bump_init(bumpWorld);
   print(love.getVersion());
   
   testworld.changemapConditionsMet = 0;
