@@ -39,6 +39,8 @@ function self:decideMovement(x,y)
   local ax, ay, cols, len = self.World:move(player, self.x, self.y)
     self.x = ax
     self.y = ay
+    print(len);
+    self.World:update(self, self.x, self.y,32,32);
 end
 
 function self:animate(action)
