@@ -30,9 +30,9 @@ function self:decideMovement(x,y)
     self.x = ax
     self.y = ay
     self.World:update(self, self.x, self.y,32,32);
-    for i=1,len do
-    print('collided with ' .. tostring(cols[i].other),self.x,self.y)
-  end
+    --for i=1,len do
+    --print('collided with ' .. tostring(cols[i].other),self.x,self.y)
+  --end
 end
 
 function self:animate(action)

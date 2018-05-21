@@ -21,9 +21,10 @@ function enemy:create (o)
       return o
     end
 
-function enemy:init(ico, jsondat,x,y, id)
+function enemy:init(ico, jsondat,x,y, id, world)
   self.icon = ico;
   self.json = jsondat;
+  self.World = world;
   --player.data = json.decode(player.jsondat);
   self.increment = 0;
   self.frames = {};
@@ -34,6 +35,7 @@ function enemy:init(ico, jsondat,x,y, id)
   self.speed = 1;
   self.alive = 1;
   self.id = id;
+  self.World:add(self, self.x, self.y, 32, 32);
   --[[
   player.cels = {};
   for i,v in ipairs(player.data.frames) do
@@ -83,6 +85,13 @@ end
   end
   self.x = self.x + (deltax * self.speed);
   self.y = self.y + (deltay * self.speed);
+  local ax, ay, cols, len = self.World:move(self, self.x, self.y)
+    self.x = ax
+    self.y = ay
+    self.World:update(self, self.x, self.y,32,32);
+    --for i=1,len do
+    --print('collided with ' .. tostring(cols[i].other),self.x,self.y)
+  --end
   --print(enemy.x, enemy.y, playerx, playery);
 end
 
