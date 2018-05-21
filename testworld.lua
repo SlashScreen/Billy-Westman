@@ -41,7 +41,7 @@ function testworld:load()
     {name = "Enemy4",x = 0, y=300,image = billywestmanimg, class=baseenemy}
   };
   triggerlist = {
-    {id = "Test 1", x = -100, y = 0, imgs = {TTriggerF,TTriggerT}, state = 0, btype = "TOGGLE", linkedto={nil}},
+    {id = "Test 1", x = 100, y = 50, imgs = {TTriggerF,TTriggerT}, state = 0, btype = "TOGGLE", linkedto={nil}},
     
   }
   --{id = "Test 2", x = 100, y = 0, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil}}
@@ -185,7 +185,8 @@ function love.mousepressed(x, y, button)
   end
 end
 function testworld:draw()
-  testmap:draw(-player.x-sx,-player.y-sy);
+  testmap:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
+  testmap:bump_draw(bumpWorld,window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0,zoom);
   for i = 1, #enemies do
     if enemies[i].alive == 1 then --if alive then
