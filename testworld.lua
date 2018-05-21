@@ -41,7 +41,7 @@ function testworld:load()
     {name = "Enemy4",x = 0, y=300,image = billywestmanimg, class=baseenemy, world = bumpWorld}
   };
   triggerlist = {
-    {id = "Test 1", x = 100, y = 50, imgs = {TTriggerF,TTriggerT}, state = 0, btype = "TOGGLE", linkedto={nil}},
+    {id = "Test 1", x = 100, y = 50, imgs = {TTriggerF,TTriggerT}, state = 0, btype = "TOGGLE", linkedto={nil}, world = bumpWorld},
     
   }
   --{id = "Test 2", x = 100, y = 0, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil}}
@@ -58,8 +58,8 @@ function testworld:load()
   end
   for i=1, #triggerlist do
     triggers[i] = makeObj(trigger);
-    triggers[i]:init(triggerlist[i].x,triggerlist[i].y,triggerlist[i].state,triggerlist[i].btype,triggerlist[i].imgs,triggerlist[i].id,triggerlist[i].linkedto);
-    bumpWorld:add(triggers[i], triggerlist[i].x, triggerlist[i].y, 16, 16);
+    triggers[i]:init(triggerlist[i].x,triggerlist[i].y,triggerlist[i].state,triggerlist[i].btype,triggerlist[i].imgs,triggerlist[i].id,triggerlist[i].linkedto,triggerlist[i].world);
+    --bumpWorld:add(triggers[i], triggerlist[i].x, triggerlist[i].y, 16, 16);
   end
   crosshair = love.graphics.newImage("assets/crosshair.png");
   

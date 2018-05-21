@@ -1,13 +1,15 @@
 --trigger_module.lua
 trigger = {};
-function trigger:init(x,y,state,btype,imgs,id,linkedto)
-  trigger.x = x;
-  trigger.y = y;
-  trigger.state = state;
-  trigger.type = btype;
-  trigger.id = id;
-  trigger.linkedto = linkedto;
-  trigger.imgs = imgs;
+function trigger:init(x,y,state,btype,imgs,id,linkedto,world)
+  self.x = x;
+  self.y = y;
+  self.state = state;
+  self.type = btype;
+  self.id = id;
+  self.linkedto = linkedto;
+  self.imgs = imgs;
+  self.World = world
+  self.World:add(self, self.x, self.y, 32, 32)
 end
 function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
   return x1 < x2+w2 and
@@ -17,11 +19,11 @@ function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
 end
 function trigger:isHit(x,y,ox,oy,wx,wy,bw,bh)
   if CheckCollision(self.x,self.y,32, 32,x,y,bw,bh) then
-    if trigger.type == "ONCE" then
-      trigger.state = 1;
+    if self.type == "ONCE" then
+      self.state = 1;
     end
-    if trigger.type == "TOGGLE" then
-      trigger.state = not trigger.state;
+    if self.type == "TOGGLE" then
+      self.state = not self.state;
     end
     return true;
   else

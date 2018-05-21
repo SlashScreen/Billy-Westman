@@ -50,6 +50,7 @@ end
 
 function enemy:die()
   self.alive = 0;
+  self.World:remove(self);
   print ("dead", self.x, self.y);
 end
 
