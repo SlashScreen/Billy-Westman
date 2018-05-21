@@ -19,7 +19,7 @@ function self:init(ico, jsondat, x, y, world)
   self.rechargelimit = 1;
   self.rechargetimer = 0;
   self.state = "PLAY";
-  self.World:add(self, self.x, self.y, 32, 32)
+  self.World:add(self, self.x, self.y, 20, 20)
 end
 
 

@@ -92,8 +92,8 @@ function testworld:update(dt)
     playerWalkTimer = 0;
   end
 for i = 1, #enemies do -- main interaction IG
-    enemies[i]:decideMovement(player.x,player.y,dt);
     if enemies[i].alive == 1 then
+      enemies[i]:decideMovement(player.x,player.y,dt);
       for o,v in ipairs(bullets) do
         if enemies[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
