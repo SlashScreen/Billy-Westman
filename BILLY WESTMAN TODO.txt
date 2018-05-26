@@ -1,0 +1,11 @@
+BILLY WESTMAN TODO:
+High Priority
+-Dynamite
+-Fix Switch Rendering System
+-bosses/loading screen
+-title screen
+Lower priority
+-maps
+-json enemy placement
+lowest
+-music

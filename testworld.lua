@@ -27,7 +27,7 @@ function testworld:load()
   json = require "modules/json"
   --TownSpawnList = json.decode("assets/spawntable.json")
   
-  player:init(love.graphics.newImage("assets/billywestman.png"), nil, 0, 0, bumpWorld);
+  player:init(love.graphics.newImage("assets/billywestman.png"), nil, 300, 350, bumpWorld);
   billywestmanimg = love.graphics.newImage("assets/billywestman.png");
   BulletImg = love.graphics.newImage("assets/BillyWestmanBullet.png");
   OTTriggerF = love.graphics.newImage("assets/OneTimeTrigger1False.png");
@@ -42,7 +42,7 @@ function testworld:load()
   };
   triggerlist = {
     {id = "Test 1", x = 100, y = 50, imgs = {TTriggerF,TTriggerT}, state = 0, btype = "TOGGLE", linkedto={nil}, world = bumpWorld},
-    
+    {id = "Test 2", x = 300, y = 100, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil},world = bumpWorld}
   }
   --{id = "Test 2", x = 100, y = 0, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil}}
   triggers = {};
@@ -187,7 +187,7 @@ function love.mousepressed(x, y, button)
 end
 function testworld:draw()
   testmap:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
-  testmap:bump_draw(bumpWorld,window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
+  --testmap:bump_draw(bumpWorld,window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0,zoom);
   for i = 1, #enemies do
     if enemies[i].alive == 1 then --if alive then

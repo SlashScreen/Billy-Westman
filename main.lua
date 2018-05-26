@@ -13,7 +13,7 @@ function love.update(dt)
     if goToMap == "test" then
       currentworld = testworld;
     else if goToMap == "westham" then
-      print("westham");
+      --print("westham");
     else if goToMap == "mines" then
       print("mines");
     else if goToMap == "gulch" then
