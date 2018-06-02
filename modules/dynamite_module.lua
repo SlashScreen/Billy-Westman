@@ -23,8 +23,8 @@ end
 
 function dynamite:explode(enemies, player, dynamite)
   for i=1, #enemies do
-    if findDist(self.x,enemies[i].x,self.y,enemies[i].y) <= 50 then
-      enemies[i]:hurt();
+    if findDist(self.x,enemies[i].x,self.y,enemies[i].y) <= 10 then
+      enemies[i]:die();
     end
     
   end
@@ -36,8 +36,8 @@ end
 
 function dynamite:update(bullets,enemies, player, dynamite)
   --if hit by bullet explode
-  for i=1, #bullets do
-    if CheckCollision(bullets[i].x,bullets[i].y,bullets[i].x+2,bullets[i].y+2,self.x,self.y,self.x+32,self.y+32) then
+  for i,v in ipairs(bullets) do
+    if CheckCollision(v.x,v.y,v.x+2,v.y+2,self.x,self.y,self.x+32,self.y+32) then
       self:explode(enemies, player, dynamite);
     end
   end

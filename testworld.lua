@@ -24,6 +24,7 @@ function testworld:load()
   player = require "modules/player_module";
   baseenemy = require "modules/enemy_module";
   trigger = require "modules/trigger_module";
+  dynamiteClass = require "modules/dynamite_module"
   json = require "modules/json"
   --TownSpawnList = json.decode("assets/spawntable.json")
   
@@ -34,6 +35,7 @@ function testworld:load()
   OTTriggerT = love.graphics.newImage("assets/OneTimeTrigger1True.png");
   TTriggerF = love.graphics.newImage("assets/ToggleTrigger1-False.png");
   TTriggerT = love.graphics.newImage("assets/ToggleTrigger1-True.png");
+  DynamiteImg = love.graphics.newImage("assets/dynamite1.png");
   spawnlist = {
     {name = "Enemy1",x = -100, y=150,image = billywestmanimg, class=baseenemy, world = bumpWorld},
     {name = "Enemy2",x = 200, y=150,image = billywestmanimg, class=baseenemy, world = bumpWorld},
@@ -44,9 +46,15 @@ function testworld:load()
     {id = "Test 1", x = 100, y = 50, imgs = {TTriggerF,TTriggerT}, state = 0, btype = "TOGGLE", linkedto={nil}, world = bumpWorld},
     {id = "Test 2", x = 300, y = 100, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil},world = bumpWorld}
   }
+  
+  DynamiteList = {
+    {x = 175, y = 175, sprite = DynamiteImg}
+  }
+  
   --{id = "Test 2", x = 100, y = 0, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil}}
   triggers = {};
   enemies = {};
+  dynamite = {};
   local function makeObj(class)
     local mt = { __index = class }
     local obj = setmetatable({}, mt)
@@ -55,6 +63,10 @@ function testworld:load()
   for i=1, #spawnlist do
     enemies[i] = makeObj(spawnlist[i].class);
     enemies[i]:init(spawnlist[i].image,nil,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name,spawnlist[i].world);
+  end
+  for i=1, #DynamiteList do
+    dynamite[i] = makeObj(dynamiteClass);
+    dynamite[i]:init(DynamiteList[i].x,DynamiteList[i].y,DynamiteList[i].sprite);
   end
   for i=1, #triggerlist do
     triggers[i] = makeObj(trigger);
@@ -81,6 +93,9 @@ function testworld:update(dt)
   testmap:update(dt)
   if math.abs(sx) > 0 then
     sx,sy = 0,0;
+  end
+  for i=1, #dynamite do
+    dynamite[i]:update(bullets,enemies,player,dynamite)
   end
   
   playerWalkTimer = playerWalkTimer + dt
@@ -212,6 +227,17 @@ function testworld:draw()
   end
   
 end
+
+for i=1, #dynamite do
+  love.graphics.draw(
+      dynamite[i].sprite,
+      dynamite[i].x-16-player.x+window.x/2-sx,
+      dynamite[i].y-16-player.y+window.y/2-sy,
+      0,
+      zoom
+      );
+end
+
 
   for i,v in ipairs(bullets) do
 		love.graphics.draw(BulletImg, v.x-player.x+window.x/2-sx, v.y-player.y+window.y/2-sy) --draw bullet
