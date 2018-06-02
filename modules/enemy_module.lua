@@ -54,6 +54,9 @@ function enemy:die()
   print ("dead", self.x, self.y);
 end
 
+function enemy:hurt()
+  self:die();
+end
 
 
 function lerp (a,b,t)

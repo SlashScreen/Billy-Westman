@@ -189,15 +189,30 @@ function testworld:draw()
   testmap:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
   --testmap:bump_draw(bumpWorld,window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0,zoom);
+  
   for i = 1, #enemies do
     if enemies[i].alive == 1 then --if alive then
-      love.graphics.draw(enemies[i].icon,enemies[i].frames[enemies[i].increment],enemies[i].x-16-player.x+window.x/2-sx,enemies[i].y-16-player.y+window.y/2-sy,0,zoom); --draw enemies
+      love.graphics.draw(
+        enemies[i].icon,
+        enemies[i].frames[enemies[i].increment],
+        enemies[i].x-16-player.x+window.x/2-sx,
+        enemies[i].y-16-player.y+window.y/2-sy,
+        0,
+        zoom
+        ); --draw enemies
   end
   for i = 1, #triggers do
-    love.graphics.draw(triggers[i].imgs[bool_to_number(triggers[i].state) + 1],triggers[i].x-16-player.x+window.x/2-sx,triggers[i].y-16-player.y+window.y/2-sy, 0, zoom);
+    love.graphics.draw(
+      triggers[i].imgs[bool_to_number(triggers[i].state) + 1],
+      triggers[i].x-16-player.x+window.x/2-sx,
+      triggers[i].y-16-player.y+window.y/2-sy,
+      0,
+      zoom
+      );
   end
   
-  end
+end
+
   for i,v in ipairs(bullets) do
 		love.graphics.draw(BulletImg, v.x-player.x+window.x/2-sx, v.y-player.y+window.y/2-sy) --draw bullet
 	end
