@@ -1,4 +1,5 @@
 --dynamite_module.lua
+testworld = require "testworld"
 dynamite = {};
 
 function findDist(x1,y1,x2,y2)
@@ -20,13 +21,15 @@ function dynamite:init(x,y,sprite)
   self.x = x;
   self.y = y;
   self.intact = 1;
+  self.explosiondist = 75;
 end
 
 function dynamite:explode(enemies, player, dynamite,x,y)
   print("boom!",x,y,self.x,self.y);
+  testworld:shakescreen();
   self.intact = 0;
   for i=1, #enemies do
-    if findDist(self.x,enemies[i].x,self.y,enemies[i].y) <= 50 then
+    if findDist(self.x,enemies[i].x,self.y,enemies[i].y) <= self.explosiondist then
       if enemies[i].alive == 1 then
         enemies[i]:die();
       end
@@ -35,7 +38,7 @@ function dynamite:explode(enemies, player, dynamite,x,y)
     
   end
   for i=1, #dynamite do
-    if findDist(self.x,dynamite[i].x,self.y,dynamite[i].y) <= 50 then
+    if findDist(self.x,dynamite[i].x,self.y,dynamite[i].y) <= self.explosiondist then
       if dynamite[i].intact == 1 then
         dynamite[i]:explode(enemies, player, dynamite,x,y);
       end

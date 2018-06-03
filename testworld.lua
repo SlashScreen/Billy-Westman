@@ -2,6 +2,10 @@
 --proof of concept for having multiple worlds without cluttering poor main.lua
 --TODO: Do Colission
 testworld = {};
+
+
+
+
 function testworld:load()
   local sti = require ("modules/sti");
   local bump = require ("modules/bump");
@@ -89,9 +93,16 @@ function testworld:load()
   sx = 0;
   sy = 0;
 end
+
+function testworld:shakescreen()
+  sx = math.random(-10,10);
+  sy = math.random(-10,10);
+end
+
 function bool_to_number(value)
   return value and 1 or 0
 end
+
 function testworld:update(dt)
   testmap:update(dt)
   if math.abs(sx) > 0 then
@@ -115,8 +126,7 @@ for i = 1, #enemies do -- main interaction IG
           table.remove(bullets,o);
           table.remove(bullets,i);
           math.randomseed(player.x);
-          sx = math.random(-10,10);
-          sy = math.random(-10,10);
+          testworld:shakescreen();
           --print(sx,sy);
         end
       end
@@ -133,8 +143,7 @@ for i = 1, #enemies do -- main interaction IG
           print("hit",v.x,v.y);
           table.remove(bullets,o);
           math.randomseed(player.x);
-          sx = math.random(-10,10);
-          sy = math.random(-10,10);
+          testworld:shakescreen();
           --print(sx,sy);
         end
       end
