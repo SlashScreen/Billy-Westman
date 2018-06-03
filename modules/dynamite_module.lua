@@ -48,11 +48,12 @@ function dynamite:explode(enemies, player, dynamite,x,y)
   --remove self from existence
 end
 
-function dynamite:update(bullets,enemies, player, dynamite)
+function dynamite:update(bullets,enemies, player, dynamite,bx,by)
   --if hit by bullet explode
   for i,v in ipairs(bullets) do
-    if CheckCollision(v.x,v.y,16,16,self.x,self.y,32,32) then
-      self:explode(enemies, player, dynamite,v.x,v.y);
+    if CheckCollision(self.x,self.y,64, 64,v.x,v.y,2,2) then
+    --if findDist(self.x,dynamite[i].x,self.y,dynamite[i].y) <= 2 then
+      self:explode(enemies, player, dynamite,v.x,v.y,bw,bh);
     end
   end
   

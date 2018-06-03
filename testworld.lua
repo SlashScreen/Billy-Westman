@@ -113,6 +113,7 @@ for i = 1, #enemies do -- main interaction IG
         if enemies[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
           table.remove(bullets,o);
+          table.remove(bullets,i);
           math.randomseed(player.x);
           sx = math.random(-10,10);
           sy = math.random(-10,10);
@@ -200,10 +201,11 @@ function love.mousepressed(x, y, button)
     print(player.ammo,"ammo");
   end
     for i=1, #dynamite do
-    dynamite[i]:update(bullets,enemies,player,dynamite);
+    dynamite[i]:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight());
     print(dynamite[i].x,dynamite[i].y, "update");
   end
 end
+
 function testworld:draw()
   testmap:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
   --testmap:bump_draw(bumpWorld,window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
@@ -234,11 +236,11 @@ end
 
 for i=1, #dynamite do
   if dynamite[i].intact == 1 then
-    love.graphics.rectangle("fill",dynamite[i].x-16-player.x+window.x/2-sx,dynamite[i].y-16-player.y+window.y/2-sy,32,32);
+    love.graphics.rectangle("fill",dynamite[i].x-player.x+window.x/2-sx,dynamite[i].y-player.y+window.y/2-sy,32,32);
     love.graphics.draw(
       dynamite[i].sprite,
-      dynamite[i].x-16-player.x+window.x/2-sx,
-      dynamite[i].y-16-player.y+window.y/2-sy,
+      dynamite[i].x-player.x+window.x/2-sx,
+      dynamite[i].y-player.y+window.y/2-sy,
       0,
       zoom*2
     );
