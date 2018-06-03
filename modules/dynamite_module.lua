@@ -22,8 +22,8 @@ function dynamite:init(x,y,sprite)
   self.intact = 1;
 end
 
-function dynamite:explode(enemies, player, dynamite)
-  print("boom!");
+function dynamite:explode(enemies, player, dynamite,x,y)
+  print("boom!",x,y,self.x,self.y);
   self.intact = 0;
   for i=1, #enemies do
     if findDist(self.x,enemies[i].x,self.y,enemies[i].y) <= 50 then
@@ -34,7 +34,15 @@ function dynamite:explode(enemies, player, dynamite)
     end
     
   end
-  
+  for i=1, #dynamite do
+    if findDist(self.x,dynamite[i].x,self.y,dynamite[i].y) <= 50 then
+      if dynamite[i].intact == 1 then
+        dynamite[i]:explode(enemies, player, dynamite,x,y);
+      end
+      
+    end
+    
+  end
   --for enemies, dynamite, if distance close enough, hurt/explode them
   --player, hurt player
   --remove self from existence
@@ -44,7 +52,7 @@ function dynamite:update(bullets,enemies, player, dynamite)
   --if hit by bullet explode
   for i,v in ipairs(bullets) do
     if CheckCollision(v.x,v.y,16,16,self.x,self.y,32,32) then
-      self:explode(enemies, player, dynamite);
+      self:explode(enemies, player, dynamite,v.x,v.y);
     end
   end
   

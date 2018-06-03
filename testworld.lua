@@ -5,6 +5,7 @@ testworld = {};
 function testworld:load()
   local sti = require ("modules/sti");
   local bump = require ("modules/bump");
+  love.graphics.setDefaultFilter("nearest","nearest");
   --Simple-Tiled-Implementation-master-2
   love.graphics.setBackgroundColor(255,255,255);
   love.graphics.setColor(1,1,1);
@@ -36,6 +37,7 @@ function testworld:load()
   TTriggerF = love.graphics.newImage("assets/ToggleTrigger1-False.png");
   TTriggerT = love.graphics.newImage("assets/ToggleTrigger1-True.png");
   DynamiteImg = love.graphics.newImage("assets/dynamite1.png");
+  DynamiteImg:setFilter("nearest","nearest");
   spawnlist = {
     {name = "Enemy1",x = -100, y=150,image = billywestmanimg, class=baseenemy, world = bumpWorld},
     {name = "Enemy2",x = 200, y=150,image = billywestmanimg, class=baseenemy, world = bumpWorld},
@@ -49,7 +51,7 @@ function testworld:load()
   
   DynamiteList = {
     {x = 175, y = 175, sprite = DynamiteImg},
-    {x = 200, y = 175, sprite = DynamiteImg}
+    {x = 215, y = 175, sprite = DynamiteImg}
   }
   
   --{id = "Test 2", x = 100, y = 0, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil}}
