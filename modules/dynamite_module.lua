@@ -43,7 +43,7 @@ end
 function dynamite:update(bullets,enemies, player, dynamite)
   --if hit by bullet explode
   for i,v in ipairs(bullets) do
-    if CheckCollision(v.x,v.y,2,2,self.x,self.y,32,32) then
+    if CheckCollision(v.x,v.y,16,16,self.x,self.y,32,32) then
       self:explode(enemies, player, dynamite);
     end
   end

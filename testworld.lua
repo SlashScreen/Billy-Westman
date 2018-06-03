@@ -48,7 +48,8 @@ function testworld:load()
   }
   
   DynamiteList = {
-    {x = 175, y = 175, sprite = DynamiteImg}
+    {x = 175, y = 175, sprite = DynamiteImg},
+    {x = 200, y = 175, sprite = DynamiteImg}
   }
   
   --{id = "Test 2", x = 100, y = 0, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil}}
@@ -197,7 +198,8 @@ function love.mousepressed(x, y, button)
     print(player.ammo,"ammo");
   end
     for i=1, #dynamite do
-    dynamite[i]:update(bullets,enemies,player,dynamite)
+    dynamite[i]:update(bullets,enemies,player,dynamite);
+    print(dynamite[i].x,dynamite[i].y, "update");
   end
 end
 function testworld:draw()
@@ -230,13 +232,15 @@ end
 
 for i=1, #dynamite do
   if dynamite[i].intact == 1 then
+    love.graphics.rectangle("fill",dynamite[i].x-16-player.x+window.x/2-sx,dynamite[i].y-16-player.y+window.y/2-sy,32,32);
     love.graphics.draw(
       dynamite[i].sprite,
       dynamite[i].x-16-player.x+window.x/2-sx,
       dynamite[i].y-16-player.y+window.y/2-sy,
       0,
-      zoom
+      zoom*2
     );
+    
   end
   
 end
