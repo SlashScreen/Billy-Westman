@@ -19,12 +19,18 @@ function dynamite:init(x,y,sprite)
   self.sprite = sprite;
   self.x = x;
   self.y = y;
+  self.intact = 1;
 end
 
 function dynamite:explode(enemies, player, dynamite)
+  print("boom!");
+  self.intact = 0;
   for i=1, #enemies do
-    if findDist(self.x,enemies[i].x,self.y,enemies[i].y) <= 10 then
-      enemies[i]:die();
+    if findDist(self.x,enemies[i].x,self.y,enemies[i].y) <= 50 then
+      if enemies[i].alive == 1 then
+        enemies[i]:die();
+      end
+      
     end
     
   end
@@ -37,7 +43,7 @@ end
 function dynamite:update(bullets,enemies, player, dynamite)
   --if hit by bullet explode
   for i,v in ipairs(bullets) do
-    if CheckCollision(v.x,v.y,v.x+2,v.y+2,self.x,self.y,self.x+32,self.y+32) then
+    if CheckCollision(v.x,v.y,2,2,self.x,self.y,32,32) then
       self:explode(enemies, player, dynamite);
     end
   end

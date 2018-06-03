@@ -94,9 +94,6 @@ function testworld:update(dt)
   if math.abs(sx) > 0 then
     sx,sy = 0,0;
   end
-  for i=1, #dynamite do
-    dynamite[i]:update(bullets,enemies,player,dynamite)
-  end
   
   playerWalkTimer = playerWalkTimer + dt
   if playerWalkTimer > .5 then
@@ -199,6 +196,9 @@ function love.mousepressed(x, y, button)
     player.ammo = player.ammo - 1;
     print(player.ammo,"ammo");
   end
+    for i=1, #dynamite do
+    dynamite[i]:update(bullets,enemies,player,dynamite)
+  end
 end
 function testworld:draw()
   testmap:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
@@ -229,13 +229,16 @@ function testworld:draw()
 end
 
 for i=1, #dynamite do
-  love.graphics.draw(
+  if dynamite[i].intact == 1 then
+    love.graphics.draw(
       dynamite[i].sprite,
       dynamite[i].x-16-player.x+window.x/2-sx,
       dynamite[i].y-16-player.y+window.y/2-sy,
       0,
       zoom
-      );
+    );
+  end
+  
 end
 
 
