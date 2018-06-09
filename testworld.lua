@@ -121,7 +121,7 @@ for i = 1, #enemies do -- main interaction IG
     if enemies[i].alive == 1 then
       enemies[i]:decideMovement(player.x,player.y,dt);
       for o,v in ipairs(bullets) do
-        if enemies[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
+        if enemies[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) or player:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
           table.remove(bullets,o);
           table.remove(bullets,i);
@@ -212,6 +212,9 @@ function love.mousepressed(x, y, button)
 		local mouseY = player.y + y - window.y / 2
  
 		local angle = math.atan2((mouseY - startY), (mouseX - startX))
+    
+    startX = startX + (math.cos(angle)*20)
+    startY = startY + (math.sin(angle)*20)
  
 		local bulletDx = bulletSpeed * math.cos(angle)
 		local bulletDy = bulletSpeed * math.sin(angle)

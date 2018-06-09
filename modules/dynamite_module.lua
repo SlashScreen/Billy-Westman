@@ -59,7 +59,7 @@ function dynamite:update(bullets,enemies, player, dynamite,bx,by)
   print(player.x,player.y,self.x,self.y)
   if self.intact == 1 then
     for i,v in ipairs(bullets) do
-      if CheckCollision(v.x,v.y,2,2,self.x,self.y,64, 64) then
+      if CheckCollision(v.x,v.y,2,2,self.x,self.y,32, 32) then
     --if findDist(self.x,dynamite[i].x,self.y,dynamite[i].y) <= 2 then
         self:explode(enemies, dynamite,v.x,v.y,bw,bh);
       end
