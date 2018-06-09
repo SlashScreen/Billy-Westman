@@ -22,12 +22,12 @@ function dynamite:init(x,y,sprite)
   self.x = x;
   self.y = y;
   self.intact = 1;
-  self.explosiondist = 75;
+  self.explosiondist = 100;
 end
 
 function dynamite:explode(enemies, dynamite,x,y)
   print("boom!",x,y,self.x,self.y);
-  testworld:shakescreen();
+  testworld:shakescreen(40);
   self.intact = 0;
   for i=1, #enemies do
     if findDist(self.x,enemies[i].x,self.y,enemies[i].y) <= self.explosiondist then
@@ -45,8 +45,10 @@ function dynamite:explode(enemies, dynamite,x,y)
       end
       
     end
-    
-  end
+  
+  
+end
+
   --for enemies, dynamite, if distance close enough, hurt/explode them
   --player, hurt player
   --remove self from existence
@@ -55,12 +57,15 @@ end
 function dynamite:update(bullets,enemies, player, dynamite,bx,by)
   --if hit by bullet explode
   print(player.x,player.y,self.x,self.y)
-  for i,v in ipairs(bullets) do
-    if CheckCollision(v.x,v.y,2,2,self.x,self.y,64, 64) then
+  if self.intact == 1 then
+    for i,v in ipairs(bullets) do
+      if CheckCollision(v.x,v.y,2,2,self.x,self.y,64, 64) then
     --if findDist(self.x,dynamite[i].x,self.y,dynamite[i].y) <= 2 then
-      self:explode(enemies, dynamite,v.x,v.y,bw,bh);
+        self:explode(enemies, dynamite,v.x,v.y,bw,bh);
+      end
     end
   end
+  
   
 end
 

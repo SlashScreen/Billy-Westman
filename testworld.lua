@@ -94,9 +94,9 @@ function testworld:load()
   sy = 0;
 end
 
-function testworld:shakescreen()
-  sx = math.random(-10,10);
-  sy = math.random(-10,10);
+function testworld:shakescreen(val)
+  sx = math.random(-val,val);
+  sy = math.random(-val,val);
 end
 
 function bool_to_number(value)
@@ -126,7 +126,7 @@ for i = 1, #enemies do -- main interaction IG
           table.remove(bullets,o);
           table.remove(bullets,i);
           math.randomseed(player.x);
-          testworld:shakescreen();
+          testworld:shakescreen(10);
           --print(sx,sy);
         end
       end
@@ -143,7 +143,7 @@ for i = 1, #enemies do -- main interaction IG
           print("hit",v.x,v.y);
           table.remove(bullets,o);
           math.randomseed(player.x);
-          testworld:shakescreen();
+          testworld:shakescreen(10);
           --print(sx,sy);
         end
       end
@@ -157,9 +157,19 @@ for i,v in ipairs(bullets) do --bullet script
     end
     
 	end
+ for i=1, #dynamite do 
+  
+  end
+  
 for i=1, #dynamite do
+  --[[if dynamite[i].intact == 0 then
+      table.remove(dynamite, i)
+  else]]
     dynamite[i]:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight());
+  --end
     print(dynamite[i].x,dynamite[i].y, "update");
+    
+    
   end
 end
   if player.state == "FIRE" then
