@@ -157,7 +157,10 @@ for i,v in ipairs(bullets) do --bullet script
     end
     
 	end
-
+for i=1, #dynamite do
+    dynamite[i]:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight());
+    print(dynamite[i].x,dynamite[i].y, "update");
+  end
 end
   if player.state == "FIRE" then
     player.rechargetimer = 0;
@@ -189,6 +192,7 @@ if player.state == "PLAY" and player.ammo < 10 then
     end
   end
 end
+
 function love.mousepressed(x, y, button)
 	if button == 1 and player.ammo > 0 then
     player.state = "FIRE";
@@ -209,10 +213,7 @@ function love.mousepressed(x, y, button)
     player.ammo = player.ammo - 1;
     print(player.ammo,"ammo");
   end
-    for i=1, #dynamite do
-    dynamite[i]:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight());
-    print(dynamite[i].x,dynamite[i].y, "update");
-  end
+    
 end
 
 function testworld:draw()

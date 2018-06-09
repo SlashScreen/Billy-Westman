@@ -10,6 +10,7 @@ function findDist(x1,y1,x2,y2)
 end
 
 function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
+  print(x2,x2+w2,y2,y2+h2,"check")
   return x1 < x2+w2 and
          x2 < x1+w1 and
          y1 < y2+h2 and
@@ -24,7 +25,7 @@ function dynamite:init(x,y,sprite)
   self.explosiondist = 75;
 end
 
-function dynamite:explode(enemies, player, dynamite,x,y)
+function dynamite:explode(enemies, dynamite,x,y)
   print("boom!",x,y,self.x,self.y);
   testworld:shakescreen();
   self.intact = 0;
@@ -53,14 +54,16 @@ end
 
 function dynamite:update(bullets,enemies, player, dynamite,bx,by)
   --if hit by bullet explode
+  print(player.x,player.y,self.x,self.y)
   for i,v in ipairs(bullets) do
-    if CheckCollision(self.x,self.y,64, 64,v.x,v.y,2,2) then
+    if CheckCollision(v.x,v.y,2,2,self.x,self.y,64, 64) then
     --if findDist(self.x,dynamite[i].x,self.y,dynamite[i].y) <= 2 then
-      self:explode(enemies, player, dynamite,v.x,v.y,bw,bh);
+      self:explode(enemies, dynamite,v.x,v.y,bw,bh);
     end
   end
   
 end
 
+--bug maybe: coordinate systems different
 
 return dynamite;
