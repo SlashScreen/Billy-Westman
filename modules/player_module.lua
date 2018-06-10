@@ -57,6 +57,7 @@ end
 function self:isHit(x,y,ox,oy,wx,wy,bw,bh)
   if CheckCollision(self.x,self.y,32, 32,x,y,bw,bh) then
     self:hurt();
+    print(self.health)
     return true;
   else
     return false;

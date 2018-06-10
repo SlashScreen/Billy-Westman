@@ -162,14 +162,7 @@ for i,v in ipairs(bullets) do --bullet script
   end
   
 for i=1, #dynamite do
-  --[[if dynamite[i].intact == 0 then
-      table.remove(dynamite, i)
-  else]]
     dynamite[i]:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight());
-  --end
-    print(dynamite[i].x,dynamite[i].y, "update");
-    
-    
   end
 end
   if player.state == "FIRE" then
