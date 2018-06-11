@@ -94,6 +94,30 @@ function testworld:load()
   sy = 0;
 end
 
+function testworld:shoot(body,x,y)
+  player.state = "FIRE";
+		local startX = body.x--window.x / 2
+		local startY = body.y--window.y / 2
+		local mouseX = body.x + x - window.x / 2
+		local mouseY = body.y + y - window.y / 2
+ 
+		local angle = math.atan2((mouseY - startY), (mouseX - startX))
+    
+    startX = startX + (math.cos(angle)*20)
+    startY = startY + (math.sin(angle)*20)
+ 
+		local bulletDx = bulletSpeed * math.cos(angle)
+		local bulletDy = bulletSpeed * math.sin(angle)
+    
+    local bulletTime = 3;
+ 
+		table.insert(bullets, {x = startX, y = startY, dx = bulletDx, dy = bulletDy, t = bulletTime})
+    
+    player.ammo = body.ammo - 1;
+    print(body.ammo,"ammo");
+  end
+  
+
 function testworld:shakescreen(val)
   sx = math.random(-val,val);
   sy = math.random(-val,val);
@@ -198,26 +222,7 @@ end
 
 function love.mousepressed(x, y, button)
 	if button == 1 and player.ammo > 0 then
-    player.state = "FIRE";
-		local startX = player.x--window.x / 2
-		local startY = player.y--window.y / 2
-		local mouseX = player.x + x - window.x / 2
-		local mouseY = player.y + y - window.y / 2
- 
-		local angle = math.atan2((mouseY - startY), (mouseX - startX))
-    
-    startX = startX + (math.cos(angle)*20)
-    startY = startY + (math.sin(angle)*20)
- 
-		local bulletDx = bulletSpeed * math.cos(angle)
-		local bulletDy = bulletSpeed * math.sin(angle)
-    
-    local bulletTime = 3;
- 
-		table.insert(bullets, {x = startX, y = startY, dx = bulletDx, dy = bulletDy, t = bulletTime})
-    
-    player.ammo = player.ammo - 1;
-    print(player.ammo,"ammo");
+    testworld:shoot(player,x,y);
   end
     
 end
