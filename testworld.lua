@@ -144,6 +144,7 @@ function testworld:update(dt)
 for i = 1, #enemies do -- main interaction IG
     if enemies[i].alive == 1 then
       enemies[i]:decideMovement(player.x,player.y,dt);
+      enemies[i]:shoot(player,testworld,dt)
       for o,v in ipairs(bullets) do
         if enemies[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) or player:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
@@ -257,7 +258,7 @@ end
 
 for i=1, #dynamite do
   if dynamite[i].intact == 1 then
-    love.graphics.rectangle("fill",dynamite[i].x-player.x+window.x/2-sx,dynamite[i].y-player.y+window.y/2-sy,32,32);
+    --love.graphics.rectangle("fill",dynamite[i].x-player.x+window.x/2-sx,dynamite[i].y-player.y+window.y/2-sy,32,32);
     love.graphics.draw(
       dynamite[i].sprite,
       dynamite[i].x-player.x+window.x/2-sx,

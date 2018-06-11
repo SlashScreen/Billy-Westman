@@ -46,7 +46,6 @@ function dynamite:explode(enemies, player, dynamite,x,y)
     
 end
 if findDist(self.x,player.x,self.y,player.y) <= self.explosiondist then
-  print("empire of dirt")
   player:hurt();
 end
 end

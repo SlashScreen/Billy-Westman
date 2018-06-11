@@ -35,6 +35,9 @@ function enemy:init(ico, jsondat,x,y, id, world)
   self.speed = 1;
   self.alive = 1;
   self.id = id;
+  self.shoottimer = 0;
+  self.shootmax = 5;
+  self.ammo = 10;
   self.World:add(self, self.x, self.y, 32, 32);
   --[[
   player.cels = {};
@@ -47,6 +50,15 @@ function enemy:init(ico, jsondat,x,y, id, world)
   print(player.frames);
   ]]--
 end
+
+function enemy:shoot(player,world,dt)
+  self.shoottimer = self.shoottimer+dt
+  if self.shoottimer > self.shootmax then
+    world:shoot(self,player.x,player.y);
+    self.shoottimer = 0;
+  end
+end
+
 
 function enemy:die()
   self.alive = 0;
