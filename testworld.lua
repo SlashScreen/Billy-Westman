@@ -100,7 +100,7 @@ function testworld:shoot(body,x,y)
 		local startY = body.y--window.y / 2
 		local mouseX = body.x + x - window.x / 2
 		local mouseY = body.y + y - window.y / 2
- 
+    print(startX,startY,mouseX,mouseY)
 		local angle = math.atan2((mouseY - startY), (mouseX - startX))
     
     startX = startX + (math.cos(angle)*20)
