@@ -1,12 +1,13 @@
 --testworld.lua
 --proof of concept for having multiple worlds without cluttering poor main.lua
 --TODO: Do Colission
-testworld = {};
+gdqsworld= {};
 
 
 
 
-function testworld:load()
+function gdqsworld
+:load()
   local sti = require ("modules/sti");
   local bump = require ("modules/bump");
   love.graphics.setDefaultFilter("nearest","nearest");
@@ -16,25 +17,24 @@ function testworld:load()
   window = {}
   window.x = love.graphics:getWidth();
   window.y = love.graphics:getHeight();
-  testmap = sti("assets/maps/testmap.lua", {"bump"});
+  testmap = sti("assets/maps/GMQSlevel.lua", {"bump"});
   currentmap = testmap;
   bumpWorld = bump.newWorld();
   bumptiles = testmap:bump_init(bumpWorld);
   --print(#bumptiles);
   print(love.getVersion());
   
-  testworld.changemapConditionsMet = 0;
-  testworld.goto = "";
+  gdqsworld.changemapConditionsMet = 0;
+  gdqsworld.goto = "test";
   
   player = require "modules/player_module";
   baseenemy = require "modules/enemy_module";
   trigger = require "modules/trigger_module";
   dynamiteClass = require "modules/dynamite_module"
-  wu = require("modules/worldupdate")
   json = require "modules/json"
   --TownSpawnList = json.decode("assets/spawntable.json")
   
-  player:init(love.graphics.newImage("assets/billywestman.png"), nil, 300, 350, bumpWorld);
+  player:init(love.graphics.newImage("assets/billywestman.png"), nil, 700, 550, bumpWorld);
   billywestmanimg = love.graphics.newImage("assets/billywestman.png");
   BulletImg = love.graphics.newImage("assets/BillyWestmanBullet.png");
   OTTriggerF = love.graphics.newImage("assets/OneTimeTrigger1False.png");
@@ -95,11 +95,39 @@ function testworld:load()
   sy = 0;
 end
 
-function testworld:shoot(body,x,y,coordspace)
-  bullets, player = wu:shoot(body,x,y,coordspace,player,window,bullets)
-end
+function gdqsworld
+:shoot(body,x,y,coordspace)
+  player.state = "FIRE";
+		local startX = body.x--window.x / 2
+		local startY = body.y--window.y / 2
+    if coordspace == 0 then
+      mouseX = body.x + x - window.x / 2
+      mouseY = body.y + y - window.y / 2
+    else
+      mouseX = body.x + x
+      mouseY = body.y + y 
+    end
+    
+		local angle = math.atan2((mouseY - startY), (mouseX - startX))
+    print(startX,startY,mouseX,mouseY,angle*180/math.pi)
+    
+    startX = startX + (math.cos(angle)*20)
+    startY = startY + (math.sin(angle)*20)
+ 
+		local bulletDx = bulletSpeed * math.cos(angle)
+		local bulletDy = bulletSpeed * math.sin(angle)
+    
+    local bulletTime = 3;
+ 
+		table.insert(bullets, {x = startX, y = startY, dx = bulletDx, dy = bulletDy, t = bulletTime})
+    
+    player.ammo = body.ammo - 1;
+    print(body.ammo,"ammo");
+  end
+  
 
-function testworld:shakescreen(val)
+function gdqsworld
+:shakescreen(val)
   sx = math.random(-val,val);
   sy = math.random(-val,val);
 end
@@ -108,7 +136,8 @@ function bool_to_number(value)
   return value and 1 or 0
 end
 
-function testworld:update(dt)
+function gdqsworld
+:update(dt)
   testmap:update(dt)
   if math.abs(sx) > 0 then
     sx,sy = 0,0;
@@ -125,14 +154,16 @@ function testworld:update(dt)
 for i = 1, #enemies do -- main interaction IG
     if enemies[i].alive == 1 then
       enemies[i]:decideMovement(player.x,player.y,dt);
-      enemies[i]:shoot(player,testworld,dt)
+      enemies[i]:shoot(player,gdqsworld
+,dt)
       for o,v in ipairs(bullets) do
         if enemies[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) or player:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
           table.remove(bullets,o);
           table.remove(bullets,i);
           math.randomseed(player.x);
-          testworld:shakescreen(10);
+          gdqsworld
+:shakescreen(10);
           --print(sx,sy);
         end
       end
@@ -141,7 +172,8 @@ for i = 1, #enemies do -- main interaction IG
   end
   for i = 1, #triggers do -- main interaction for Triggers
     if triggers[i].id == "Test 1" then
-      testworld:setChange("westham");
+      gdqsworld
+:setChange("westham");
     end
     
       for o,v in ipairs(bullets) do
@@ -149,7 +181,8 @@ for i = 1, #enemies do -- main interaction IG
           print("hit",v.x,v.y);
           table.remove(bullets,o);
           math.randomseed(player.x);
-          testworld:shakescreen(10);
+          gdqsworld
+:shakescreen(10);
           --print(sx,sy);
         end
       end
@@ -204,12 +237,14 @@ end
 
 function love.mousepressed(x, y, button)
 	if button == 1 and player.ammo > 0 then
-    testworld:shoot(player,x,y,0);
+    gdqsworld
+:shoot(player,x,y,0);
   end
     
 end
 
-function testworld:draw()
+function gdqsworld
+:draw()
   testmap:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
   --testmap:bump_draw(bumpWorld,window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0,zoom);
@@ -260,17 +295,25 @@ end
   love.graphics.draw(crosshair, love.mouse.getX()-(crosshair:getWidth()/2), love.mouse.getY()-(crosshair:getHeight()/2))
 end
 
-function testworld:canChange()
-  if testworld.changemapConditionsMet == 1 then
-    return true, testworld.goto;
+function gdqsworld
+:canChange()
+  if gdqsworld
+.changemapConditionsMet == 1 then
+    return true, gdqsworld
+.goto;
   else
-    return false, testworld.goto
+    return false, gdqsworld
+.goto
   end
   
 end
-function testworld:setChange(gotomap)
-  testworld.changemapConditionsMet = 1
-  testworld.goto = gotomap;
+function gdqsworld
+:setChange(gotomap)
+  gdqsworld
+.changemapConditionsMet = 1
+  gdqsworld
+.goto = gotomap;
 end
 
-return testworld;
+return gdqsworld
+;
