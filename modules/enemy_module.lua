@@ -54,7 +54,8 @@ end
 function enemy:shoot(player,world,dt)
   self.shoottimer = self.shoottimer+dt
   if self.shoottimer > self.shootmax then
-    world:shoot(self,player.x,player.y,0);
+    world:shoot(self,player.x,player.y,1);
+    print("enemyshoot",player.x,player.y)
     self.shoottimer = 0;
   end
 end

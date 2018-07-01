@@ -10,10 +10,10 @@ function worldupdate:shoot(body,x,y,coordspace,player,window,bullets)
       mouseX = body.x + x - window.x / 2
       mouseY = body.y + y - window.y / 2
     else
-      mouseX = body.x + x
-      mouseY = body.y + y 
+      mouseX =  x
+      mouseY =  y 
     end
-    
+    print("moduleshoot",mouseX,mouseY)
 		local angle = math.atan2((mouseY - startY), (mouseX - startX))
     print(startX,startY,mouseX,mouseY,angle*180/math.pi)
     
