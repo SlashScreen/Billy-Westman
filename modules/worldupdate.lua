@@ -5,7 +5,7 @@ function worldupdate:shoot(body,x,y,coordspace,player,window,bullets)
   player.state = "FIRE";
 		local startX = body.x--window.x / 2
 		local startY = body.y--window.y / 2
-    local dist = 50
+    local dist = 25
     if coordspace == 0 then
       mouseX = body.x + x - window.x / 2
       mouseY = body.y + y - window.y / 2
@@ -44,7 +44,7 @@ function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamit
     for i = 1, #enemies do
       enemies[i]:animate("walk");
     end
-    playerWalkTimer = 0;
+    player.playerWalkTimer = 0;
   end
 for i = 1, #enemies do -- main interaction IG
     if enemies[i].alive == 1 then
