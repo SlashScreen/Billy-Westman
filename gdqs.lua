@@ -3,9 +3,6 @@
 --TODO: Do Colission
 gdqsworld= {};
 
-
-
-
 function gdqsworld
 :load()
   local sti = require ("modules/sti");
@@ -17,10 +14,10 @@ function gdqsworld
   window = {}
   window.x = love.graphics:getWidth();
   window.y = love.graphics:getHeight();
-  testmap = sti("assets/maps/GMQSlevel.lua", {"bump"});
-  currentmap = testmap;
+  map = sti("assets/maps/techdemomap.lua", {"bump"});
+  currentmap = map;
   bumpWorld = bump.newWorld();
-  bumptiles = testmap:bump_init(bumpWorld);
+  bumptiles = map:bump_init(bumpWorld);
   --print(#bumptiles);
   print(love.getVersion());
   
@@ -32,9 +29,10 @@ function gdqsworld
   trigger = require "modules/trigger_module";
   dynamiteClass = require "modules/dynamite_module"
   json = require "modules/json"
+  wu = require("modules/worldupdate")
   --TownSpawnList = json.decode("assets/spawntable.json")
   
-  player:init(love.graphics.newImage("assets/billywestman.png"), nil, 700, 550, bumpWorld);
+  player:init(love.graphics.newImage("assets/billywestman.png"), nil, 700, 600, bumpWorld);
   billywestmanimg = love.graphics.newImage("assets/billywestman.png");
   BulletImg = love.graphics.newImage("assets/BillyWestmanBullet.png");
   OTTriggerF = love.graphics.newImage("assets/OneTimeTrigger1False.png");
@@ -44,10 +42,10 @@ function gdqsworld
   DynamiteImg = love.graphics.newImage("assets/dynamite1.png");
   DynamiteImg:setFilter("nearest","nearest");
   spawnlist = {
-    {name = "Enemy1",x = -100, y=150,image = billywestmanimg, class=baseenemy, world = bumpWorld},
-    {name = "Enemy2",x = 200, y=150,image = billywestmanimg, class=baseenemy, world = bumpWorld},
-    {name = "Enemy3",x = 100, y=0,image = billywestmanimg, class=baseenemy, world = bumpWorld},
-    {name = "Enemy4",x = 0, y=300,image = billywestmanimg, class=baseenemy, world = bumpWorld}
+    {name = "Enemy1",x = 600, y=550,image = billywestmanimg, class=baseenemy, world = bumpWorld},
+    {name = "Enemy2",x = 550, y=400,image = billywestmanimg, class=baseenemy, world = bumpWorld},
+    {name = "Enemy3",x = 450, y=700,image = billywestmanimg, class=baseenemy, world = bumpWorld},
+    {name = "Enemy4",x = 400, y=300,image = billywestmanimg, class=baseenemy, world = bumpWorld}
   };
   triggerlist = {
     {id = "Test 1", x = 100, y = 50, imgs = {TTriggerF,TTriggerT}, state = 0, btype = "TOGGLE", linkedto={nil}, world = bumpWorld},
@@ -95,34 +93,8 @@ function gdqsworld
   sy = 0;
 end
 
-function gdqsworld
-:shoot(body,x,y,coordspace)
-  player.state = "FIRE";
-		local startX = body.x--window.x / 2
-		local startY = body.y--window.y / 2
-    if coordspace == 0 then
-      mouseX = body.x + x - window.x / 2
-      mouseY = body.y + y - window.y / 2
-    else
-      mouseX = body.x + x
-      mouseY = body.y + y 
-    end
-    
-		local angle = math.atan2((mouseY - startY), (mouseX - startX))
-    print(startX,startY,mouseX,mouseY,angle*180/math.pi)
-    
-    startX = startX + (math.cos(angle)*20)
-    startY = startY + (math.sin(angle)*20)
- 
-		local bulletDx = bulletSpeed * math.cos(angle)
-		local bulletDy = bulletSpeed * math.sin(angle)
-    
-    local bulletTime = 3;
- 
-		table.insert(bullets, {x = startX, y = startY, dx = bulletDx, dy = bulletDy, t = bulletTime})
-    
-    player.ammo = body.ammo - 1;
-    print(body.ammo,"ammo");
+function gdqsworld:shoot(body,x,y,coordspace)
+  bullets, player = wu:shoot(body,x,y,coordspace,player,window,bullets)
   end
   
 
@@ -136,116 +108,12 @@ function bool_to_number(value)
   return value and 1 or 0
 end
 
-function gdqsworld
-:update(dt)
-  testmap:update(dt)
-  if math.abs(sx) > 0 then
-    sx,sy = 0,0;
-  end
-  
-  playerWalkTimer = playerWalkTimer + dt
-  if playerWalkTimer > .5 then
-    player:animate("walk");
-    for i = 1, #enemies do
-      enemies[i]:animate("walk");
-    end
-    playerWalkTimer = 0;
-  end
-for i = 1, #enemies do -- main interaction IG
-    if enemies[i].alive == 1 then
-      enemies[i]:decideMovement(player.x,player.y,dt);
-      enemies[i]:shoot(player,gdqsworld
-,dt)
-      for o,v in ipairs(bullets) do
-        if enemies[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) or player:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
-          print("hit",v.x,v.y);
-          table.remove(bullets,o);
-          table.remove(bullets,i);
-          math.randomseed(player.x);
-          gdqsworld
-:shakescreen(10);
-          --print(sx,sy);
-        end
-      end
-      
-      
-  end
-  for i = 1, #triggers do -- main interaction for Triggers
-    if triggers[i].id == "Test 1" then
-      gdqsworld
-:setChange("westham");
-    end
-    
-      for o,v in ipairs(bullets) do
-        if triggers[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
-          print("hit",v.x,v.y);
-          table.remove(bullets,o);
-          math.randomseed(player.x);
-          gdqsworld
-:shakescreen(10);
-          --print(sx,sy);
-        end
-      end
-  end
-for i,v in ipairs(bullets) do --bullet script
-    v.t = v.t-dt;
-		v.x = v.x + (v.dx * dt)
-		v.y = v.y + (v.dy * dt)
-    if v.t < 0 then
-      table.remove(bullets,i);
-    end
-    
-	end
- for i=1, #dynamite do 
-  
-  end
-  
-for i=1, #dynamite do
-    dynamite[i]:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight());
-  end
-end
-  if player.state == "FIRE" then
-    player.rechargetimer = 0;
-  end
-  
-if love.keyboard.isDown("w") then
-  player:decideMovement(0,1);
-end
-if love.keyboard.isDown("s") then
-  player:decideMovement(0,-1);
-end
-if love.keyboard.isDown("a") then
-  player:decideMovement(-1,0);
-end
-if love.keyboard.isDown("d") then
-  player:decideMovement(1,0);
+function gdqsworld:update(dt)
+  wu:update(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg)
 end
 
-if not love.mouse.isDown(1) then
-  player.state = "PLAY";
-end
---print(player.state);
-if player.state == "PLAY" and player.ammo < 10 then
-    player.rechargetimer = player.rechargetimer + dt;
-    if player.rechargetimer > player.rechargelimit then
-        player.ammo = player.ammo+1;
-        print(player.ammo,"ammorecharge", player.rechargetimer);
-        player.rechargetimer = 0;
-    end
-  end
-end
-
-function love.mousepressed(x, y, button)
-	if button == 1 and player.ammo > 0 then
-    gdqsworld
-:shoot(player,x,y,0);
-  end
-    
-end
-
-function gdqsworld
-:draw()
-  testmap:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
+function gdqsworld:draw()
+  map:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
   --testmap:bump_draw(bumpWorld,window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0,zoom);
   

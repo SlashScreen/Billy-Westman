@@ -2,7 +2,7 @@
 function love.load()
   testworld = require "testworld"
   gdqs = require "gdqs"
-  currentworld = testworld;
+  currentworld = gdqs;
   currentworld:load();
   love.mouse.setVisible(false);
 end
