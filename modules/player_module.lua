@@ -22,6 +22,7 @@ function self:init(ico, jsondat, x, y, world)
   self.rechargetimer = 0;
   self.state = "PLAY";
   self.World:add(self, self.x, self.y, 20, 20)
+  self.playerWalkTimer = 0
 end
 
 function self:hurt()

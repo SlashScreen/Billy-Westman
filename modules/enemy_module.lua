@@ -78,12 +78,6 @@ end
 
 
 function enemy:decideMovement(playerx,playery,dt)
-  --[[
-  local deltax = lerp(enemy.x, player.x, .5);
-  local deltay = lerp(enemy.y, player.y, .5);
-  enemy.x = enemy.x + deltax;
-  enemy.y = enemy.y + deltay;
-  ]]--
   local deltax = 0;
   local deltay = 0;
   if (self.x < playerx) then

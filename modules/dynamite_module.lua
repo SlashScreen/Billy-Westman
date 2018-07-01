@@ -22,16 +22,16 @@ function dynamite:init(x,y,sprite)
   self.y = y;
   self.intact = 1;
   self.explosiondist = 200;
-  explosionFlame = love.graphics.newImage("/assets/explosionFlame.png")
-  explosionParticles = love.graphics.newParticleSystem(explosionFlame, 30)
-  explosionParticles:setParticleLifetime(2, 5) -- Particles live at least 2s and at most 5s.
-	explosionParticles:setLinearAcceleration(-5, -5, 50, 100) -- Randomized movement towards the bottom of the screen.
-	explosionParticles:setColors(255, 255, 255, 255, 255, 255, 255, 0) -- Fade to black.
+  self.explosionFlame = love.graphics.newImage("/assets/explosionFlame.png")
+  self.explosionParticles = love.graphics.newParticleSystem(self.explosionFlame, 4)
+  self.explosionParticles:setParticleLifetime(2, 5) -- Particles live at least 2s and at most 5s.
+	self.explosionParticles:setLinearAcceleration(-5, -5, 50, 100) -- Randomized movement towards the bottom of the screen.
+	self.explosionParticles:setColors(255, 255, 255, 255, 255, 255, 255, 0) -- Fade to black.
 end
 
 function dynamite:explode(enemies, player, dynamite,x,y)
   testworld:shakescreen(40);
-  explosionParticles:emit(20)
+  self.explosionParticles:emit(20)
   self.intact = 0;
   for i=1, #enemies do
     if findDist(self.x,enemies[i].x,self.y,enemies[i].y) <= self.explosiondist  then
@@ -58,7 +58,7 @@ end
 end
 
 function dynamite:update(bullets,enemies, player, dynamite,bx,by,dt)
-  explosionParticles:update(dt)
+  self.explosionParticles:update(dt)
   if self.intact == 1 then
     for i,v in ipairs(bullets) do
       if CheckCollision(v.x,v.y,2,2,self.x,self.y,32, 32) then
