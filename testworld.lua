@@ -9,14 +9,7 @@ testworld = {};
 function testworld:load()
   local sti = require ("modules/sti");
   local bump = require ("modules/bump");
-  love.graphics.setDefaultFilter("nearest","nearest");
-  --Simple-Tiled-Implementation-master-2
-  love.graphics.setBackgroundColor(255,255,255);
-  love.graphics.setColor(1,1,1);
-  window = {}
-  window.x = love.graphics:getWidth();
-  window.y = love.graphics:getHeight();
-  testmap = sti("assets/maps/testmap.lua", {"bump"});
+  map = sti("assets/maps/testmap.lua", {"bump"});
   currentmap = testmap;
   bumpWorld = bump.newWorld();
   bumptiles = testmap:bump_init(bumpWorld);
@@ -34,65 +27,25 @@ function testworld:load()
   json = require "modules/json"
   --TownSpawnList = json.decode("assets/spawntable.json")
   
-  player:init(love.graphics.newImage("assets/billywestman.png"), nil, 300, 350, bumpWorld);
-  billywestmanimg = love.graphics.newImage("assets/billywestman.png");
-  BulletImg = love.graphics.newImage("assets/BillyWestmanBullet.png");
-  OTTriggerF = love.graphics.newImage("assets/OneTimeTrigger1False.png");
-  OTTriggerT = love.graphics.newImage("assets/OneTimeTrigger1True.png");
-  TTriggerF = love.graphics.newImage("assets/ToggleTrigger1-False.png");
-  TTriggerT = love.graphics.newImage("assets/ToggleTrigger1-True.png");
-  DynamiteImg = love.graphics.newImage("assets/dynamite1.png");
-  DynamiteImg:setFilter("nearest","nearest");
+  
   spawnlist = {
-    {name = "Enemy1",x = -100, y=150,image = billywestmanimg, class=baseenemy, world = bumpWorld},
-    {name = "Enemy2",x = 200, y=150,image = billywestmanimg, class=baseenemy, world = bumpWorld},
-    {name = "Enemy3",x = 100, y=0,image = billywestmanimg, class=baseenemy, world = bumpWorld},
-    {name = "Enemy4",x = 0, y=300,image = billywestmanimg, class=baseenemy, world = bumpWorld}
+    {name = "Enemy1",x = -100, y=150,image = "billyimage", class=baseenemy, world = bumpWorld},
+    {name = "Enemy2",x = 200, y=150,image = "billyimage", class=baseenemy, world = bumpWorld},
+    {name = "Enemy3",x = 100, y=0,image = "billyimage", class=baseenemy, world = bumpWorld},
+    {name = "Enemy4",x = 0, y=300,image = "billyimage", class=baseenemy, world = bumpWorld}
   };
   triggerlist = {
-    {id = "Test 1", x = 100, y = 50, imgs = {TTriggerF,TTriggerT}, state = 0, btype = "TOGGLE", linkedto={nil}, world = bumpWorld},
-    {id = "Test 2", x = 300, y = 100, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil},world = bumpWorld}
+    {id = "Test 1", x = 100, y = 50, imgs = "TT", state = 0, btype = "TOGGLE", linkedto={nil}, world = bumpWorld},
+    {id = "Test 2", x = 300, y = 100, imgs = "OT", state = 0, btype = "ONCE", linkedto={nil},world = bumpWorld}
   }
   
   DynamiteList = {
-    {x = 175, y = 175, sprite = DynamiteImg},
-    {x = 215, y = 175, sprite = DynamiteImg}
+    {x = 175, y = 175, sprite = "dynamite"},
+    {x = 215, y = 175, sprite = "dynamite"}
   }
   
   --{id = "Test 2", x = 100, y = 0, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil}}
-  triggers = {};
-  enemies = {};
-  dynamite = {};
-  local function makeObj(class)
-    local mt = { __index = class }
-    local obj = setmetatable({}, mt)
-    return obj;
-  end
-  for i=1, #spawnlist do
-    enemies[i] = makeObj(spawnlist[i].class);
-    enemies[i]:init(spawnlist[i].image,nil,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name,spawnlist[i].world);
-  end
-  for i=1, #DynamiteList do
-    dynamite[i] = makeObj(dynamiteClass);
-    dynamite[i]:init(DynamiteList[i].x,DynamiteList[i].y,DynamiteList[i].sprite);
-  end
-  for i=1, #triggerlist do
-    triggers[i] = makeObj(trigger);
-    triggers[i]:init(triggerlist[i].x,triggerlist[i].y,triggerlist[i].state,triggerlist[i].btype,triggerlist[i].imgs,triggerlist[i].id,triggerlist[i].linkedto,triggerlist[i].world);
-    --bumpWorld:add(triggers[i], triggerlist[i].x, triggerlist[i].y, 16, 16);
-  end
-  crosshair = love.graphics.newImage("assets/crosshair.png");
-  
-  bulletSpeed = 150
- 
-	bullets = {}
-  
-  
-  playerWalkTimer = 0;
-  zoom = 1;
-  
-  sx = 0;
-  sy = 0;
+  player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window = wu:init(spawnlist,DynamiteList,triggerlist, 150, 150)
 end
 
 function testworld:shoot(body,x,y,coordspace)
@@ -120,63 +73,7 @@ function love.mousepressed(x, y, button)
 end
 
 function testworld:draw()
-  testmap:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
-  --testmap:bump_draw(bumpWorld,window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
-  love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0,zoom);
-  
-  for i = 1, #enemies do
-    if enemies[i].alive == 1 then --if alive then
-      love.graphics.draw(
-        enemies[i].icon,
-        enemies[i].frames[enemies[i].increment],
-        enemies[i].x-16-player.x+window.x/2-sx,
-        enemies[i].y-16-player.y+window.y/2-sy,
-        0,
-        zoom
-        ); --draw enemies
-  end
-  for i = 1, #triggers do
-    love.graphics.draw(
-      triggers[i].imgs[bool_to_number(triggers[i].state) + 1],
-      triggers[i].x-16-player.x+window.x/2-sx,
-      triggers[i].y-16-player.y+window.y/2-sy,
-      0,
-      zoom
-      );
-  end
-  
-end
-
-for i=1, #dynamite do
-  if dynamite[i].intact == 1 then
-    --love.graphics.rectangle("fill",dynamite[i].x-player.x+window.x/2-sx,dynamite[i].y-player.y+window.y/2-sy,32,32);
-    love.graphics.draw(
-      dynamite[i].sprite,
-      dynamite[i].x-player.x+window.x/2-sx,
-      dynamite[i].y-player.y+window.y/2-sy,
-      0,
-      zoom*2
-    );
-    
-  end
-  
-end
-
-
-  for i,v in ipairs(bullets) do
-		love.graphics.draw(BulletImg, v.x-player.x+window.x/2-sx, v.y-player.y+window.y/2-sy) --draw bullet
-	end
-  
-  love.graphics.draw(crosshair, love.mouse.getX()-(crosshair:getWidth()/2), love.mouse.getY()-(crosshair:getHeight()/2))
-end
-
-function testworld:canChange()
-  if testworld.changemapConditionsMet == 1 then
-    return true, testworld.goto;
-  else
-    return false, testworld.goto
-  end
-  
+  wu:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,testworld,BulletImg,crosshair, window)
 end
 function testworld:setChange(gotomap)
   testworld.changemapConditionsMet = 1

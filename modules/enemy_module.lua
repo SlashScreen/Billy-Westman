@@ -21,9 +21,9 @@ function enemy:create (o)
       return o
     end
 
-function enemy:init(ico, jsondat,x,y, id, world)
+function enemy:init(ico,x,y, id, world)
+  print(ico)
   self.icon = ico;
-  self.json = jsondat;
   self.World = world;
   --player.data = json.decode(player.jsondat);
   self.increment = 0;

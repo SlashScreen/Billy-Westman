@@ -21,7 +21,7 @@ function dynamite:init(x,y,sprite)
   self.x = x;
   self.y = y;
   self.intact = 1;
-  self.explosiondist = 200;
+  self.explosiondist = 50;
   self.explosionFlame = love.graphics.newImage("/assets/explosionFlame.png")
   self.explosionParticles = love.graphics.newParticleSystem(self.explosionFlame, 4)
   self.explosionParticles:setParticleLifetime(2, 5) -- Particles live at least 2s and at most 5s.

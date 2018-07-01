@@ -1,11 +1,87 @@
 --worldupdate.lua
 worldupdate = {}
 
+function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py)
+  local sti = require ("modules/sti");
+  local bump = require ("modules/bump");
+  love.graphics.setDefaultFilter("nearest","nearest");
+  --Simple-Tiled-Implementation-master-2
+  love.graphics.setBackgroundColor(255,255,255);
+  love.graphics.setColor(1,1,1);
+  window = {}
+  window.x = love.graphics:getWidth();
+  window.y = love.graphics:getHeight();
+  
+  player:init(love.graphics.newImage("assets/billywestman.png"), nil, px, py, bumpWorld);
+  billywestmanimg = love.graphics.newImage("assets/billywestman.png");
+  BulletImg = love.graphics.newImage("assets/BillyWestmanBullet.png");
+  OTTriggerF = love.graphics.newImage("assets/OneTimeTrigger1False.png");
+  OTTriggerT = love.graphics.newImage("assets/OneTimeTrigger1True.png");
+  TTriggerF = love.graphics.newImage("assets/ToggleTrigger1-False.png");
+  TTriggerT = love.graphics.newImage("assets/ToggleTrigger1-True.png");
+  DynamiteImg = love.graphics.newImage("assets/dynamite1.png");
+  DynamiteImg:setFilter("nearest","nearest");
+  
+  triggers = {};
+  enemies = {};
+  dynamite = {};
+  local function makeObj(class)
+    local mt = { __index = class }
+    local obj = setmetatable({}, mt)
+    return obj;
+  end
+  for i=1, #spawnlist do
+    if spawnlist[i].image == "billyimage" then
+      spawnlist[i].image = billywestmanimg
+    end
+    
+    enemies[i] = makeObj(spawnlist[i].class);
+    print(spawnlist[i].image)
+    enemies[i]:init(spawnlist[i].image,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name,spawnlist[i].world);
+  end
+  for i=1, #DynamiteList do
+    if DynamiteList[i].sprite == "dynamite" then
+      DynamiteList[i].sprite = DynamiteImg
+    end
+    dynamite[i] = makeObj(dynamiteClass);
+    dynamite[i]:init(DynamiteList[i].x,DynamiteList[i].y,DynamiteList[i].sprite);
+  end
+  for i=1, #triggerlist do
+    if triggerlist[i].imgs == "TT" then
+      triggerlist[i].imgs = {TTriggerF,TTriggerT}
+    elseif triggerlist[i].imgs == "OT" then
+      triggerlist[i].imgs = {OTTriggerF,OTTriggerT}
+    end
+    
+    
+    triggers[i] = makeObj(trigger);
+    triggers[i]:init(triggerlist[i].x,triggerlist[i].y,triggerlist[i].state,triggerlist[i].btype,triggerlist[i].imgs,triggerlist[i].id,triggerlist[i].linkedto,triggerlist[i].world);
+    --bumpWorld:add(triggers[i], triggerlist[i].x, triggerlist[i].y, 16, 16);
+  end
+  crosshair = love.graphics.newImage("assets/crosshair.png");
+  
+  bulletSpeed = 150
+ 
+	bullets = {}
+  
+  
+  playerWalkTimer = 0;
+  zoom = 1;
+  
+  sx = 0;
+  sy = 0;
+  
+  return player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window
+end
+
+
+
+
 function worldupdate:shoot(body,x,y,coordspace,player,window,bullets)
   player.state = "FIRE";
 		local startX = body.x--window.x / 2
 		local startY = body.y--window.y / 2
-    local dist = 25
+    local dist = 50
     if coordspace == 0 then
       mouseX = body.x + x - window.x / 2
       mouseY = body.y + y - window.y / 2
@@ -17,8 +93,8 @@ function worldupdate:shoot(body,x,y,coordspace,player,window,bullets)
 		local angle = math.atan2((mouseY - startY), (mouseX - startX))
     print(startX,startY,mouseX,mouseY,angle*180/math.pi)
     
-    startX = startX + (math.cos(angle)*50)
-    startY = startY + (math.sin(angle)*50)
+    startX = startX + (math.cos(angle)*dist)
+    startY = startY + (math.sin(angle)*dist)
  
 		local bulletDx = bulletSpeed * math.cos(angle)
 		local bulletDy = bulletSpeed * math.sin(angle)
