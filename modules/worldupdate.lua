@@ -36,7 +36,6 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py)
     end
     
     enemies[i] = makeObj(spawnlist[i].class);
-    print(spawnlist[i].image)
     enemies[i]:init(spawnlist[i].image,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name,spawnlist[i].world);
   end
   for i=1, #DynamiteList do
@@ -89,9 +88,7 @@ function worldupdate:shoot(body,x,y,coordspace,player,window,bullets)
       mouseX =  x
       mouseY =  y 
     end
-    print("moduleshoot",mouseX,mouseY)
 		local angle = math.atan2((mouseY - startY), (mouseX - startX))
-    print(startX,startY,mouseX,mouseY,angle*180/math.pi)
     
     startX = startX + (math.cos(angle)*dist)
     startY = startY + (math.sin(angle)*dist)

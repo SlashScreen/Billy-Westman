@@ -22,7 +22,6 @@ function enemy:create (o)
     end
 
 function enemy:init(ico,x,y, id, world)
-  print(ico)
   self.icon = ico;
   self.World = world;
   --player.data = json.decode(player.jsondat);
@@ -35,10 +34,11 @@ function enemy:init(ico,x,y, id, world)
   self.speed = 1;
   self.alive = 1;
   self.id = id;
-  self.shoottimer = 0;
+  self.shoottimer = 0.0;
   self.shootmax = 5;
   self.ammo = 10;
   self.World:add(self, self.x, self.y, 32, 32);
+  self.detectedplayer = 0
   --[[
   player.cels = {};
   for i,v in ipairs(player.data.frames) do
@@ -81,18 +81,26 @@ end
 function enemy:decideMovement(playerx,playery,dt)
   local deltax = 0;
   local deltay = 0;
-  if (self.x < playerx) then
-    deltax = 1;
-  else if (self.x > playerx) then
-    deltax = -1;
+  if (self.detectedplayer) then
+    if (self.x < playerx) then
+      deltax = 1;
+    else if (self.x > playerx) then
+      deltax = -1;
+    end
   end
-end
 
-  if (self.y < playery) then
-    deltay = 1;
-  else if (self.y > playery) then
-    deltay = -1;
+    if (self.y < playery) then
+      deltay = 1;
+    else if (self.y > playery) then
+      deltay = -1;
+    end
   end
+  print(math.sqrt(math.pow(playerx,2)+math.pow(playery,2))<10)
+  else if (math.sqrt(math.pow(playerx,2)+math.pow(playery,2))<10) then
+    self.detectedplayer = true
+  end
+  
+  
   end
   self.x = self.x + (deltax * self.speed);
   self.y = self.y + (deltay * self.speed);
