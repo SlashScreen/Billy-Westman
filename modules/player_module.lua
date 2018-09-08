@@ -1,7 +1,7 @@
 --player_module
 self = {};
 json = require("modules/json");
-
+--TODO: test if player in shadowed tile
 function self:init(ico, jsondat, x, y, world)
   self.World = world;
   self.icon = ico;
@@ -60,7 +60,7 @@ end
 function self:isHit(x,y,ox,oy,wx,wy,bw,bh)
   if CheckCollision(self.x,self.y,32, 32,x,y,bw,bh) then
     self:hurt();
-    
+
     return true;
   else
     return false;
@@ -75,9 +75,9 @@ function self:animate(action)
     else
       self.increment = self.increment+1;
     end
-    
-    
+
+
   end
-  
+
 end
 return self
