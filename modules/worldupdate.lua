@@ -120,14 +120,15 @@ function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamit
     player.playerWalkTimer = 0;
   end
 detected = false
-for i = 1, #enemies do -- main interaction IG
-    if enemies[i].detectedplayer then
-      detected = true
-    end
-    if enemies[i].alive == 1 then
-      enemies[i]:decideMovement(player.x,player.y,dt);
-      enemies[i]:shoot(player,world,dt)
-      for o,v in ipairs(bullets) do
+for i = 1, #enemies do -- main interaction IG w enemies
+    
+    if enemies[i].alive == 1 then --if the enemy isn't dead
+      if enemies[i].detectedplayer then --If any of them detected the player the player is detected now
+        detected = true
+      end
+      enemies[i]:decideMovement(player.x,player.y,dt); --walk
+      enemies[i]:shoot(player,world,dt) --do shoot calcculations
+      for o,v in ipairs(bullets) do -- is hit by bullets?
         if enemies[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) or player:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
           table.remove(bullets,o);
@@ -141,15 +142,19 @@ for i = 1, #enemies do -- main interaction IG
       
   end
 end
-if detected then
+print(detected,"detected")
+if detected then -- followup to player detection
   player.substate = "DETECTED"
+else
+  player.substate = "UNDETECTED"
 end
+
   for i = 1, #triggers do -- main interaction for Triggers
-    if triggers[i].id == "Test 1" then
+    if triggers[i].id == "Test 1" then --hardcoded: change
       world:setChange("westham");
     end
     
-      for o,v in ipairs(bullets) do
+      for o,v in ipairs(bullets) do --is hit
         if triggers[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
           table.remove(bullets,o);
@@ -163,7 +168,7 @@ for i,v in ipairs(bullets) do --bullet script
     v.t = v.t-dt;
 		v.x = v.x + (v.dx * dt)
 		v.y = v.y + (v.dy * dt)
-    if v.t < 0 then
+    if v.t < 0 then --if timer ran out then remove bullet
       table.remove(bullets,i);
     end
     
