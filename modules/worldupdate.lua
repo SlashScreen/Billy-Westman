@@ -10,7 +10,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py)
   window = {}
   window.x = love.graphics:getWidth();
   window.y = love.graphics:getHeight();
-  
+
   player:init(love.graphics.newImage("assets/billywestman.png"), nil, px, py, bumpWorld);
   billywestmanimg = love.graphics.newImage("assets/billywestman.png");
   BulletImg = love.graphics.newImage("assets/BillyWestmanBullet.png");
@@ -20,7 +20,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py)
   TTriggerT = love.graphics.newImage("assets/ToggleTrigger1-True.png");
   DynamiteImg = love.graphics.newImage("assets/dynamite1.png");
   DynamiteImg:setFilter("nearest","nearest");
-  
+
   triggers = {};
   enemies = {};
   dynamite = {};
@@ -44,18 +44,18 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py)
     dynamite[i]:init(DynamiteList[i].x,DynamiteList[i].y,DynamiteList[i].sprite);
   end
   for i=1, #triggerlist do
-    
+
     if triggerlist[i].imgs == "TT" then
       triggerlist[i].imgs = {TTriggerF,TTriggerT}
     elseif triggerlist[i].imgs == "OT" then
       triggerlist[i].imgs = {OTTriggerF,OTTriggerT}
     end
-    
+
     triggers[i] = makeObj(trigger);
     triggers[i]:init(triggerlist[i].x,triggerlist[i].y,triggerlist[i].state,triggerlist[i].btype,triggerlist[i].imgs,triggerlist[i].id,triggerlist[i].linkedto,triggerlist[i].world);
   end
   crosshair = love.graphics.newImage("assets/crosshair.png");
-  bulletSpeed = 150
+  bulletSpeed = 300
 	bullets = {}
   playerWalkTimer = 0;
   zoom = 1;
@@ -69,15 +69,15 @@ end
 
 function worldupdate:shoot(body,x,y,coordspace,player,window,bullets)
   player.state = "FIRE";
-		local startX = body.x--window.x / 2
-		local startY = body.y--window.y / 2
+		local startX = body.x
+		local startY = body.y
     local dist = 50
     if coordspace == 0 then
       mouseX = body.x + x - window.x / 2
       mouseY = body.y + y - window.y / 2
     else
       mouseX =  x
-      mouseY =  y 
+      mouseY =  y
     end
 		local angle = math.atan2((mouseY - startY), (mouseX - startX))
     startX = startX + (math.cos(angle)*dist)
@@ -96,22 +96,22 @@ function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamit
   if math.abs(sx) > 0 then
     sx,sy = 0,0;
   end
-  
+
   player.playerWalkTimer = player.playerWalkTimer + dt
   if player.playerWalkTimer > .5 then
     player:animate("walk");
-    
+
     for i = 1, #enemies do
       enemies[i]:animate("walk");
     end
-    
+
     player.playerWalkTimer = 0;
   end
-  
+
 detected = false
 
 for i = 1, #enemies do -- main interaction IG w enemies
-    
+
     if enemies[i].alive == 1 then --if the enemy isn't dead
       if enemies[i].detectedplayer then --If any of them detected the player the player is detected now
         detected = true
@@ -127,8 +127,8 @@ for i = 1, #enemies do -- main interaction IG w enemies
           world:shakescreen(10);
         end
       end
-      
-      
+
+
   end
 end
 print(detected,"detected")
@@ -142,7 +142,7 @@ end
     if triggers[i].id == "Test 1" then --hardcoded: change
       world:setChange("westham");
     end
-    
+
       for o,v in ipairs(bullets) do --is hit
         if triggers[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
@@ -160,12 +160,12 @@ for i,v in ipairs(bullets) do --bullet script
     if v.t < 0 then --if timer ran out then remove bullet
       table.remove(bullets,i);
     end
-    
+
 	end
- for i=1, #dynamite do 
-  
+ for i=1, #dynamite do
+
   end
-  
+
 for i=1, #dynamite do
     dynamite[i]:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight(),dt);
   end
@@ -173,7 +173,7 @@ for i=1, #dynamite do
   if player.state == "FIRE" then
     player.rechargetimer = 0;
   end
-  
+
 if love.keyboard.isDown("w") then
   player:decideMovement(0,1);
 end
@@ -204,7 +204,7 @@ end
 function worldupdate:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg,crosshair, window)
   map:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0,zoom);
-  
+
   for i = 1, #enemies do
     if enemies[i].alive == 1 then --if alive then
       love.graphics.draw(
@@ -225,7 +225,7 @@ function worldupdate:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,
       zoom
       ); --draw triggers
   end
-  
+
 end
 
 for i=1, #dynamite do
@@ -239,14 +239,14 @@ for i=1, #dynamite do
     ); --draw dynamite
     love.graphics.draw(dynamite[i].explosionParticles, dynamite[i].x-player.x+window.x/2-sx, dynamite[i].y-player.y+window.y/2-sy,0,0,20,20)
   end
-  
+
 end
 
 
   for i,v in ipairs(bullets) do
 		love.graphics.draw(BulletImg, v.x-player.x+window.x/2-sx, v.y-player.y+window.y/2-sy) --draw bullet
 	end
-  
+
   love.graphics.draw(crosshair, love.mouse.getX()-(crosshair:getWidth()/2), love.mouse.getY()-(crosshair:getHeight()/2)) --crosshair
 end
 
