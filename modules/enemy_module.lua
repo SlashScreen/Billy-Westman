@@ -39,16 +39,6 @@ function enemy:init(ico,x,y, id, world)
   self.ammo = 10;
   self.World:add(self, self.x, self.y, 32, 32);
   self.detectedplayer = false
-  --[[
-  player.cels = {};
-  for i,v in ipairs(player.data.frames) do
-    player.frames[i] = player.data.frames[i];
-  end
-  for o,k in ipairs(player.frames) do
-    player.cels[o] = love.graphics.newQuad(player.frames[o].frame,player.icon:getDimensions()) --player.data.frames[i];
-  end
-  print(player.frames);
-  ]]--
 end
 
 function enemy:shoot(player,world,dt)
@@ -57,7 +47,7 @@ function enemy:shoot(player,world,dt)
   else
     self.shoottimer = 0
   end
-  
+
   if self.shoottimer > self.shootmax then
     world:shoot(self,player.x,player.y,1);
     print("enemyshoot",player.x,player.y)
@@ -81,7 +71,17 @@ function lerp (a,b,t)
   return a + (b - a) * t;
 end
 
-
+function enemy:pointDetectable(px,py,sx,sy,shadowed)
+  print(px,py,sx,sy,shadowed)
+  local dist = 0
+  if (shadowed) then
+    dist = 10
+  else
+    dist = 50
+  end
+  --return math.sqrt(math.pow(sx-px,2)+math.pow(sy-py,2))< dist
+  return true
+end
 
 function enemy:decideMovement(playerx,playery,dt)
   local deltax = 0;
@@ -100,12 +100,11 @@ function enemy:decideMovement(playerx,playery,dt)
       deltay = -1;
     end
   end
-  --print(math.sqrt(math.pow(self.x-playerx,2)+math.pow(self.y-playery,2))<50)
-  else if (math.sqrt(math.pow(self.x-playerx,2)+math.pow(self.y-playery,2))<50) then
+else if (self.pointDetectable(playerx,playery,self.x,self.y,false)) then
     self.detectedplayer = true
   end
-  
-  
+
+
   end
   self.x = self.x + (deltax * self.speed);
   self.y = self.y + (deltay * self.speed);
@@ -127,10 +126,10 @@ function enemy:animate(action)
     else
       self.increment = self.increment+1;
     end
-    
-    
+
+
   end
-  
+
 end
 
 function enemy:isHit(x,y,ox,oy,wx,wy,bw,bh)
