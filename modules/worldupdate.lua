@@ -89,19 +89,14 @@ function worldupdate:shoot(body,x,y,coordspace,player,window,bullets)
       mouseY =  y 
     end
 		local angle = math.atan2((mouseY - startY), (mouseX - startX))
-    
     startX = startX + (math.cos(angle)*dist)
     startY = startY + (math.sin(angle)*dist)
- 
 		local bulletDx = bulletSpeed * math.cos(angle)
 		local bulletDy = bulletSpeed * math.sin(angle)
-    
     local bulletTime = 3;
- 
 		table.insert(bullets, {x = startX, y = startY, dx = bulletDx, dy = bulletDy, t = bulletTime})
-    
-    player.ammo = body.ammo - 1;
-    print(body.ammo,"ammo");
+    player.ammo = player.ammo - 1;
+    print(player.ammo,"ammo");
     return bullets,player
 end
 
@@ -114,12 +109,16 @@ function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamit
   player.playerWalkTimer = player.playerWalkTimer + dt
   if player.playerWalkTimer > .5 then
     player:animate("walk");
+    
     for i = 1, #enemies do
       enemies[i]:animate("walk");
     end
+    
     player.playerWalkTimer = 0;
   end
+  
 detected = false
+
 for i = 1, #enemies do -- main interaction IG w enemies
     
     if enemies[i].alive == 1 then --if the enemy isn't dead
@@ -135,7 +134,6 @@ for i = 1, #enemies do -- main interaction IG w enemies
           table.remove(bullets,i);
           math.randomseed(player.x);
           world:shakescreen(10);
-          --print(sx,sy);
         end
       end
       
