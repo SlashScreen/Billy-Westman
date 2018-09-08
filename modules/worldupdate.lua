@@ -131,7 +131,6 @@ for i = 1, #enemies do -- main interaction IG w enemies
 
   end
 end
-print(detected,"detected")
 if detected then -- followup to player detection
   player.substate = "DETECTED"
 else

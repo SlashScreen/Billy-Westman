@@ -72,15 +72,15 @@ function lerp (a,b,t)
 end
 
 function enemy:pointDetectable(px,py,sx,sy,shadowed)
-  print(px,py,sx,sy,shadowed)
+  print("px:",px,"py:",py,"sx:",sx,"sy:",sy,"shadowed:",shadowed)
   local dist = 0
   if (shadowed) then
     dist = 10
   else
     dist = 50
   end
-  --return math.sqrt(math.pow(sx-px,2)+math.pow(sy-py,2))< dist
-  return true
+  return math.sqrt(math.pow(sx-px,2)+math.pow(sy-py,2))< dist
+  --return true
 end
 
 function enemy:decideMovement(playerx,playery,dt)
@@ -100,7 +100,8 @@ function enemy:decideMovement(playerx,playery,dt)
       deltay = -1;
     end
   end
-else if (self.pointDetectable(playerx,playery,self.x,self.y,false)) then
+print("playx:",playerx,"playy:",playery,"selfx:",self.x,"selfy:",self.y)
+else if (self.pointDetectable(0,playerx,playery,self.x,self.y,false)) then
     self.detectedplayer = true
   end
 
