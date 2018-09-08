@@ -38,7 +38,7 @@ function enemy:init(ico,x,y, id, world)
   self.shootmax = 5;
   self.ammo = 10;
   self.World:add(self, self.x, self.y, 32, 32);
-  self.detectedplayer = 0
+  self.detectedplayer = false
   --[[
   player.cels = {};
   for i,v in ipairs(player.data.frames) do
@@ -52,7 +52,12 @@ function enemy:init(ico,x,y, id, world)
 end
 
 function enemy:shoot(player,world,dt)
-  self.shoottimer = self.shoottimer+dt
+  if self.detectedplayer then
+    self.shoottimer = self.shoottimer+dt
+  else
+    self.shoottimer = 0
+  end
+  
   if self.shoottimer > self.shootmax then
     world:shoot(self,player.x,player.y,1);
     print("enemyshoot",player.x,player.y)
@@ -95,8 +100,8 @@ function enemy:decideMovement(playerx,playery,dt)
       deltay = -1;
     end
   end
-  print(math.sqrt(math.pow(playerx,2)+math.pow(playery,2))<10)
-  else if (math.sqrt(math.pow(playerx,2)+math.pow(playery,2))<10) then
+  print(math.sqrt(math.pow(self.x-playerx,2)+math.pow(self.y-playery,2))<50)
+  else if (math.sqrt(math.pow(self.x-playerx,2)+math.pow(self.y-playery,2))<50) then
     self.detectedplayer = true
   end
   
