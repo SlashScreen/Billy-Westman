@@ -100,7 +100,7 @@ function enemy:decideMovement(playerx,playery,dt)
       deltay = -1;
     end
   end
-  print(math.sqrt(math.pow(self.x-playerx,2)+math.pow(self.y-playery,2))<50)
+  --print(math.sqrt(math.pow(self.x-playerx,2)+math.pow(self.y-playery,2))<50)
   else if (math.sqrt(math.pow(self.x-playerx,2)+math.pow(self.y-playery,2))<50) then
     self.detectedplayer = true
   end

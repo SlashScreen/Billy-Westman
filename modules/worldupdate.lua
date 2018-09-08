@@ -119,7 +119,11 @@ function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamit
     end
     player.playerWalkTimer = 0;
   end
+detected = false
 for i = 1, #enemies do -- main interaction IG
+    if enemies[i].detectedplayer then
+      detected = true
+    end
     if enemies[i].alive == 1 then
       enemies[i]:decideMovement(player.x,player.y,dt);
       enemies[i]:shoot(player,world,dt)
@@ -136,6 +140,10 @@ for i = 1, #enemies do -- main interaction IG
       
       
   end
+end
+if detected then
+  player.substate = "DETECTED"
+end
   for i = 1, #triggers do -- main interaction for Triggers
     if triggers[i].id == "Test 1" then
       world:setChange("westham");
@@ -167,7 +175,7 @@ for i,v in ipairs(bullets) do --bullet script
 for i=1, #dynamite do
     dynamite[i]:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight(),dt);
   end
-end
+
   if player.state == "FIRE" then
     player.rechargetimer = 0;
   end
@@ -189,7 +197,7 @@ if not love.mouse.isDown(1) then
   player.state = "PLAY";
 end
 --print(player.state);
-if player.state == "PLAY" and player.ammo < 10 then
+if player.state == "PLAY" and player.substate == "UNDETECTED" and player.ammo < 10 then
     player.rechargetimer = player.rechargetimer + dt;
     if player.rechargetimer > player.rechargelimit then
         player.ammo = player.ammo+1;

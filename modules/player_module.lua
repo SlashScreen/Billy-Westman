@@ -23,6 +23,7 @@ function self:init(ico, jsondat, x, y, world)
   self.state = "PLAY";
   self.World:add(self, self.x, self.y, 20, 20)
   self.playerWalkTimer = 0
+  self.substate = "UNDETECTED"
 end
 
 function self:hurt()
