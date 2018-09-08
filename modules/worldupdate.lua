@@ -5,7 +5,6 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py)
   local sti = require ("modules/sti");
   local bump = require ("modules/bump");
   love.graphics.setDefaultFilter("nearest","nearest");
-  --Simple-Tiled-Implementation-master-2
   love.graphics.setBackgroundColor(255,255,255);
   love.graphics.setColor(1,1,1);
   window = {}
@@ -34,7 +33,6 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py)
     if spawnlist[i].image == "billyimage" then
       spawnlist[i].image = billywestmanimg
     end
-    
     enemies[i] = makeObj(spawnlist[i].class);
     enemies[i]:init(spawnlist[i].image,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name,spawnlist[i].world);
   end
@@ -46,30 +44,23 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py)
     dynamite[i]:init(DynamiteList[i].x,DynamiteList[i].y,DynamiteList[i].sprite);
   end
   for i=1, #triggerlist do
+    
     if triggerlist[i].imgs == "TT" then
       triggerlist[i].imgs = {TTriggerF,TTriggerT}
     elseif triggerlist[i].imgs == "OT" then
       triggerlist[i].imgs = {OTTriggerF,OTTriggerT}
     end
     
-    
     triggers[i] = makeObj(trigger);
     triggers[i]:init(triggerlist[i].x,triggerlist[i].y,triggerlist[i].state,triggerlist[i].btype,triggerlist[i].imgs,triggerlist[i].id,triggerlist[i].linkedto,triggerlist[i].world);
-    --bumpWorld:add(triggers[i], triggerlist[i].x, triggerlist[i].y, 16, 16);
   end
   crosshair = love.graphics.newImage("assets/crosshair.png");
-  
   bulletSpeed = 150
- 
 	bullets = {}
-  
-  
   playerWalkTimer = 0;
   zoom = 1;
-  
   sx = 0;
   sy = 0;
-  
   return player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window
 end
 
@@ -212,7 +203,6 @@ end
 
 function worldupdate:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg,crosshair, window)
   map:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
-  --testmap:bump_draw(bumpWorld,window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0,zoom);
   
   for i = 1, #enemies do
@@ -233,21 +223,20 @@ function worldupdate:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,
       triggers[i].y-16-player.y+window.y/2-sy,
       0,
       zoom
-      );
+      ); --draw triggers
   end
   
 end
 
 for i=1, #dynamite do
   if dynamite[i].intact == 1 then
-    --love.graphics.rectangle("fill",dynamite[i].x-player.x+window.x/2-sx,dynamite[i].y-player.y+window.y/2-sy,32,32);
     love.graphics.draw(
       dynamite[i].sprite,
       dynamite[i].x-player.x+window.x/2-sx,
       dynamite[i].y-player.y+window.y/2-sy,
       0,
       zoom*2
-    );
+    ); --draw dynamite
     love.graphics.draw(dynamite[i].explosionParticles, dynamite[i].x-player.x+window.x/2-sx, dynamite[i].y-player.y+window.y/2-sy,0,0,20,20)
   end
   
@@ -258,7 +247,7 @@ end
 		love.graphics.draw(BulletImg, v.x-player.x+window.x/2-sx, v.y-player.y+window.y/2-sy) --draw bullet
 	end
   
-  love.graphics.draw(crosshair, love.mouse.getX()-(crosshair:getWidth()/2), love.mouse.getY()-(crosshair:getHeight()/2))
+  love.graphics.draw(crosshair, love.mouse.getX()-(crosshair:getWidth()/2), love.mouse.getY()-(crosshair:getHeight()/2)) --crosshair
 end
 
 return worldupdate
