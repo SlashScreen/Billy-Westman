@@ -16,7 +16,7 @@ function self:init(ico, jsondat, x, y, world)
   self.x = x;
   self.y = y;
   self.speed = 2;
-  self.maxammo = 10;
+  self.maxammo = 6;
   self.ammo = self.maxammo;
   self.rechargelimit = 1;
   self.rechargetimer = 0;
@@ -45,9 +45,6 @@ function self:decideMovement(x,y)
     self.x = ax
     self.y = ay
     self.World:update(self, self.x, self.y,32,32);
-    --for i=1,len do
-    --print('collided with ' .. tostring(cols[i].other),self.x,self.y)
-  --end
 end
 
 function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
