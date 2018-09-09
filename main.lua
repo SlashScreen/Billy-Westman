@@ -10,7 +10,7 @@ function love.update(dt)
   currentworld:update(dt);
   canchange, goToMap = currentworld:canChange();
   if canchange then
-    currentworld.changemapConditionsMet = 0; --style
+    currentworld.changemapConditionsMet = 0;
     if goToMap == "test" then
       currentworld = testworld;
     else if goToMap == "westham" then
