@@ -2,7 +2,8 @@
 self = {};
 json = require("modules/json");
 --TODO: test if player in shadowed tile
-function self:init(ico, jsondat, x, y, world)
+function self:init(ico, jsondat, x, y, world, map)
+  self.map = map
   self.World = world;
   self.icon = ico;
   self.json = jsondat;
@@ -24,6 +25,7 @@ function self:init(ico, jsondat, x, y, world)
   self.World:add(self, self.x, self.y, 20, 20)
   self.playerWalkTimer = 0
   self.substate = "UNDETECTED"
+  self.shadowed = false
 end
 
 function self:hurt()
@@ -31,6 +33,27 @@ function self:hurt()
   print(self.health,"health")
   if self.health <= 0 then
     self:die()
+  end
+end
+
+function self:calcShadowed()
+  tx, ty = self.map:convertPixelToTile(self.x,self.y)
+  tx = math.floor(tx)
+  ty = math.floor(ty)
+  shadowdata = self.map:getTileProperties(3,tx,ty) -- layers: "base" "bump" "shadows"
+  for i in ipairs(shadowdata) do
+    print ("shadowdata",i)
+  end
+  --print (shadowdata["shadowed"],".shadowed")
+  for i in ipairs(self.map:getLayerProperties(3)) do
+    print ("layerdata:",i)
+  end
+  if (shadowdata[shadowed]) then
+    self.shadowed = true
+    print("in shadow")
+  else
+    self.shadowed = false
+    print("out of shadow")
   end
 end
 
@@ -55,7 +78,7 @@ function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
 end
 
 function self:isHit(x,y,ox,oy,wx,wy,bw,bh)
-  if CheckCollision(self.x,self.y,32, 32,x,y,bw,bh) then
+  if CheckCollision(self.x,self.y,32,32,x,y,bw,bh) then
     self:hurt();
 
     return true;

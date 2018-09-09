@@ -1,7 +1,7 @@
 --worldupdate.lua
 worldupdate = {}
 
-function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py)
+function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map)
   local sti = require ("modules/sti");
   local bump = require ("modules/bump");
   love.graphics.setDefaultFilter("nearest","nearest");
@@ -11,7 +11,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py)
   window.x = love.graphics:getWidth();
   window.y = love.graphics:getHeight();
 
-  player:init(love.graphics.newImage("assets/billywestman.png"), nil, px, py, bumpWorld);
+  player:init(love.graphics.newImage("assets/billywestman.png"), nil, px, py, bumpWorld,map);
   billywestmanimg = love.graphics.newImage("assets/billywestman.png");
   BulletImg = love.graphics.newImage("assets/BillyWestmanBullet.png");
   OTTriggerF = love.graphics.newImage("assets/OneTimeTrigger1False.png");
@@ -97,6 +97,7 @@ function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamit
     sx,sy = 0,0;
   end
 
+  player:calcShadowed()
   player.playerWalkTimer = player.playerWalkTimer + dt
   if player.playerWalkTimer > .5 then
     player:animate("walk");

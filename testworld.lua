@@ -15,10 +15,10 @@ function testworld:load()
   bumptiles = testmap:bump_init(bumpWorld);
   --print(#bumptiles);
   print(love.getVersion());
-  
+
   testworld.changemapConditionsMet = 0;
   testworld.goto = "";
-  
+
   player = require "modules/player_module";
   baseenemy = require "modules/enemy_module";
   trigger = require "modules/trigger_module";
@@ -26,8 +26,8 @@ function testworld:load()
   wu = require("modules/worldupdate")
   json = require "modules/json"
   --TownSpawnList = json.decode("assets/spawntable.json")
-  
-  
+
+
   spawnlist = {
     {name = "Enemy1",x = -100, y=150,image = "billyimage", class=baseenemy, world = bumpWorld},
     {name = "Enemy2",x = 200, y=150,image = "billyimage", class=baseenemy, world = bumpWorld},
@@ -38,14 +38,14 @@ function testworld:load()
     {id = "Test 1", x = 100, y = 50, imgs = "TT", state = 0, btype = "TOGGLE", linkedto={nil}, world = bumpWorld},
     {id = "Test 2", x = 300, y = 100, imgs = "OT", state = 0, btype = "ONCE", linkedto={nil},world = bumpWorld}
   }
-  
+
   DynamiteList = {
     {x = 175, y = 175, sprite = "dynamite"},
     {x = 215, y = 175, sprite = "dynamite"}
   }
-  
+
   --{id = "Test 2", x = 100, y = 0, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil}}
-  player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window = wu:init(spawnlist,DynamiteList,triggerlist, 150, 150)
+  player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window = wu:init(spawnlist,DynamiteList,triggerlist, 150, 150,map)
 end
 
 function testworld:shoot(body,x,y,coordspace)
@@ -69,7 +69,7 @@ function love.mousepressed(x, y, button)
 	if button == 1 and player.ammo > 0 then
     testworld:shoot(player,x,y,0);
   end
-    
+
 end
 
 function testworld:draw()
