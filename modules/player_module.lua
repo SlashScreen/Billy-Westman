@@ -1,6 +1,9 @@
 --player_module
 self = {};
 json = require("modules/json");
+local inspect = require('modules/inspect')
+print(inspect.path)
+print(inspect.cpath)
 --TODO: test if player in shadowed tile
 function self:init(ico, jsondat, x, y, world, map)
   self.map = map
@@ -40,14 +43,11 @@ function self:calcShadowed()
   tx, ty = self.map:convertPixelToTile(self.x,self.y)
   tx = math.floor(tx)
   ty = math.floor(ty)
-  shadowdata = self.map:getTileProperties(3,tx,ty) -- layers: "base" "bump" "shadows"
-  for i in ipairs(shadowdata) do
-    print ("shadowdata",i)
-  end
+  --print(tx)
+  shadowdata = self.map:getTileProperties(2,tx,ty) -- layers: "base" "bump" "shadows"
+  print("shadowdata: ",inspect(shadowdata))
   --print (shadowdata["shadowed"],".shadowed")
-  for i in ipairs(self.map:getLayerProperties(3)) do
-    print ("layerdata:",i)
-  end
+  print ("layer",inspect(self.map:getLayerProperties(2)))
   if (shadowdata[shadowed]) then
     self.shadowed = true
     print("in shadow")

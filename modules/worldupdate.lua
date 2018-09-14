@@ -94,7 +94,10 @@ end
 function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg)
   map:update(dt)
   if math.abs(sx) > 0 then
-    sx,sy = 0,0;
+    sx,sy = -sx+sx/2,-sy+sy/2;
+    if sx < .1 then
+      sx,sy=0,0
+    end
   end
 
   player:calcShadowed()
