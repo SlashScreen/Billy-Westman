@@ -50,7 +50,7 @@ function enemy:shoot(player,world,dt)
 
   if self.shoottimer > self.shootmax then
     world:shoot(self,player.x,player.y,1);
-    print("enemyshoot",player.x,player.y)
+    --print("enemyshoot",player.x,player.y)
     self.shoottimer = 0;
   end
 end
@@ -59,7 +59,7 @@ end
 function enemy:die()
   self.alive = 0;
   self.World:remove(self);
-  print ("dead", self.x, self.y);
+  --print ("dead", self.x, self.y);
 end
 
 function enemy:hurt()
@@ -72,7 +72,7 @@ function lerp (a,b,t)
 end
 
 function enemy:pointDetectable(px,py,sx,sy,shadowed)
-  print("px:",px,"py:",py,"sx:",sx,"sy:",sy,"shadowed:",shadowed)
+  --print("px:",px,"py:",py,"sx:",sx,"sy:",sy,"shadowed:",shadowed)
   local dist = 0
   if (shadowed) then
     dist = 10
@@ -100,7 +100,7 @@ function enemy:decideMovement(playerx,playery,dt)
       deltay = -1;
     end
   end
-print("playx:",playerx,"playy:",playery,"selfx:",self.x,"selfy:",self.y)
+--print("playx:",playerx,"playy:",playery,"selfx:",self.x,"selfy:",self.y)
 else if (self.pointDetectable(0,playerx,playery,self.x,self.y,false)) then
     self.detectedplayer = true
   end
