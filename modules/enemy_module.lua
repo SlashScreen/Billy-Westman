@@ -39,6 +39,7 @@ function enemy:init(ico,x,y, id, world)
   self.ammo = 10;
   self.World:add(self, self.x, self.y, 32, 32);
   self.detectedplayer = false
+  self.state = "WANDER"
   maxsearch = 5
   self.searchtimer = maxsearch
 end
@@ -89,29 +90,50 @@ function enemy:decideMovement(playerx,playery,dt)
   local deltax = 0;
   local deltay = 0;
   if (self.detectedplayer) then
-    if (self.x < playerx) then
-      deltax = 1;
-    else if (self.x > playerx) then
-      deltax = -1;
+      if (self.x < playerx) then
+        deltax = 1;
+      else if (self.x > playerx) then
+        deltax = -1;
+      end
+
+
+      if (self.y < playery) then
+        deltay = 1;
+      else if (self.y > playery) then
+        deltay = -1;
+      end
     end
   end
 
-    if (self.y < playery) then
-      deltay = 1;
-    else if (self.y > playery) then
-      deltay = -1;
-    end
+  if self.state == "WANDER" then
+    print("wander")
+  end
+
+  if self.state == "WANDER" and mathf.math.random() > .5 then
+      print(self.state)
+      if mathf.math.random() >= .5 then
+        deltax = 1;
+      else
+        deltax = -1;
+      end
+      if mathf.math.random() >= .5 then
+        deltay = 1;
+      else
+        deltay = -1;
+      end
   end
   if not self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed) then
     self.searchtimer = self.searchtimer-dt
     print (self.searchtimer)
     if self.searchtimer <= 0 then
+      self.state = "WANDER"
       self.detectedplayer = false
     end
   end
 --print("playx:",playerx,"playy:",playery,"selfx:",self.x,"selfy:",self.y)
 else if (self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed)) then
     self.searchtimer = maxsearch
+    self.state = "PERSUE"
     self.detectedplayer = true
 end
 
