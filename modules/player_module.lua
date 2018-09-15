@@ -2,8 +2,7 @@
 self = {};
 json = require("modules/json");
 local inspect = require('modules/inspect')
-print(inspect.path)
-print(inspect.cpath)
+
 --TODO: test if player in shadowed tile
 function self:init(ico, jsondat, x, y, world, map)
   self.map = map
@@ -29,6 +28,7 @@ function self:init(ico, jsondat, x, y, world, map)
   self.playerWalkTimer = 0
   self.substate = "UNDETECTED"
   self.shadowed = false
+  print("shadowdata: ",inspect(self.map.tiles))
 end
 
 function self:hurt()
@@ -44,17 +44,22 @@ function self:calcShadowed()
   tx = math.floor(tx)
   ty = math.floor(ty)
   --print(tx)
-  shadowdata = self.map:getTileProperties(2,tx,ty) -- layers: "base" "bump" "shadows"
-  print("shadowdata: ",inspect(shadowdata))
+  shadowdata = self.map.tiles--:getTileProperties(2,tx,ty) -- layers: "base" "bump" "shadows"
+  --print("shadowdata: ",inspect(shadowdata))
   --print (shadowdata["shadowed"],".shadowed")
-  print ("layer",inspect(self.map:getLayerProperties(2)))
-  if (shadowdata[shadowed]) then
+  --print ("layer",inspect(self.map:getLayerProperties(2)))
+  for pair,also in pairs(shadowdata) do
+    --print("p",inspect(pair),inspect(also))
+    print(inspect(also.offset))
+  if (also.offset.x == tx and also.offset.y == ty) then
     self.shadowed = true
     print("in shadow")
+    break
   else
     self.shadowed = false
     print("out of shadow")
   end
+end
 end
 
 function self:die()
