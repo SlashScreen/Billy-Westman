@@ -41,25 +41,16 @@ end
 
 function self:calcShadowed()
   tx, ty = self.map:convertPixelToTile(self.x,self.y)
-  tx = math.floor(tx)
-  ty = math.floor(ty)
-  --print(tx)
-  shadowdata = self.map.tiles--:getTileProperties(2,tx,ty) -- layers: "base" "bump" "shadows"
-  --print("shadowdata: ",inspect(shadowdata))
-  --print (shadowdata["shadowed"],".shadowed")
-  --print ("layer",inspect(self.map:getLayerProperties(2)))
-  for pair,also in pairs(shadowdata) do
-    --print("p",inspect(pair),inspect(also))
-    print(inspect(also.offset))
-  if (also.offset.x == tx and also.offset.y == ty) then
+  tx = math.floor(tx)+1
+  ty = math.floor(ty)+1
+
+  if self.map.layers[2].data[ty][tx] then
     self.shadowed = true
-    print("in shadow")
-    break
   else
     self.shadowed = false
-    print("out of shadow")
+
   end
-end
+  print(self.shadowed)
 end
 
 function self:die()
