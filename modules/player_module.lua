@@ -50,7 +50,7 @@ function self:calcShadowed()
     self.shadowed = false
 
   end
-  print(self.shadowed)
+  --print(self.shadowed)
 end
 
 function self:die()
