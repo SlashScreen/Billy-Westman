@@ -39,7 +39,8 @@ function enemy:init(ico,x,y, id, world)
   self.ammo = 10;
   self.World:add(self, self.x, self.y, 32, 32);
   self.detectedplayer = false
-  self.searchtimer = 5
+  maxsearch = 5
+  self.searchtimer = maxsearch
 end
 
 function enemy:shoot(player,world,dt)
@@ -76,7 +77,7 @@ function enemy:pointDetectable(px,py,sx,sy,shadowed)
   --print("px:",px,"py:",py,"sx:",sx,"sy:",sy,"shadowed:",shadowed)
   local dist = 0
   if (shadowed) then
-    dist = 30
+    dist = 0
   else
     dist = 150
   end
@@ -101,18 +102,20 @@ function enemy:decideMovement(playerx,playery,dt)
       deltay = -1;
     end
   end
+  if not self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed) then
+    self.searchtimer = self.searchtimer-dt
+    print (self.searchtimer)
+    if self.searchtimer <= 0 then
+      self.detectedplayer = false
+    end
+  end
 --print("playx:",playerx,"playy:",playery,"selfx:",self.x,"selfy:",self.y)
 else if (self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed)) then
+    self.searchtimer = maxsearch
     self.detectedplayer = true
-
-end
-if self.detectedplayer and not self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed) then
-  self.searchtimer = self.searchtimer-dt
 end
 
-if self.searchtimer <= 0 then
-  self.detectedplayer = false
-end
+
 
 
   end
