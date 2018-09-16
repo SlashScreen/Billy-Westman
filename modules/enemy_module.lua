@@ -128,12 +128,15 @@ function enemy:decideMovement(playerx,playery,dt)
   end
 
   end
+end
+  print("1",self.x,self.y)
   self.x = self.x + (deltax * self.speed);
   self.y = self.y + (deltay * self.speed);
   local ax, ay, cols, len = self.World:move(self, self.x, self.y)
   self.x = ax
-self.y = ay
-self.World:update(self, self.x, self.y,32,32);
+  self.y = ay
+  print("2",self.x,self.y)
+  self.World:update(self, self.x, self.y,32,32);
   --[[if self.state == "WANDER" and mathf.math.random() > .5 then
       print(self.state)
       if mathf.math.random() >= .5 then
@@ -149,7 +152,7 @@ self.World:update(self, self.x, self.y,32,32);
   end]]--
 
 end
-end
+
 
 
 
