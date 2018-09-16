@@ -29,6 +29,8 @@ function enemy:init(ico,x,y, id, world)
   self.frames = {};
   self.frames[0] = love.graphics.newQuad(0,0,32,32,self.icon:getDimensions())
   self.frames[1] = love.graphics.newQuad(32,0,32,32,self.icon:getDimensions())
+  self.origx = x
+  self.origy = y
   self.x = x;
   self.y = y;
   self.speed = 1;
@@ -87,9 +89,13 @@ function enemy:pointDetectable(px,py,sx,sy,shadowed)
 end
 
 function enemy:decideMovement(playerx,playery,dt)
+  print (self.state)
   local deltax = 0;
   local deltay = 0;
   if (self.detectedplayer) then
+      self.state = "PERSUE"
+    end
+    if self.state == "PERSUE" then
       if (self.x < playerx) then
         deltax = 1;
       else if (self.x > playerx) then
@@ -103,11 +109,24 @@ function enemy:decideMovement(playerx,playery,dt)
         deltay = -1;
       end
     end
-  end
+
 
   if self.state == "WANDER" then
     print("wander")
+    if (self.x < self.origx) then
+      deltax = 1;
+    else if (self.x > self.origx) then
+      deltax = -1;
+    end
+
+
+    if (self.y < self.origy) then
+      deltay = 1;
+    else if (self.y > self.origy) then
+      deltay = -1;
+    end
   end
+end
 
   if self.state == "WANDER" and mathf.math.random() > .5 then
       print(self.state)
@@ -122,36 +141,37 @@ function enemy:decideMovement(playerx,playery,dt)
         deltay = -1;
       end
   end
-  if not self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed) then
+  end
+  self.x = self.x + (deltax * self.speed);
+  self.y = self.y + (deltay * self.speed);
+  local ax, ay, cols, len = self.World:move(self, self.x, self.y)
+  self.x = ax
+  self.y = ay
+  self.World:update(self, self.x, self.y,32,32);
+end
+end
+end
+
+
+function enemy:update(playerx,playery,dt)
+  if self.state == "PERSUE" and not self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed) then
     self.searchtimer = self.searchtimer-dt
     print (self.searchtimer)
     if self.searchtimer <= 0 then
       self.state = "WANDER"
       self.detectedplayer = false
     end
-  end
---print("playx:",playerx,"playy:",playery,"selfx:",self.x,"selfy:",self.y)
 else if (self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed)) then
     self.searchtimer = maxsearch
     self.state = "PERSUE"
     self.detectedplayer = true
 end
-
-
-
-
-  end
-  self.x = self.x + (deltax * self.speed);
-  self.y = self.y + (deltay * self.speed);
-  local ax, ay, cols, len = self.World:move(self, self.x, self.y)
-    self.x = ax
-    self.y = ay
-    self.World:update(self, self.x, self.y,32,32);
-    --for i=1,len do
-    --print('collided with ' .. tostring(cols[i].other),self.x,self.y)
-  --end
-  --print(enemy.x, enemy.y, playerx, playery);
 end
+end
+
+
+
+
 
 function enemy:animate(action)
   if action == "walk" then

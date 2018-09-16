@@ -120,6 +120,7 @@ for i = 1, #enemies do -- main interaction IG w enemies
       if enemies[i].detectedplayer then --If any of them detected the player the player is detected now
         detected = true
       end
+      enemies[i]:update(player.x,player.y,dt)
       enemies[i]:decideMovement(player.x,player.y,dt); --walk
       enemies[i]:shoot(player,world,dt) --do shoot calcculations
       for o,v in ipairs(bullets) do -- is hit by bullets?
