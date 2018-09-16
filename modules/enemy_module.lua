@@ -92,10 +92,8 @@ function enemy:decideMovement(playerx,playery,dt)
   print (self.state)
   local deltax = 0;
   local deltay = 0;
-  if (self.detectedplayer) then
-      self.state = "PERSUE"
-    end
     if self.state == "PERSUE" then
+      print("persue")
       if (self.x < playerx) then
         deltax = 1;
       else if (self.x > playerx) then
@@ -109,6 +107,8 @@ function enemy:decideMovement(playerx,playery,dt)
         deltay = -1;
       end
     end
+  end
+  end
 
 
   if self.state == "WANDER" then
@@ -126,9 +126,15 @@ function enemy:decideMovement(playerx,playery,dt)
       deltay = -1;
     end
   end
-end
 
-  if self.state == "WANDER" and mathf.math.random() > .5 then
+  end
+  self.x = self.x + (deltax * self.speed);
+  self.y = self.y + (deltay * self.speed);
+  local ax, ay, cols, len = self.World:move(self, self.x, self.y)
+  self.x = ax
+self.y = ay
+self.World:update(self, self.x, self.y,32,32);
+  --[[if self.state == "WANDER" and mathf.math.random() > .5 then
       print(self.state)
       if mathf.math.random() >= .5 then
         deltax = 1;
@@ -140,17 +146,11 @@ end
       else
         deltay = -1;
       end
-  end
-  end
-  self.x = self.x + (deltax * self.speed);
-  self.y = self.y + (deltay * self.speed);
-  local ax, ay, cols, len = self.World:move(self, self.x, self.y)
-  self.x = ax
-  self.y = ay
-  self.World:update(self, self.x, self.y,32,32);
+  end]]--
+
 end
 end
-end
+
 
 
 function enemy:update(playerx,playery,dt)
