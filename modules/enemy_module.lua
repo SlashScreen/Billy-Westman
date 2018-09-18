@@ -95,36 +95,29 @@ function enemy:decideMovement(playerx,playery,dt)
 
       if (self.state == 1 and self.x < playerx) then
         deltax = 1;
-      else if (self.x > playerx) then
+      elseif (self.x > playerx) then
+        deltax = -1;
+      end
+
+      if (self.state == 1 and self.y < playery) then
+        deltay = 1;
+      elseif (self.y > playery) then
+        deltay = -1;
+      end
+
+      if (self.state == 0 and self.x < self.origx) then
+        deltax = 1;
+      elseif (self.x > self.origx) then
         deltax = -1;
       end
 
 
-      if (self.state == 1 and self.y < playery) then
+      if (self.state == 0 and self.y < self.origy) then
         deltay = 1;
-      else if (self.y > playery) then
+      elseif (self.y > self.origy) then
         deltay = -1;
       end
-    end
-
-
-    if (self.state == 0 and self.x < self.origx) then
-      deltax = 1;
-    else if (self.x > self.origx) then
-      deltax = -1;
-    end
-
-
-    if (self.state == 0 and self.y < self.origy) then
-      deltay = 1;
-    else if (self.y > self.origy) then
-      deltay = -1;
-    end
     --print("∆",deltax,deltay)
-
-end
-  end
-end
 
   self.x = self.x + (deltax * self.speed);
   self.y = self.y + (deltay * self.speed);
@@ -145,7 +138,6 @@ end
         deltay = -1;
       end
   end]]--
-
 end
 
 
@@ -162,7 +154,7 @@ function enemy:update(playerx,playery,dt)
       self.state = 0
       self.detectedplayer = false
     end
-else if (self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed)) then
+elseif (self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed)) then
     self.searchtimer = maxsearch
     if self.state == 0 then
       print(1)
@@ -172,7 +164,7 @@ else if (self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed)) 
     self.detectedplayer = true
 end
 end
-end
+
 
 
 
