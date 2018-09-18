@@ -41,7 +41,7 @@ function enemy:init(ico,x,y, id, world)
   self.ammo = 10;
   self.World:add(self, self.x, self.y, 32, 32);
   self.detectedplayer = false
-  self.state = "WANDER"
+  self.state = 0
   maxsearch = 5
   self.searchtimer = maxsearch
 end
@@ -89,55 +89,50 @@ function enemy:pointDetectable(px,py,sx,sy,shadowed)
 end
 
 function enemy:decideMovement(playerx,playery,dt)
-  print (self.state)
+  --print (self.state)
   local deltax = 0;
   local deltay = 0;
-    if self.state == "PERSUE" then
-      print("persue")
-      if (self.x < playerx) then
+
+      if (self.state == 1 and self.x < playerx) then
         deltax = 1;
       else if (self.x > playerx) then
         deltax = -1;
       end
 
 
-      if (self.y < playery) then
+      if (self.state == 1 and self.y < playery) then
         deltay = 1;
       else if (self.y > playery) then
         deltay = -1;
       end
     end
-  end
-  end
 
 
-  if self.state == "WANDER" then
-    print("wander")
-    if (self.x < self.origx) then
+    if (self.state == 0 and self.x < self.origx) then
       deltax = 1;
     else if (self.x > self.origx) then
       deltax = -1;
     end
 
 
-    if (self.y < self.origy) then
+    if (self.state == 0 and self.y < self.origy) then
       deltay = 1;
     else if (self.y > self.origy) then
       deltay = -1;
     end
-  end
+    --print("∆",deltax,deltay)
 
+end
   end
 end
-  print("1",self.x,self.y)
+
   self.x = self.x + (deltax * self.speed);
   self.y = self.y + (deltay * self.speed);
   local ax, ay, cols, len = self.World:move(self, self.x, self.y)
   self.x = ax
   self.y = ay
-  print("2",self.x,self.y)
   self.World:update(self, self.x, self.y,32,32);
-  --[[if self.state == "WANDER" and mathf.math.random() > .5 then
+  --[[if self.state == 0 and mathf.math.random() > .5 then
       print(self.state)
       if mathf.math.random() >= .5 then
         deltax = 1;
@@ -157,16 +152,23 @@ end
 
 
 function enemy:update(playerx,playery,dt)
-  if self.state == "PERSUE" and not self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed) then
+  if self.state == 1 and not self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed) then
     self.searchtimer = self.searchtimer-dt
     print (self.searchtimer)
     if self.searchtimer <= 0 then
-      self.state = "WANDER"
+      if self.state == 1 then
+        print(0)
+      end
+      self.state = 0
       self.detectedplayer = false
     end
 else if (self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed)) then
     self.searchtimer = maxsearch
-    self.state = "PERSUE"
+    if self.state == 0 then
+      print(1)
+    end
+    self.state = 1
+
     self.detectedplayer = true
 end
 end
