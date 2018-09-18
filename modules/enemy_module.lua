@@ -43,6 +43,8 @@ function enemy:init(ico,x,y, id, world)
   self.detectedplayer = false
   self.state = 0
   maxsearch = 5
+  goalx = 0
+  goaly = 0
   self.searchtimer = maxsearch
 end
 
@@ -93,31 +95,26 @@ function enemy:decideMovement(playerx,playery,dt)
   local deltax = 0;
   local deltay = 0;
 
-      if (self.state == 1 and self.x < playerx) then
-        deltax = 1;
-      elseif (self.x > playerx) then
-        deltax = -1;
-      end
+  if self.state == 1 then
+    goalx = playerx
+    goaly = playery
+  end
+  if self.state == 0 and math.random() < .005 then
+      math.randomseed(os.clock())
+      goalx = goalx + math.random(-20, 20)
+      goaly = goaly + math.random(-20, 20)
+  end
+    if (self.x < goalx) then
+      deltax = 1;
+    elseif (self.x > goalx) then
+      deltax = -1;
+    end
 
-      if (self.state == 1 and self.y < playery) then
-        deltay = 1;
-      elseif (self.y > playery) then
-        deltay = -1;
-      end
-
-      if (self.state == 0 and self.x < self.origx) then
-        deltax = 1;
-      elseif (self.x > self.origx) then
-        deltax = -1;
-      end
-
-
-      if (self.state == 0 and self.y < self.origy) then
-        deltay = 1;
-      elseif (self.y > self.origy) then
-        deltay = -1;
-      end
-    --print("∆",deltax,deltay)
+    if (self.y < goaly) then
+      deltay = 1;
+    elseif (self.y > goaly) then
+      deltay = -1;
+    end
 
   self.x = self.x + (deltax * self.speed);
   self.y = self.y + (deltay * self.speed);
@@ -125,23 +122,7 @@ function enemy:decideMovement(playerx,playery,dt)
   self.x = ax
   self.y = ay
   self.World:update(self, self.x, self.y,32,32);
-  --[[if self.state == 0 and mathf.math.random() > .5 then
-      print(self.state)
-      if mathf.math.random() >= .5 then
-        deltax = 1;
-      else
-        deltax = -1;
-      end
-      if mathf.math.random() >= .5 then
-        deltay = 1;
-      else
-        deltay = -1;
-      end
-  end]]--
 end
-
-
-
 
 function enemy:update(playerx,playery,dt)
   if self.state == 1 and not self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed) then
@@ -151,6 +132,8 @@ function enemy:update(playerx,playery,dt)
       if self.state == 1 then
         print(0)
       end
+      --goalx = self.origx
+      --goaly = self.origy
       self.state = 0
       self.detectedplayer = false
     end
