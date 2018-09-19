@@ -57,7 +57,6 @@ function enemy:shoot(player,world,dt)
 
   if self.shoottimer > self.shootmax then
     world:shoot(self,player.x,player.y,1);
-    --print("enemyshoot",player.x,player.y)
     self.shoottimer = 0;
   end
 end
@@ -66,7 +65,6 @@ end
 function enemy:die()
   self.alive = 0;
   self.World:remove(self);
-  --print ("dead", self.x, self.y);
 end
 
 function enemy:hurt()
@@ -79,19 +77,16 @@ function lerp (a,b,t)
 end
 
 function enemy:pointDetectable(px,py,sx,sy,shadowed)
-  --print("px:",px,"py:",py,"sx:",sx,"sy:",sy,"shadowed:",shadowed)
   local dist = 0
   if (shadowed) then
     dist = 0
   else
-    dist = 50
+    dist = 100
   end
   return math.sqrt(math.pow(sx-px,2)+math.pow(sy-py,2))< dist
-  --return true
 end
 
 function enemy:decideMovement(playerx,playery,dt)
-  --print (self.state)
   local deltax = 0;
   local deltay = 0;
 
@@ -100,21 +95,21 @@ function enemy:decideMovement(playerx,playery,dt)
     self.goaly = playery
   end
   if self.state == 0 and math.random() < .005 then
-      math.randomseed(os.time())
-      self.goalx = self.goalx + math.random(-20, 20)
-      self.goaly = self.goaly + math.random(-20, 20)
+    math.randomseed(os.time())
+    self.goalx = self.goalx + math.random(-20, 20)
+    self.goaly = self.goaly + math.random(-20, 20)
   end
-    if (self.x < self.goalx) then
-      deltax = 1;
-    elseif (self.x > self.goalx) then
-      deltax = -1;
-    end
+  if (self.x < self.goalx) then
+    deltax = 1;
+  elseif (self.x > self.goalx) then
+    deltax = -1;
+  end
 
-    if (self.y < self.goaly) then
-      deltay = 1;
-    elseif (self.y > self.goaly) then
-      deltay = -1;
-    end
+  if (self.y < self.goaly) then
+    deltay = 1;
+  elseif (self.y > self.goaly) then
+    deltay = -1;
+  end
 
   self.x = self.x + (deltax * self.speed);
   self.y = self.y + (deltay * self.speed);
@@ -145,26 +140,17 @@ function enemy:update(playerx,playery,dt)
       self.state = 1
     end
     self.detectedplayer = true
+  end
 end
-end
-
-
-
-
-
 
 function enemy:animate(action)
   if action == "walk" then
-    --put in the animation thing
     if self.increment == 1 then
       self.increment = 0;
     else
       self.increment = self.increment+1;
     end
-
-
   end
-
 end
 
 function enemy:isHit(x,y,ox,oy,wx,wy,bw,bh)
