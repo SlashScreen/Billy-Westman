@@ -14,7 +14,7 @@ function gdqsworld:load()
   print(love.getVersion());
 
   gdqsworld.changemapConditionsMet = 0;
-  gdqsworld.goto = "test"
+  gdqsworld.go_to = "test"
 
   player = require "modules/player_module";
   baseenemy = require "modules/enemy_module";
@@ -67,15 +67,15 @@ end
 
 function gdqsworld:canChange()
   if gdqsworld.changemapConditionsMet == 1 then
-    return true, gdqsworld.goto;
+    return true, gdqsworld.go_to;
   else
-    return false, gdqsworld.goto
+    return false, gdqsworld.go_to
   end
 
 end
 function gdqsworld:setChange(gotomap)
   gdqsworld.changemapConditionsMet = 1
-  gdqsworld.goto = gotomap;
+  gdqsworld.go_to = gotomap;
 end
 
 return gdqsworld
