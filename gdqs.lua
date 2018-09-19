@@ -14,7 +14,7 @@ function gdqsworld:load()
   print(love.getVersion());
 
   gdqsworld.changemapConditionsMet = 0;
-  gdqsworld.goto = "test";
+  gdqsworld.goto = "test"
 
   player = require "modules/player_module";
   baseenemy = require "modules/enemy_module";
@@ -48,8 +48,7 @@ function gdqsworld:shoot(body,x,y,coordspace)
   end
 
 
-function gdqsworld
-:shakescreen(val)
+function gdqsworld:shakescreen(val)
   sx = math.random(-val,val);
   sy = math.random(-val,val);
 end
@@ -66,24 +65,17 @@ function gdqsworld:draw()
   wu:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,crosshair, window)
 end
 
-function gdqsworld
-:canChange()
-  if gdqsworld
-.changemapConditionsMet == 1 then
-    return true, gdqsworld
-.goto;
+function gdqsworld:canChange()
+  if gdqsworld.changemapConditionsMet == 1 then
+    return true, gdqsworld.goto;
   else
-    return false, gdqsworld
-.goto
+    return false, gdqsworld.goto
   end
 
 end
-function gdqsworld
-:setChange(gotomap)
-  gdqsworld
-.changemapConditionsMet = 1
-  gdqsworld
-.goto = gotomap;
+function gdqsworld:setChange(gotomap)
+  gdqsworld.changemapConditionsMet = 1
+  gdqsworld.goto = gotomap;
 end
 
 return gdqsworld
