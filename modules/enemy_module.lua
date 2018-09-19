@@ -84,7 +84,7 @@ function enemy:pointDetectable(px,py,sx,sy,shadowed)
   if (shadowed) then
     dist = 0
   else
-    dist = 150
+    dist = 50
   end
   return math.sqrt(math.pow(sx-px,2)+math.pow(sy-py,2))< dist
   --return true
@@ -100,7 +100,7 @@ function enemy:decideMovement(playerx,playery,dt)
     goaly = playery
   end
   if self.state == 0 and math.random() < .005 then
-      math.randomseed(os.clock())
+      math.randomseed(os.time())
       goalx = goalx + math.random(-20, 20)
       goaly = goaly + math.random(-20, 20)
   end
@@ -132,8 +132,8 @@ function enemy:update(playerx,playery,dt)
       if self.state == 1 then
         print(0)
       end
-      --goalx = self.origx
-      --goaly = self.origy
+      goalx = self.origx
+      goaly = self.origy
       self.state = 0
       self.detectedplayer = false
     end
