@@ -24,7 +24,6 @@ function enemy:create (o)
 function enemy:init(ico,x,y, id, world)
   self.icon = ico;
   self.World = world;
-  --player.data = json.decode(player.jsondat);
   self.increment = 0;
   self.frames = {};
   self.frames[0] = love.graphics.newQuad(0,0,32,32,self.icon:getDimensions())
