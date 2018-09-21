@@ -124,18 +124,15 @@ function enemy:update(playerx,playery,dt)
     print (self.searchtimer)
     if self.searchtimer <= 0 then
       if self.state == 1 then
-        print(0)
       end
       self.goalx = self.origx
       self.goaly = self.origy
-      print(self.goalx,self.goaly)
       self.state = 0
       self.detectedplayer = false
     end
   elseif (self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed)) then
     self.searchtimer = maxsearch
     if self.state == 0 then
-      print(1)
       self.state = 1
     end
     self.detectedplayer = true
