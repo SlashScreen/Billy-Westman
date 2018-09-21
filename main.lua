@@ -13,20 +13,17 @@ function love.update(dt)
     currentworld.changemapConditionsMet = 0;
     if goToMap == "test" then
       currentworld = testworld;
-    else if goToMap == "westham" then
+    elseif goToMap == "westham" then
       print("westham");
-    else if goToMap == "mines" then
+    elseif goToMap == "mines" then
       print("mines");
-    else if goToMap == "gulch" then
+    elseif goToMap == "gulch" then
       print("gulch");
     end
 
   end
 end
-end
 
-end
-end
 
 function love.draw()
   currentworld:draw();

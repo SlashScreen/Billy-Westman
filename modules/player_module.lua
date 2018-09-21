@@ -3,7 +3,6 @@ self = {};
 json = require("modules/json");
 local inspect = require('modules/inspect')
 
---TODO: test if player in shadowed tile
 function self:init(ico, jsondat, x, y, world, map)
   self.map = map
   self.World = world;
@@ -11,7 +10,6 @@ function self:init(ico, jsondat, x, y, world, map)
   self.json = jsondat;
   self.health = 10;
   self.alive = true;
-  --player.data = json.decode(player.jsondat);
   self.increment = 0;
   self.frames = {};
   self.frames[0] = love.graphics.newQuad(0,0,32,32,self.icon:getDimensions())
@@ -50,7 +48,6 @@ function self:calcShadowed()
     self.shadowed = false
 
   end
-  --print(self.shadowed)
 end
 
 function self:die()
@@ -85,7 +82,6 @@ end
 
 function self:animate(action)
   if action == "walk" then
-    --put in the animation thing
     if self.increment == 1 then
       self.increment = 0;
     else

@@ -24,7 +24,6 @@ function enemy:create (o)
 function enemy:init(ico,x,y, id, world)
   self.icon = ico;
   self.World = world;
-  --player.data = json.decode(player.jsondat);
   self.increment = 0;
   self.frames = {};
   self.frames[0] = love.graphics.newQuad(0,0,32,32,self.icon:getDimensions())
@@ -41,8 +40,10 @@ function enemy:init(ico,x,y, id, world)
   self.ammo = 10;
   self.World:add(self, self.x, self.y, 32, 32);
   self.detectedplayer = false
-  self.state = "WANDER"
+  self.state = 0
   maxsearch = 5
+  self.goalx = 0
+  self.goaly = 0
   self.searchtimer = maxsearch
 end
 
@@ -55,7 +56,6 @@ function enemy:shoot(player,world,dt)
 
   if self.shoottimer > self.shootmax then
     world:shoot(self,player.x,player.y,1);
-    --print("enemyshoot",player.x,player.y)
     self.shoottimer = 0;
   end
 end
@@ -64,7 +64,6 @@ end
 function enemy:die()
   self.alive = 0;
   self.World:remove(self);
-  --print ("dead", self.x, self.y);
 end
 
 function enemy:hurt()
@@ -77,71 +76,40 @@ function lerp (a,b,t)
 end
 
 function enemy:pointDetectable(px,py,sx,sy,shadowed)
-  --print("px:",px,"py:",py,"sx:",sx,"sy:",sy,"shadowed:",shadowed)
   local dist = 0
   if (shadowed) then
     dist = 0
   else
-    dist = 150
+    dist = 100
   end
   return math.sqrt(math.pow(sx-px,2)+math.pow(sy-py,2))< dist
-  --return true
 end
 
 function enemy:decideMovement(playerx,playery,dt)
-  print (self.state)
   local deltax = 0;
   local deltay = 0;
-  if (self.detectedplayer) then
-      self.state = "PERSUE"
-    end
-    if self.state == "PERSUE" then
-      if (self.x < playerx) then
-        deltax = 1;
-      else if (self.x > playerx) then
-        deltax = -1;
-      end
 
-
-      if (self.y < playery) then
-        deltay = 1;
-      else if (self.y > playery) then
-        deltay = -1;
-      end
-    end
-
-
-  if self.state == "WANDER" then
-    print("wander")
-    if (self.x < self.origx) then
-      deltax = 1;
-    else if (self.x > self.origx) then
-      deltax = -1;
-    end
-
-
-    if (self.y < self.origy) then
-      deltay = 1;
-    else if (self.y > self.origy) then
-      deltay = -1;
-    end
+  if self.state == 1 then
+    self.goalx = playerx
+    self.goaly = playery
   end
-end
+  if self.state == 0 and math.random() < .005 then
+    math.randomseed(os.time())
+    self.goalx = self.goalx + math.random(-20, 20)
+    self.goaly = self.goaly + math.random(-20, 20)
+  end
+  if (self.x < self.goalx) then
+    deltax = 1;
+  elseif (self.x > self.goalx) then
+    deltax = -1;
+  end
 
-  if self.state == "WANDER" and mathf.math.random() > .5 then
-      print(self.state)
-      if mathf.math.random() >= .5 then
-        deltax = 1;
-      else
-        deltax = -1;
-      end
-      if mathf.math.random() >= .5 then
-        deltay = 1;
-      else
-        deltay = -1;
-      end
+  if (self.y < self.goaly) then
+    deltay = 1;
+  elseif (self.y > self.goaly) then
+    deltay = -1;
   end
-  end
+
   self.x = self.x + (deltax * self.speed);
   self.y = self.y + (deltay * self.speed);
   local ax, ay, cols, len = self.World:move(self, self.x, self.y)
@@ -149,42 +117,39 @@ end
   self.y = ay
   self.World:update(self, self.x, self.y,32,32);
 end
-end
-end
-
 
 function enemy:update(playerx,playery,dt)
-  if self.state == "PERSUE" and not self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed) then
+  if self.state == 1 and not self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed) then
     self.searchtimer = self.searchtimer-dt
     print (self.searchtimer)
     if self.searchtimer <= 0 then
-      self.state = "WANDER"
+      if self.state == 1 then
+        print(0)
+      end
+      self.goalx = self.origx
+      self.goaly = self.origy
+      print(self.goalx,self.goaly)
+      self.state = 0
       self.detectedplayer = false
     end
-else if (self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed)) then
+  elseif (self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed)) then
     self.searchtimer = maxsearch
-    self.state = "PERSUE"
+    if self.state == 0 then
+      print(1)
+      self.state = 1
+    end
     self.detectedplayer = true
+  end
 end
-end
-end
-
-
-
-
 
 function enemy:animate(action)
   if action == "walk" then
-    --put in the animation thing
     if self.increment == 1 then
       self.increment = 0;
     else
       self.increment = self.increment+1;
     end
-
-
   end
-
 end
 
 function enemy:isHit(x,y,ox,oy,wx,wy,bw,bh)
