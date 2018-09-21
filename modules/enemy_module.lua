@@ -93,10 +93,14 @@ function enemy:decideMovement(playerx,playery,dt)
     self.goalx = playerx
     self.goaly = playery
   end
-  if self.state == 0 and math.random() < .005 then
+  descision = math.random()
+  if self.state == 0 and descision < .005 then
     math.randomseed(os.time())
     self.goalx = self.goalx + math.random(-20, 20)
     self.goaly = self.goaly + math.random(-20, 20)
+  elseif self.state == 0 and descision < .15 and descision > .2 then
+    self.goalx = self.origx
+    self.goaly = self.origy
   end
   if (self.x < self.goalx) then
     deltax = 1;
