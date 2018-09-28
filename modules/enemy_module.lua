@@ -78,7 +78,7 @@ end
 function enemy:pointDetectable(px,py,sx,sy,shadowed)
   local dist = 0
   if (shadowed) then
-    dist = 0
+    dist = 10
   else
     dist = 100
   end
