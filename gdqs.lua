@@ -61,7 +61,7 @@ function gdqsworld:update(dt)
 end
 
 function gdqsworld:draw()
-  gradient = gdshader:constructGradient(255,0,0,0,0,255)
+  gradient = gdshader:constructGradient(1,0,0,0,0,1)
   shader = gdshader:gradShader(gradient) -- change to gradient object once that's working
   wu:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,crosshair, window,shader)
 end
