@@ -29,7 +29,7 @@ function self:init(ico, jsondat, x, y, world, map)
   print("shadowdata: ",inspect(self.map.tiles))
 end
 
-function self:hurt()
+function self:hurt() --health. TODO: Die properly
   self.health = self.health - 1;
   print(self.health,"health")
   if self.health <= 0 then
@@ -37,11 +37,10 @@ function self:hurt()
   end
 end
 
-function self:calcShadowed()
+function self:calcShadowed() --is shadowed?
   tx, ty = self.map:convertPixelToTile(self.x,self.y)
   tx = math.floor(tx)+1
   ty = math.floor(ty)+1
-
   if self.map.layers[2].data[ty][tx] then
     self.shadowed = true
   else
@@ -50,11 +49,11 @@ function self:calcShadowed()
   end
 end
 
-function self:die()
+function self:die() --TODO: make matter
   self.alive = false;
 end
 
-function self:decideMovement(x,y)
+function self:decideMovement(x,y) --Recieve input
   self.x = self.x + (x*self.speed);
   self.y = self.y - (y*self.speed);
   local ax, ay, cols, len = self.World:move(self, self.x, self.y)
@@ -70,26 +69,22 @@ function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
          y2 < y1+h1
 end
 
-function self:isHit(x,y,ox,oy,wx,wy,bw,bh)
+function self:isHit(x,y,ox,oy,wx,wy,bw,bh) --check if hit by bullet
   if CheckCollision(self.x,self.y,32,32,x,y,bw,bh) then
     self:hurt();
-
     return true;
   else
     return false;
     end
 end
 
-function self:animate(action)
+function self:animate(action) --animation cycle
   if action == "walk" then
     if self.increment == 1 then
       self.increment = 0;
     else
       self.increment = self.increment+1;
     end
-
-
   end
-
 end
 return self

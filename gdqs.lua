@@ -1,6 +1,5 @@
---testworld.lua
---proof of concept for having multiple worlds without cluttering poor main.lua
---TODO: Do Colission
+--gdjs.lua - test demo
+local gdshader = require "modules/shader"
 gdqsworld= {};
 
 function gdqsworld:load()
@@ -62,7 +61,9 @@ function gdqsworld:update(dt)
 end
 
 function gdqsworld:draw()
-  wu:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,crosshair, window)
+  gradient = gdshader:constructGradient(0,0,0,1,1,1)
+  shader = gdshader:gradShader(gradient) -- change to gradient object once that's working
+  wu:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,crosshair, window,shader)
 end
 
 function gdqsworld:canChange()
