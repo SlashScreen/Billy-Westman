@@ -1,5 +1,7 @@
 --shader.lua
 
+shader = {}
+
 function shader:constructGradient(r1,b1,g1,r2,b2,g2)
   gradient = {}
   gradient[color1][r] = r1
@@ -12,7 +14,7 @@ function shader:constructGradient(r1,b1,g1,r2,b2,g2)
 end
 
 function shader:gradShader (gradient)
-  local gradeffect = love.graphics.newShader[[
+  local gradeffect = [[
     vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
       vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
       number average = (pixel.r+pixel.b+pixel.g)/3.0;
@@ -22,5 +24,8 @@ function shader:gradShader (gradient)
       return pixel;
     }
   ]]
-  return gradeffect
+  gradShader = love.graphics.newShader(gradeffect)
+  return gradShader
 end
+
+return shader
