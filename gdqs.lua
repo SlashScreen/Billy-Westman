@@ -15,6 +15,9 @@ function gdqsworld:load()
   gdqsworld.changemapConditionsMet = 0;
   gdqsworld.go_to = "test"
 
+  gradient = gdshader:constructGradient(gdshader:toOneBase(38),gdshader:toOneBase(173),gdshader:toOneBase(137),gdshader:toOneBase(211),gdshader:toOneBase(223),gdshader:toOneBase(226))
+  shader = gdshader:gradShader(gradient)
+
   player = require "modules/player_module";
   baseenemy = require "modules/enemy_module";
   trigger = require "modules/trigger_module";
@@ -61,8 +64,6 @@ function gdqsworld:update(dt)
 end
 
 function gdqsworld:draw()
-  gradient = gdshader:constructGradient(0,0,0,1,1,1)
-  shader = gdshader:gradShader(gradient) -- change to gradient object once that's working
   wu:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,crosshair, window,shader)
 end
 

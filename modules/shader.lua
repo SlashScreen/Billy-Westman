@@ -8,7 +8,7 @@ function shader:constructGradient(r1,b1,g1,r2,b2,g2)
 end
 
 function shader:toOneBase(val) --convert  255 base to 1 base I hope
-  return 1/val
+  return val/255
 end
 
 function unpackGradient(gr)
