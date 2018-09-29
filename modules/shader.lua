@@ -32,9 +32,9 @@ function shader:gradShader (gradient)
   ]]
   gradShader = love.graphics.newShader(gradeffect)
   fromCol, toCol = unpackGradient(gradient)
-  --print(fromCol, toCol)
-  gradShader:send("fromCol", {0.1,0.5,0.1})
-  gradShader:send("toCol", {1,1,1})
+  --print(fromCol["r"], toCol["r"])
+  gradShader:send("fromCol", {fromCol["r"],fromCol["g"],fromCol["b"]})
+  gradShader:send("toCol", {toCol["r"],toCol["g"],toCol["b"]})
   return gradShader
 end
 
