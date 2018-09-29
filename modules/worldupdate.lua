@@ -205,7 +205,8 @@ if player.state == "PLAY" and player.substate == "UNDETECTED" and player.ammo < 
   end
 end
 
-function worldupdate:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg,crosshair, window)
+function worldupdate:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg,crosshair, window,shader)
+  love.graphics.setShader(shader)
   map:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0,zoom);
 
