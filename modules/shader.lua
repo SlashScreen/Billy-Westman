@@ -11,6 +11,10 @@ function shader:constructGradient(r1,b1,g1,r2,b2,g2)
   return gradient
 end
 
+function shader:toOneBase(val)
+  return 1/val
+end
+
 function unpackGradient(gr)
   return gr[1],gr[2]
 end
