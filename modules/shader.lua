@@ -1,9 +1,10 @@
 --shader.lua
 
 shader = {}
+inspect = require('modules/inspect')
 
-function shader:constructGradient(r1,b1,g1,r2,b2,g2)
-  gradient = {{["r"]=r1,["g"]=g1,["b"]=b1},{["r"]=r2,["g"]=g2,["b"]=b2}} --make pack
+function shader:constructGradient(color1,color2)
+  gradient = {color2,color1} --make pack
   return gradient
 end
 
@@ -27,8 +28,10 @@ function shader:gradShader (gradient)
     return pixel;
   }
   ]] --shader script
+
   gradShader = love.graphics.newShader(gradeffect) --shader object
   fromCol, toCol = unpackGradient(gradient) --get colors from gradient object
+  --print(inspect(fromCol))
   gradShader:send("fromCol", {fromCol["r"],fromCol["g"],fromCol["b"]}) --send to shader
   gradShader:send("toCol", {toCol["r"],toCol["g"],toCol["b"]})
   return gradShader
