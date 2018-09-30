@@ -23,8 +23,8 @@ function shader:gradShader (gradient)
 
   vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
     vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
-    number average = dot(pixel.rgb, vec3(1.0/3.0));//convert pixel to black and white
     if (pixel.r == pixel.g && pixel.g == pixel.b){
+      number average = dot(pixel.rgb, vec3(1.0/3.0));//convert pixel to black and white
       pixel.rgb = mix(fromCol, toCol, average); //use average as alpha for lerp "mix" function between colors 1 and 2
       return pixel;
     }
