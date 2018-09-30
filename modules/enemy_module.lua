@@ -45,6 +45,8 @@ function enemy:init(ico,x,y, id, world)
   self.goalx = 0
   self.goaly = 0
   self.searchtimer = maxsearch
+  self.fidget = 0.0
+  self.lost = false
 end
 
 function enemy:shoot(player,world,dt) --interface with world shoot function
@@ -93,8 +95,12 @@ function enemy:decideMovement(playerx,playery,dt)
     self.goalx = playerx
     self.goaly = playery
   end
+  if self.lost and goalx == playerx and goaly == playery then
+    self.lost = false
+    self.state = 2
+  end
   descision = math.random()
-  if self.state == 0 and descision < .005 then --function for random wandering. bind to fidget variable for future searching state?
+  if self.state == 0 and descision < self.fidget or self.state == 2 and descision < self.fidget then --function for random wandering. bind to fidget variable for future searching state?
     math.randomseed(os.time())
     self.goalx = self.goalx + math.random(-20, 20)
     self.goaly = self.goaly + math.random(-20, 20)
@@ -126,10 +132,11 @@ end
 function enemy:update(playerx,playery,dt)
   --Search timer function where they "lose" you; same as yellow state in MGS
   if self.state == 1 and not self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed) then
+    self.lost = true
+    self.fidget = .1
     self.searchtimer = self.searchtimer-dt
     if self.searchtimer <= 0 then --if search runs out before finding player, switch to state 0
-      if self.state == 1 then
-      end
+      self.fidget = .05
       self.goalx = self.origx
       self.goaly = self.origy
       self.state = 0
