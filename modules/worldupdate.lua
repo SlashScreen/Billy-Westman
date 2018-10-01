@@ -13,6 +13,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map)
 
   player:init(love.graphics.newImage("assets/billywestman.png"), nil, px, py, bumpWorld,map);
   billywestmanimg = love.graphics.newImage("assets/billywestman.png");
+  enemyimg = love.graphics.newImage("assets/enemy.png");
   BulletImg = love.graphics.newImage("assets/BillyWestmanBullet.png");
   OTTriggerF = love.graphics.newImage("assets/OneTimeTrigger1False.png");
   OTTriggerT = love.graphics.newImage("assets/OneTimeTrigger1True.png");
@@ -32,6 +33,8 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map)
   for i=1, #spawnlist do
     if spawnlist[i].image == "billyimage" then
       spawnlist[i].image = billywestmanimg
+    elseif spawnlist[i].image == "enemybase" then
+      spawnlist[i].image = enemyimg
     end
     enemies[i] = makeObj(spawnlist[i].class);
     enemies[i]:init(spawnlist[i].image,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name,spawnlist[i].world);
@@ -58,7 +61,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map)
   bulletSpeed = 300
 	bullets = {}
   playerWalkTimer = 0;
-  zoom = 1;
+  zoom = 1.25;
   sx = 0;
   sy = 0;
   return player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window
@@ -115,7 +118,6 @@ function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamit
 detected = false
 
 for i = 1, #enemies do -- main interaction IG w enemies
-
     if enemies[i].alive == 1 then --if the enemy isn't dead
       if enemies[i].detectedplayer then --If any of them detected the player the player is detected now
         detected = true
@@ -208,15 +210,15 @@ end
 function worldupdate:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg,crosshair, window,shader)
   love.graphics.setShader(shader)
   map:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
-  love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0,zoom);
+  love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0);
 
   for i = 1, #enemies do
     if enemies[i].alive == 1 then --if alive then
       love.graphics.draw(
         enemies[i].icon,
         enemies[i].frames[enemies[i].increment],
-        enemies[i].x-16-player.x+window.x/2-sx,
-        enemies[i].y-16-player.y+window.y/2-sy,
+        (enemies[i].x-16-player.x+window.x/2-sx),
+        (enemies[i].y-16-player.y+window.y/2-sy),
         0,
         zoom
         ); --draw enemies
@@ -224,8 +226,8 @@ function worldupdate:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,
   for i = 1, #triggers do
     love.graphics.draw(
       triggers[i].imgs[bool_to_number(triggers[i].state) + 1],
-      triggers[i].x-16-player.x+window.x/2-sx,
-      triggers[i].y-16-player.y+window.y/2-sy,
+      (triggers[i].x-16-player.x+window.x/2-sx),
+      (triggers[i].y-16-player.y+window.y/2-sy),
       0,
       zoom
       ); --draw triggers
@@ -237,19 +239,19 @@ for i=1, #dynamite do
   if dynamite[i].intact == 1 then
     love.graphics.draw(
       dynamite[i].sprite,
-      dynamite[i].x-player.x+window.x/2-sx,
-      dynamite[i].y-player.y+window.y/2-sy,
+      (dynamite[i].x-player.x+window.x/2-sx),
+      (dynamite[i].y-player.y+window.y/2-sy),
       0,
       zoom*2
     ); --draw dynamite
-    love.graphics.draw(dynamite[i].explosionParticles, dynamite[i].x-player.x+window.x/2-sx, dynamite[i].y-player.y+window.y/2-sy,0,0,20,20)
+    love.graphics.draw(dynamite[i].explosionParticles, (dynamite[i].x-player.x+window.x/2-sx), (dynamite[i].y-player.y+window.y/2-sy),0,0,20,20)
   end
 
 end
 
 
   for i,v in ipairs(bullets) do
-		love.graphics.draw(BulletImg, v.x-player.x+window.x/2-sx, v.y-player.y+window.y/2-sy) --draw bullet
+		love.graphics.draw(BulletImg, (v.x-player.x+window.x/2-sx), (v.y-player.y+window.y/2-sy),zoom) --draw bullet
 	end
 
   love.graphics.draw(crosshair, love.mouse.getX()-(crosshair:getWidth()/2), love.mouse.getY()-(crosshair:getHeight()/2)) --crosshair

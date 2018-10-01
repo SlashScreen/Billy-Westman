@@ -27,10 +27,10 @@ function gdqsworld:load()
   --TownSpawnList = json.decode("assets/spawntable.json")
 
   spawnlist = {
-    {name = "Enemy1",x = 600, y=550,image = "billyimage", class=baseenemy, world = bumpWorld},
-    {name = "Enemy2",x = 550, y=400,image = "billyimage", class=baseenemy, world = bumpWorld},
-    {name = "Enemy3",x = 450, y=700,image = "billyimage", class=baseenemy, world = bumpWorld},
-    {name = "Enemy4",x = 400, y=350,image = "billyimage", class=baseenemy, world = bumpWorld}
+    {name = "Enemy1",x = 600, y=550,image = "enemybase", class=baseenemy, world = bumpWorld},
+    {name = "Enemy2",x = 550, y=400,image = "enemybase", class=baseenemy, world = bumpWorld},
+    {name = "Enemy3",x = 450, y=700,image = "enemybase", class=baseenemy, world = bumpWorld},
+    {name = "Enemy4",x = 400, y=350,image = "enemybase", class=baseenemy, world = bumpWorld}
   };
   triggerlist = {
 
