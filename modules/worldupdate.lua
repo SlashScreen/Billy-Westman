@@ -61,7 +61,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map)
   bulletSpeed = 300
 	bullets = {}
   playerWalkTimer = 0;
-  zoom = 1.25;
+  zoom = 1;
   sx = 0;
   sy = 0;
   return player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window
