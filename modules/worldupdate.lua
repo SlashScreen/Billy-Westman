@@ -11,8 +11,8 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map)
   window.x = love.graphics:getWidth();
   window.y = love.graphics:getHeight();
 
-  player:init(love.graphics.newImage("assets/billywestman.png"), nil, px, py, bumpWorld,map);
-  billywestmanimg = love.graphics.newImage("assets/billywestman.png");
+  player:init(love.graphics.newImage("assets/player.png"), nil, px, py, bumpWorld,map);
+  billywestmanimg = love.graphics.newImage("assets/player.png");
   enemyimg = love.graphics.newImage("assets/enemy.png");
   BulletImg = love.graphics.newImage("assets/BillyWestmanBullet.png");
   OTTriggerF = love.graphics.newImage("assets/OneTimeTrigger1False.png");
