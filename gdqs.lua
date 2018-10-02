@@ -15,7 +15,7 @@ function gdqsworld:load()
   gdqsworld.changemapConditionsMet = 0;
   gdqsworld.go_to = "test"
 
-  gradient = gdshader:constructGradient({["r"]=gdshader:toOneBase(10),["g"]=gdshader:toOneBase(255),["b"]=gdshader:toOneBase(244)},{["r"]=gdshader:toOneBase(155),["g"]=gdshader:toOneBase(0),["b"]=gdshader:toOneBase(0)})
+  gradient = gdshader:constructGradient({["r"]=gdshader:toOneBase(100),["g"]=gdshader:toOneBase(190),["b"]=gdshader:toOneBase(43)},{["r"]=gdshader:toOneBase(233),["g"]=gdshader:toOneBase(0),["b"]=gdshader:toOneBase(234)})
   shader = gdshader:gradShader(gradient)
 
   player = require "modules/player_module";
