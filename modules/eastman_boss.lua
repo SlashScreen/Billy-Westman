@@ -95,26 +95,7 @@ function eastman:decideMovement(playerx,playery,dt)
     self.goalx = playerx
     self.goaly = playery
   end
-  if self.lost and goalx == playerx and goaly == playery then
-    self.lost = false
-    self.state = 2
-  end
-  descision = math.random()
-  if self.state == 0 and descision < self.fidget or self.state == 2 and descision < self.fidget then --function for random wandering. bind to fidget variable for future searching state?
-    math.randomseed(os.time())
-    self.goalx = self.goalx + math.random(-20, 20)
-    self.goaly = self.goaly + math.random(-20, 20)
-  elseif self.state == 0 and descision < .15 and descision > .2 then
-    self.goalx = self.origx
-    self.goaly = self.origy
-  end
-  --pathfinding for goal. TODO: make smarter
-  if (self.x < self.goalx) then
-    deltax = 1;
-  elseif (self.x > self.goalx) then
-    deltax = -1;
-  end
-
+  
   if (self.y < self.goaly) then
     deltay = 1;
   elseif (self.y > self.goaly) then
