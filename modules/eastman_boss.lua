@@ -22,7 +22,7 @@ function eastman:create (o)
     end
 
 function eastman:init(ico,x,y, id, world)
-  self.icon = ico;
+  self.icon = love.graphics.newImage("../assets/player.png");
   self.World = world;
   self.increment = 0;
   self.frames = {};
@@ -72,11 +72,6 @@ function eastman:hurt() --hurt; right now redirects to die but is helpful for fu
   self:die();
 end
 
-
-function lerp (a,b,t) --lerp, might be deprecated
-  return a + (b - a) * t;
-end
-
 function eastman:pointDetectable(px,py,sx,sy,shadowed) --is point visible to eastman?
   local dist = 0
   if (shadowed) then
@@ -95,7 +90,7 @@ function eastman:decideMovement(playerx,playery,dt)
     self.goalx = playerx
     self.goaly = playery
   end
-  
+
   if (self.y < self.goaly) then
     deltay = 1;
   elseif (self.y > self.goaly) then
