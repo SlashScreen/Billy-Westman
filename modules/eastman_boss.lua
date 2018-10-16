@@ -129,7 +129,7 @@ end
 
 function eastman:animate(action) --the animation cycle
   if action == "walk" then
-    if self.increment == 1 then
+    if self.increment == 4 then
       self.increment = 0;
     else
       self.increment = self.increment+1;

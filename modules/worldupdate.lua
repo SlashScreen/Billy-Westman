@@ -1,7 +1,8 @@
 --worldupdate.lua
 worldupdate = {}
 
-function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map)
+function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses)
+  bosses = bosses or {}
   local sti = require ("modules/sti");
   local bump = require ("modules/bump");
   love.graphics.setDefaultFilter("nearest","nearest");
@@ -38,6 +39,15 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map)
     end
     enemies[i] = makeObj(spawnlist[i].class);
     enemies[i]:init(spawnlist[i].image,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name,spawnlist[i].world);
+  end
+  for i=1, #bosses do
+    if bosses[i].image == "billyimage" then
+      bosses[i].image = billywestmanimg
+    elseif bosses[i].image == "enemybase" then
+      bosses[i].image = enemyimg
+    end
+    bosses[i] = makeObj(spawnlist[i].class);
+    bosses[i]:init(spawnlist[i].image,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name,spawnlist[i].world);
   end
   for i=1, #DynamiteList do
     if DynamiteList[i].sprite == "dynamite" then
