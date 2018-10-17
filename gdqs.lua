@@ -37,9 +37,7 @@ function gdqsworld:load()
 
   }
 
-  bosses = {
-    {name = "east",x = 600, y=550,image = "enemybase", class=eastman_boss, world = bumpWorld}
-  };
+  bosses = {name = "east",x = 600, y=550,image = "east", class=eastman_boss, world = bumpWorld}
 
   DynamiteList = {
     {x = 300, y = 300, sprite = "dynamite"},

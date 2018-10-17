@@ -21,6 +21,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses)
   TTriggerF = love.graphics.newImage("assets/ToggleTrigger1-False.png");
   TTriggerT = love.graphics.newImage("assets/ToggleTrigger1-True.png");
   DynamiteImg = love.graphics.newImage("assets/dynamite1.png");
+  EastImg = love.graphics.newImage("assets/eman.png");
   DynamiteImg:setFilter("nearest","nearest");
 
   triggers = {};
@@ -41,11 +42,12 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses)
     enemies[i] = makeObj(spawnlist[i].class);
     enemies[i]:init(spawnlist[i].image,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name,spawnlist[i].world);
   end
-  for i=1, #bosses do
-    bosses[i] = makeObj(bosses[i].class);
-    print(bosses[i].x,bosses[i].y,bosses[i].name,bosses[i].world,"boss")
-    bosses[i]:init(bosses[i].x,bosses[i].y,bosses[i].name,bosses[i].world);
+  if bosses.image == "east" then
+    bosses.image = EastImg
   end
+  boss = makeObj(bosses.class);
+  print(bosses.image,bosses.x,bosses.y,bosses.name,bosses.world,"boss")
+  boss:init(bosses.image,bosses.x,bosses.y,bosses.name,bosses.world);
   for i=1, #DynamiteList do
     if DynamiteList[i].sprite == "dynamite" then
       DynamiteList[i].sprite = DynamiteImg
