@@ -43,7 +43,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses)
   end
   for i=1, #bosses do
     bosses[i] = makeObj(bosses[i].class);
-    --print(bosses[i].x,bosses[i].y,bosses[i].name,bosses[i].world)
+    print(bosses[i].x,bosses[i].y,bosses[i].name,bosses[i].world,"boss")
     bosses[i]:init(bosses[i].x,bosses[i].y,bosses[i].name,bosses[i].world);
   end
   for i=1, #DynamiteList do

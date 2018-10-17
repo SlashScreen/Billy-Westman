@@ -28,12 +28,10 @@ function enemy:init(ico,x,y, id, world)
   else
     self.alive = 1;
   end
-  print(ico,x,y, id, world)
   self.icon = ico;
   self.World = world;
   self.increment = 0;
   self.frames = {};
-  print(self.icon,id)
   self.frames[0] = love.graphics.newQuad(0,0,32,32,self.icon:getDimensions())
   self.frames[1] = love.graphics.newQuad(32,0,32,32,self.icon:getDimensions())
   self.origx = x

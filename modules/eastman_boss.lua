@@ -22,7 +22,8 @@ function eastman:create (o)
     end
 
 function eastman:init(x,y, id, world)
-  self.icon = love.graphics.newImage("../assets/eastman.png");
+  print(x,y, id, world,"east")
+  self.icon = love.graphics.newImage("../assets/eman.png");
   self.World = world;
   self.increment = 0;
   self.frames = {};

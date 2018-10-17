@@ -20,6 +20,7 @@ function gdqsworld:load()
 
   player = require "modules/player_module";
   baseenemy = require "modules/enemy_module";
+  eastman_boss = require "modules/eastman_boss";
   trigger = require "modules/trigger_module";
   dynamiteClass = require "modules/dynamite_module"
   json = require "modules/json"
@@ -37,7 +38,7 @@ function gdqsworld:load()
   }
 
   bosses = {
-    {name = "east",x = 600, y=550,image = "enemybase", class=baseenemy, world = bumpWorld},
+    {name = "east",x = 600, y=550,image = "enemybase", class=eastman_boss, world = bumpWorld}
   };
 
   DynamiteList = {
