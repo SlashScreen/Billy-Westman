@@ -32,6 +32,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses)
     local obj = setmetatable({}, mt)
     return obj;
   end
+  --#ENEMIES#
   for i=1, #spawnlist do
     print(i)
     if spawnlist[i].image == "billyimage" then
@@ -42,12 +43,14 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses)
     enemies[i] = makeObj(spawnlist[i].class);
     enemies[i]:init(spawnlist[i].image,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name,spawnlist[i].world);
   end
+  --#BOSS#
   if bosses.image == "east" then
     bosses.image = EastImg
   end
   boss = makeObj(bosses.class);
   print(bosses.image,bosses.x,bosses.y,bosses.name,bosses.world,"boss")
   boss:init(bosses.image,bosses.x,bosses.y,bosses.name,bosses.world);
+  --#DYNAMITE#
   for i=1, #DynamiteList do
     if DynamiteList[i].sprite == "dynamite" then
       DynamiteList[i].sprite = DynamiteImg
@@ -103,7 +106,7 @@ function worldupdate:shoot(body,x,y,coordspace,player,window,bullets)
     return bullets,player
 end
 
-function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg)
+function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg,bosses)
   map:update(dt)
   if math.abs(sx) > 0 then
     sx,sy = -sx+sx/2,-sy+sy/2;
@@ -125,7 +128,23 @@ function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamit
   end
 
 detected = false
-
+if bosses.alive == 1 then --if the enemy isn't dead
+  if bosses.detectedplayer then --If any of them detected the player the player is detected now
+    detected = true
+  end
+  bosses:update(player.x,player.y,dt)
+  bosses:decideMovement(player.x,player.y,dt); --walk
+  bosses:shoot(player,world,dt) --do shoot calcculations
+  for o,v in ipairs(bullets) do -- is hit by bullets?
+    if bosses:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) or player:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
+      print("hit",v.x,v.y);
+      table.remove(bullets,o);
+      table.remove(bullets,i);
+      math.randomseed(player.x);
+      world:shakescreen(10);
+    end
+  end
+end 
 for i = 1, #enemies do -- main interaction IG w enemies
     if enemies[i].alive == 1 then --if the enemy isn't dead
       if enemies[i].detectedplayer then --If any of them detected the player the player is detected now
@@ -226,10 +245,8 @@ function worldupdate:draw(bosses, player, enemies, playerWalkTimer,dt,triggers,d
       love.graphics.draw(enemies[i].icon,enemies[i].frames[enemies[i].increment],(enemies[i].x-16-player.x+window.x/2-sx),(enemies[i].y-16-player.y+window.y/2-sy),0,zoom); --draw enemies
     end
   end
-  for i = 1, #bosses do
-    if bosses[i].alive == 1 then --if alive then
-      love.graphics.draw(bosses[i].icon,bosses[i].frames[bosses[i].increment],(bosses[i].x-16-player.x+window.x/2-sx),(bosses[i].y-16-player.y+window.y/2-sy),0,zoom); --draw bosses
-    end
+  if bosses.alive == 1 then --if alive then
+    love.graphics.draw(bosses.icon,bosses.frames[bosses.increment],(bosses.x-16-player.x+window.x/2-sx),(bosses.y-16-player.y+window.y/2-sy),0,zoom); --draw bosses
   end
   for i = 1, #triggers do
     love.graphics.draw(triggers[i].imgs[bool_to_number(triggers[i].state) + 1],(triggers[i].x-16-player.x+window.x/2-sx),(triggers[i].y-16-player.y+window.y/2-sy),0,zoom); --draw triggers

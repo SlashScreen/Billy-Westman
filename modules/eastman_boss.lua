@@ -107,6 +107,7 @@ function eastman:decideMovement(playerx,playery,dt)
 end
 
 function eastman:update(playerx,playery,dt)
+  print(self.alive)
   --Search timer function where they "lose" you; same as yellow state in MGS
   if self.state == 1 and not self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed) then
     self.lost = true

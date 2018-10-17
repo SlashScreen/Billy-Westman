@@ -37,7 +37,7 @@ function gdqsworld:load()
 
   }
 
-  bosses = {name = "east",x = 600, y=550,image = "east", class=eastman_boss, world = bumpWorld}
+  bosses = {name = "east",x = 600, y=700,image = "east", class=eastman_boss, world = bumpWorld}
 
   DynamiteList = {
     {x = 300, y = 300, sprite = "dynamite"},
@@ -63,7 +63,7 @@ function bool_to_number(value)
 end
 
 function gdqsworld:update(dt)
-  wu:update(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg)
+  wu:update(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,bosses)
 end
 
 function gdqsworld:draw()
