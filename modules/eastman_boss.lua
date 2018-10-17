@@ -21,8 +21,8 @@ function eastman:create (o)
       return o
     end
 
-function eastman:init(ico,x,y, id, world)
-  self.icon = love.graphics.newImage("../assets/player.png");
+function eastman:init(x,y, id, world)
+  self.icon = love.graphics.newImage("../assets/eastman.png");
   self.World = world;
   self.increment = 0;
   self.frames = {};

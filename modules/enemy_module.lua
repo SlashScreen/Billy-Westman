@@ -22,10 +22,18 @@ function enemy:create (o)
     end
 
 function enemy:init(ico,x,y, id, world)
+  if id == nil then
+    self.alive = 0
+    return
+  else
+    self.alive = 1;
+  end
+  print(ico,x,y, id, world)
   self.icon = ico;
   self.World = world;
   self.increment = 0;
   self.frames = {};
+  print(self.icon,id)
   self.frames[0] = love.graphics.newQuad(0,0,32,32,self.icon:getDimensions())
   self.frames[1] = love.graphics.newQuad(32,0,32,32,self.icon:getDimensions())
   self.origx = x
@@ -33,7 +41,6 @@ function enemy:init(ico,x,y, id, world)
   self.x = x;
   self.y = y;
   self.speed = 1;
-  self.alive = 1;
   self.id = id;
   self.shoottimer = 0.0;
   self.shootmax = 5;

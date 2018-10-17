@@ -46,7 +46,7 @@ function gdqsworld:load()
   }
 
   --{id = "Test 2", x = 100, y = 0, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil}}
-  player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window = wu:init(spawnlist,DynamiteList,triggerlist,350,300,currentmap,bosses)
+  player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window,bosses = wu:init(spawnlist,DynamiteList,triggerlist,350,300,currentmap,bosses)
 end
 
 function gdqsworld:shoot(body,x,y,coordspace)
@@ -68,7 +68,7 @@ function gdqsworld:update(dt)
 end
 
 function gdqsworld:draw()
-  wu:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,crosshair, window,shader)
+  wu:draw(bosses,player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,crosshair, window,shader)
 end
 
 function gdqsworld:canChange()
