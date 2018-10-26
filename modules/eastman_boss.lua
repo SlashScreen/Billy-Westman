@@ -22,7 +22,7 @@ function eastman:create (o)
     end
 
 function eastman:init(img, x,y, id, world)
-  print(img,x,y, id, world,"east")
+  print(img,x,y, id, world,"east init")
   self.icon = img
   self.World = world;
   self.increment = 0;

@@ -6,6 +6,7 @@ function love.load()
   currentworld:load();
   love.mouse.setVisible(false);
 end
+
 function love.update(dt)
   currentworld:update(dt);
   canchange, goToMap = currentworld:canChange();
