@@ -5,6 +5,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses)
   bosses = bosses or {}
   local sti = require ("modules/sti");
   local bump = require ("modules/bump");
+  main = require ("../main");
   love.graphics.setDefaultFilter("nearest","nearest");
   love.graphics.setBackgroundColor(255,255,255);
   love.graphics.setColor(1,1,1);
@@ -114,6 +115,9 @@ function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamit
       sx,sy=0,0
     end
   end
+  if not player.alive then
+    main:reset()
+  end
 
   player:calcShadowed()
   player.playerWalkTimer = player.playerWalkTimer + dt
@@ -144,7 +148,7 @@ if bosses.alive == 1 then --if the enemy isn't dead
       world:shakescreen(10);
     end
   end
-end 
+end
 for i = 1, #enemies do -- main interaction IG w enemies
     if enemies[i].alive == 1 then --if the enemy isn't dead
       if enemies[i].detectedplayer then --If any of them detected the player the player is detected now

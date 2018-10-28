@@ -6,6 +6,10 @@ function love.load()
   currentworld:load();
   love.mouse.setVisible(false);
 end
+main = {}
+function main:reset()
+  currentworld:load();
+end
 
 function love.update(dt)
   currentworld:update(dt);
@@ -29,3 +33,5 @@ end
 function love.draw()
   currentworld:draw();
 end
+
+return main
