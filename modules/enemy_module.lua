@@ -175,5 +175,4 @@ function enemy:isHit(x,y,ox,oy,wx,wy,bw,bh) --check if hit by bullet
     end
 end
 
-
 return enemy;
