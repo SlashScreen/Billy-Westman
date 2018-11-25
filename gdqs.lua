@@ -23,6 +23,7 @@ function gdqsworld:load()
   eastman_boss = require "modules/eastman_boss";
   trigger = require "modules/trigger_module";
   dynamiteClass = require "modules/dynamite_module"
+  ammoboxclass = require "modules/ammobox"
   json = require "modules/json"
   wu = require("modules/worldupdate")
   --TownSpawnList = json.decode("assets/spawntable.json")
