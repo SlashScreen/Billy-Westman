@@ -1,7 +1,7 @@
 --worldupdate.lua
 worldupdate = {}
 
-function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses)
+function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,items)
   bosses = bosses or {}
   local sti = require ("modules/sti");
   local bump = require ("modules/bump");
@@ -15,6 +15,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses)
 
   player:init(love.graphics.newImage("assets/player.png"), nil, px, py, bumpWorld,map);
   billywestmanimg = love.graphics.newImage("assets/player.png");
+  ammoboximg = love.graphics.newImage("assets/ammobox.png");
   enemyimg = love.graphics.newImage("assets/enemy.png");
   BulletImg = love.graphics.newImage("assets/BillyWestmanBullet.png");
   OTTriggerF = love.graphics.newImage("assets/OneTimeTrigger1False.png");
@@ -28,6 +29,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses)
   triggers = {};
   enemies = {};
   dynamite = {};
+  item = {};
   local function makeObj(class)
     local mt = { __index = class }
     local obj = setmetatable({}, mt)
@@ -43,6 +45,12 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses)
     end
     enemies[i] = makeObj(spawnlist[i].class);
     enemies[i]:init(spawnlist[i].image,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name,spawnlist[i].world);
+  end
+  --#ITEMS#
+  for i=1, #items do
+    print(i)
+    item[i] = makeObj(items[i].class);
+    item[i]:init(ammoboximg,items[i].x,items[i].y,items[i].name,items[i].world);
   end
   --#BOSS#
   if bosses.image == "east" then
@@ -240,31 +248,42 @@ if player.state == "PLAY" and player.substate == "UNDETECTED" and player.ammo < 
 end
 
 function worldupdate:draw(bosses, player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg,crosshair, window,shader)
+  --SHADER
   love.graphics.setShader(shader)
+  --MAP
   map:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
+  --PLAYER
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0);
-
+  --ENEMIES
   for i = 1, #enemies do
     if enemies[i].alive == 1 then --if alive then
       love.graphics.draw(enemies[i].icon,enemies[i].frames[enemies[i].increment],(enemies[i].x-16-player.x+window.x/2-sx),(enemies[i].y-16-player.y+window.y/2-sy),0,zoom); --draw enemies
     end
   end
+  --BOSS
   if bosses.alive == 1 then --if alive then
     love.graphics.draw(bosses.icon,bosses.frames[bosses.increment],(bosses.x-16-player.x+window.x/2-sx),(bosses.y-16-player.y+window.y/2-sy),0,zoom); --draw bosses
   end
+  --TRIGGERS
   for i = 1, #triggers do
     love.graphics.draw(triggers[i].imgs[bool_to_number(triggers[i].state) + 1],(triggers[i].x-16-player.x+window.x/2-sx),(triggers[i].y-16-player.y+window.y/2-sy),0,zoom); --draw triggers
   end
+  --ITEMS
+  for i = 1, #item do
+    love.graphics.draw(item[i].img,(item[i].x-16-player.x+window.x/2-sx),(item[i].y-16-player.y+window.y/2-sy),0,zoom); --draw triggers
+  end
+  --DYNAMITE
   for i=1, #dynamite do
     if dynamite[i].intact == 1 then
       love.graphics.draw(dynamite[i].sprite,(dynamite[i].x-player.x+window.x/2-sx),(dynamite[i].y-player.y+window.y/2-sy),0,zoom*2); --draw dynamite
       love.graphics.draw(dynamite[i].explosionParticles, (dynamite[i].x-player.x+window.x/2-sx), (dynamite[i].y-player.y+window.y/2-sy),0,0,20,20)
     end
   end
+  --BULLETS
   for i,v in ipairs(bullets) do
 		love.graphics.draw(BulletImg, (v.x-player.x+window.x/2-sx), (v.y-player.y+window.y/2-sy),zoom) --draw bullet
 	end
-
+  --CROSSHAIR
   love.graphics.draw(crosshair, love.mouse.getX()-(crosshair:getWidth()/2), love.mouse.getY()-(crosshair:getHeight()/2)) --crosshair
 end
 

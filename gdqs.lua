@@ -34,6 +34,9 @@ function gdqsworld:load()
     {name = "Enemy3",x = 450, y=700,image = "enemybase", class=baseenemy, world = bumpWorld},
     {name = "Enemy4",x = 400, y=350,image = "enemybase", class=baseenemy, world = bumpWorld}
   };
+  items = {
+    {name = "Ammo1",x = 450, y=700, class=ammoboxclass, world = bumpWorld}
+  }
   triggerlist = {
 
   }
@@ -46,7 +49,7 @@ function gdqsworld:load()
   }
 
   --{id = "Test 2", x = 100, y = 0, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil}}
-  player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window,bosses = wu:init(spawnlist,DynamiteList,triggerlist,350,300,currentmap,bosses)
+  player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window,bosses = wu:init(spawnlist,DynamiteList,triggerlist,350,300,currentmap,bosses,items)
 end
 
 function gdqsworld:shoot(body,x,y,coordspace)

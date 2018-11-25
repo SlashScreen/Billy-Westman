@@ -1,9 +1,10 @@
 --ammobox.lua
 ammobox = {}
 
-function ammobox:init(x,y)
+function ammobox:init(img,x,y,name,world)
   self.x = x
   self.y = y
+  self.img = img
   self.w = 30
   self.h = 20
   self.frame = 0
