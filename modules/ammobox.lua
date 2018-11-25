@@ -2,12 +2,18 @@
 ammobox = {}
 
 function ammobox:init(img,x,y,name,world)
+  self.type = "ammo"
+  self.taken = false
   self.x = x
   self.y = y
   self.img = img
   self.w = 30
   self.h = 20
   self.frame = 0
+end
+
+function ammobox:take()
+  self.taken = true
 end
 
 function ammobox:incrementframe(i)

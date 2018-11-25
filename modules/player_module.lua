@@ -37,6 +37,11 @@ function self:hurt() --health. TODO: Die properly
   end
 end
 
+function self:instantRefill()
+  print("instant")
+  self.ammo = self.maxammo;
+end
+
 function self:calcShadowed() --is shadowed?
   tx, ty = self.map:convertPixelToTile(self.x,self.y)
   tx = math.floor(tx)+1

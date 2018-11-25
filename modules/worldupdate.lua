@@ -47,8 +47,9 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
     enemies[i]:init(spawnlist[i].image,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name,spawnlist[i].world);
   end
   --#ITEMS#
+  --items is the list, item is the item objects
   for i=1, #items do
-    print(i)
+    print(items[i].name)
     item[i] = makeObj(items[i].class);
     item[i]:init(ammoboximg,items[i].x,items[i].y,items[i].name,items[i].world);
   end
@@ -85,7 +86,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
   zoom = 1;
   sx = 0;
   sy = 0;
-  return player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window,bosses
+  return player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window,bosses,item
 end
 
 
@@ -115,14 +116,16 @@ function worldupdate:shoot(body,x,y,coordspace,player,window,bullets)
     return bullets,player
 end
 
-function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg,bosses)
+function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg,bosses,item)
   map:update(dt)
+  --SHAKESCREEN
   if math.abs(sx) > 0 then
     sx,sy = -sx+sx/2,-sy+sy/2;
     if sx < .1 then
       sx,sy=0,0
     end
   end
+  --PLAYER
   if not player.alive then
     main:reset()
   end
@@ -157,6 +160,7 @@ if bosses.alive == 1 then --if the enemy isn't dead
     end
   end
 end
+--ENEMIES
 for i = 1, #enemies do -- main interaction IG w enemies
     if enemies[i].alive == 1 then --if the enemy isn't dead
       if enemies[i].detectedplayer then --If any of them detected the player the player is detected now
@@ -178,12 +182,13 @@ for i = 1, #enemies do -- main interaction IG w enemies
 
   end
 end
+--DETECTED
 if detected then -- followup to player detection
   player.substate = "DETECTED"
 else
   player.substate = "UNDETECTED"
 end
-
+--TRIGGERS
   for i = 1, #triggers do -- main interaction for Triggers
     if triggers[i].id == "Test 1" then --hardcoded: change
       world:setChange("westham");
@@ -199,6 +204,7 @@ end
         end
       end
   end
+--BULLETS
 for i,v in ipairs(bullets) do --bullet script
     v.t = v.t-dt;
 		v.x = v.x + (v.dx * dt)
@@ -208,6 +214,7 @@ for i,v in ipairs(bullets) do --bullet script
     end
 
 	end
+--DYNAMITE
  for i=1, #dynamite do
 
   end
@@ -219,7 +226,7 @@ for i=1, #dynamite do
   if player.state == "FIRE" then
     player.rechargetimer = 0;
   end
-
+--CONTROL
 if love.keyboard.isDown("w") then
   player:decideMovement(0,1);
 end
@@ -236,7 +243,19 @@ end
 if not love.mouse.isDown(1) then
   player.state = "PLAY";
 end
---print(player.state);
+--ITEMS
+for i = 1, #item do
+  if item[i].type == "ammo" then
+    if not item[i].taken then
+      if item[i]:iscolliding(player.x,player.y,32,32) then
+        player:instantRefill()
+        item[i]:take()
+      end
+  end
+  end
+end
+
+--RECHARGE
 if player.state == "PLAY" and player.substate == "UNDETECTED" and player.ammo < 10 then
     player.rechargetimer = player.rechargetimer + dt;
     if player.rechargetimer > player.rechargelimit then
@@ -247,7 +266,7 @@ if player.state == "PLAY" and player.substate == "UNDETECTED" and player.ammo < 
   end
 end
 
-function worldupdate:draw(bosses, player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg,crosshair, window,shader)
+function worldupdate:draw(bosses, player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg,crosshair, window,shader,item)
   --SHADER
   love.graphics.setShader(shader)
   --MAP
@@ -270,7 +289,11 @@ function worldupdate:draw(bosses, player, enemies, playerWalkTimer,dt,triggers,d
   end
   --ITEMS
   for i = 1, #item do
-    love.graphics.draw(item[i].img,(item[i].x-16-player.x+window.x/2-sx),(item[i].y-16-player.y+window.y/2-sy),0,zoom); --draw triggers
+    if item[i].type == "ammo" then
+      if not item[i].taken then
+        love.graphics.draw(item[i].img,(item[i].x-16-player.x+window.x/2-sx),(item[i].y-16-player.y+window.y/2-sy),0,zoom); --draw items
+      end
+    end
   end
   --DYNAMITE
   for i=1, #dynamite do
