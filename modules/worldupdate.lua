@@ -307,7 +307,7 @@ function worldupdate:draw(bosses, player, enemies, playerWalkTimer,dt,triggers,d
   end
   --BULLETS
   for i,v in ipairs(bullets) do
-		love.graphics.draw(BulletImg, (v.x-player.x+window.x/2-sx), (v.y-player.y+window.y/2-sy),zoom) --draw bullet
+		love.graphics.draw(BulletImg, (v.x-player.x+window.x/2-sx), (v.y-player.y+window.y/2-sy)) --draw bullet
 	end
   --CROSSHAIR
   love.graphics.draw(crosshair, love.mouse.getX()-(crosshair:getWidth()/2), love.mouse.getY()-(crosshair:getHeight()/2)) --crosshair
