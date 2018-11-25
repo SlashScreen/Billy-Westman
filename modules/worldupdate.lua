@@ -15,7 +15,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
 
   player:init(love.graphics.newImage("assets/player.png"), nil, px, py, bumpWorld,map);
   billywestmanimg = love.graphics.newImage("assets/player.png");
-  ammoboximg = love.graphics.newImage("assets/ammobox.png");
+  ammoboximg = love.graphics.newImage("assets/ammoboxsprite.png");
   enemyimg = love.graphics.newImage("assets/enemy.png");
   BulletImg = love.graphics.newImage("assets/BillyWestmanBullet.png");
   OTTriggerF = love.graphics.newImage("assets/OneTimeTrigger1False.png");
@@ -141,7 +141,9 @@ function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamit
 
     player.playerWalkTimer = 0;
   end
-
+  for i = 1, #item do
+    item[i]:animate("float",dt);
+  end
 detected = false
 if bosses.alive == 1 then --if the enemy isn't dead
   if bosses.detectedplayer then --If any of them detected the player the player is detected now
@@ -291,7 +293,8 @@ function worldupdate:draw(bosses, player, enemies, playerWalkTimer,dt,triggers,d
   for i = 1, #item do
     if item[i].type == "ammo" then
       if not item[i].taken then
-        love.graphics.draw(item[i].img,(item[i].x-16-player.x+window.x/2-sx),(item[i].y-16-player.y+window.y/2-sy),0,zoom); --draw items
+
+        love.graphics.draw(item[i].img,item[i].frames[item[i].increment],(item[i].x-16-player.x+window.x/2-sx),(item[i].y-16-player.y+window.y/2-sy),0,zoom); --draw items
       end
     end
   end

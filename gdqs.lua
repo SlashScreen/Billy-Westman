@@ -9,7 +9,6 @@ function gdqsworld:load()
   currentmap = map;
   bumpWorld = bump.newWorld();
   bumptiles = map:bump_init(bumpWorld);
-  --print(#bumptiles);
   print(love.getVersion());
 
   gdqsworld.changemapConditionsMet = 0;
@@ -26,7 +25,6 @@ function gdqsworld:load()
   ammoboxclass = require "modules/ammobox"
   json = require "modules/json"
   wu = require("modules/worldupdate")
-  --TownSpawnList = json.decode("assets/spawntable.json")
 
   spawnlist = {
     {name = "Enemy1",x = 600, y=550,image = "enemybase", class=baseenemy, world = bumpWorld},
@@ -48,7 +46,6 @@ function gdqsworld:load()
     {x = 300, y = 335, sprite = "dynamite"}
   }
 
-  --{id = "Test 2", x = 100, y = 0, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil}}
   player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window,bosses,item = wu:init(spawnlist,DynamiteList,triggerlist,350,300,currentmap,bosses,items)
 end
 
