@@ -8,7 +8,7 @@ function ammobox:init(img,x,y,name,world)
   self.y = y
   self.img = img
   self.w = 30
-  self.h = 20
+  self.h = 15
   self.frame = 0
 end
 
