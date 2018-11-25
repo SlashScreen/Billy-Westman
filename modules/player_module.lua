@@ -40,7 +40,12 @@ end
 function self:instantRefill()
   print("instant")
   self.ammo = self.maxammo;
+  print(self.ammo)
 end
+
+function self:changeammo(i)
+  self.ammo = self.ammo + i
+end 
 
 function self:calcShadowed() --is shadowed?
   tx, ty = self.map:convertPixelToTile(self.x,self.y)

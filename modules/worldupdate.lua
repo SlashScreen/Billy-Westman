@@ -256,10 +256,10 @@ for i = 1, #item do
 end
 
 --RECHARGE
-if player.state == "PLAY" and player.substate == "UNDETECTED" and player.ammo < 10 then
+if player.state == "PLAY" and player.substate == "UNDETECTED" and player.ammo < player.maxammo then
     player.rechargetimer = player.rechargetimer + dt;
     if player.rechargetimer > player.rechargelimit then
-        player.ammo = player.ammo+1;
+        player:changeammo(1)
         print(player.ammo,"ammorecharge", player.rechargetimer);
         player.rechargetimer = 0;
     end
