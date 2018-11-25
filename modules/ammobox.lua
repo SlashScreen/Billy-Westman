@@ -6,6 +6,11 @@ function ammobox:init(x,y)
   self.y = y
   self.w = 30
   self.h = 20
+  self.frame = 0
+end
+
+function ammobox:incrementframe(i)
+  self.frame = self.frame + i
 end
 
 function ammobox:iscolliding(x1,y1,w1,h1)
