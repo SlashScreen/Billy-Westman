@@ -17,11 +17,11 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
   billywestmanimg = love.graphics.newImage("assets/player.png");
   ammoboximg = love.graphics.newImage("assets/ammoboxsprite.png");
   enemyimg = love.graphics.newImage("assets/enemy.png");
-  BulletImg = love.graphics.newImage("assets/BillyWestmanBullet.png");
-  OTTriggerF = love.graphics.newImage("assets/OneTimeTrigger1False.png");
-  OTTriggerT = love.graphics.newImage("assets/OneTimeTrigger1True.png");
-  TTriggerF = love.graphics.newImage("assets/ToggleTrigger1-False.png");
-  TTriggerT = love.graphics.newImage("assets/ToggleTrigger1-True.png");
+  BulletImg = love.graphics.newImage("assets/billywestmanbullet.png");
+  OTTriggerF = love.graphics.newImage("assets/onetimetrigger1false.png");
+  OTTriggerT = love.graphics.newImage("assets/onetimetrigger1true.png");
+  TTriggerF = love.graphics.newImage("assets/toggletrigger1-false.png");
+  TTriggerT = love.graphics.newImage("assets/toggletrigger1-true.png");
   DynamiteImg = love.graphics.newImage("assets/dynamite1.png");
   EastImg = love.graphics.newImage("assets/eman.png");
   DynamiteImg:setFilter("nearest","nearest");
