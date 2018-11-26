@@ -21,8 +21,9 @@ function eastman:create (o)
       return o
     end
 
-function eastman:init(ico,x,y, id, world)
-  self.icon = ico;
+function eastman:init(img, x,y, id, world)
+  print(img,x,y, id, world,"east init")
+  self.icon = img
   self.World = world;
   self.increment = 0;
   self.frames = {};
@@ -72,11 +73,6 @@ function eastman:hurt() --hurt; right now redirects to die but is helpful for fu
   self:die();
 end
 
-
-function lerp (a,b,t) --lerp, might be deprecated
-  return a + (b - a) * t;
-end
-
 function eastman:pointDetectable(px,py,sx,sy,shadowed) --is point visible to eastman?
   local dist = 0
   if (shadowed) then
@@ -95,25 +91,6 @@ function eastman:decideMovement(playerx,playery,dt)
     self.goalx = playerx
     self.goaly = playery
   end
-  if self.lost and goalx == playerx and goaly == playery then
-    self.lost = false
-    self.state = 2
-  end
-  descision = math.random()
-  if self.state == 0 and descision < self.fidget or self.state == 2 and descision < self.fidget then --function for random wandering. bind to fidget variable for future searching state?
-    math.randomseed(os.time())
-    self.goalx = self.goalx + math.random(-20, 20)
-    self.goaly = self.goaly + math.random(-20, 20)
-  elseif self.state == 0 and descision < .15 and descision > .2 then
-    self.goalx = self.origx
-    self.goaly = self.origy
-  end
-  --pathfinding for goal. TODO: make smarter
-  if (self.x < self.goalx) then
-    deltax = 1;
-  elseif (self.x > self.goalx) then
-    deltax = -1;
-  end
 
   if (self.y < self.goaly) then
     deltay = 1;
@@ -130,6 +107,7 @@ function eastman:decideMovement(playerx,playery,dt)
 end
 
 function eastman:update(playerx,playery,dt)
+  print(self.alive)
   --Search timer function where they "lose" you; same as yellow state in MGS
   if self.state == 1 and not self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed) then
     self.lost = true
@@ -153,7 +131,7 @@ end
 
 function eastman:animate(action) --the animation cycle
   if action == "walk" then
-    if self.increment == 1 then
+    if self.increment == 4 then
       self.increment = 0;
     else
       self.increment = self.increment+1;

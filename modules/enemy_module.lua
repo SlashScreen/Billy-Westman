@@ -22,6 +22,12 @@ function enemy:create (o)
     end
 
 function enemy:init(ico,x,y, id, world)
+  if id == nil then
+    self.alive = 0
+    return
+  else
+    self.alive = 1;
+  end
   self.icon = ico;
   self.World = world;
   self.increment = 0;
@@ -32,11 +38,10 @@ function enemy:init(ico,x,y, id, world)
   self.origy = y
   self.x = x;
   self.y = y;
-  self.speed = 1;
-  self.alive = 1;
+  self.speed = 90;
   self.id = id;
   self.shoottimer = 0.0;
-  self.shootmax = 5;
+  self.shootmax = 1;
   self.ammo = 10;
   self.World:add(self, self.x, self.y, 32, 32);
   self.detectedplayer = false
@@ -121,8 +126,8 @@ function enemy:decideMovement(playerx,playery,dt)
     deltay = -1;
   end
 
-  self.x = self.x + (deltax * self.speed); --make it so it moves delta every second, not frame
-  self.y = self.y + (deltay * self.speed);
+  self.x = self.x + (deltax * self.speed *dt); --make it so it moves delta every second, not frame
+  self.y = self.y + (deltay * self.speed *dt);
   local ax, ay, cols, len = self.World:move(self, self.x, self.y) --interface with bumpmap
   self.x = ax
   self.y = ay
@@ -169,6 +174,5 @@ function enemy:isHit(x,y,ox,oy,wx,wy,bw,bh) --check if hit by bullet
     return false;
     end
 end
-
 
 return enemy;

@@ -9,22 +9,22 @@ function gdqsworld:load()
   currentmap = map;
   bumpWorld = bump.newWorld();
   bumptiles = map:bump_init(bumpWorld);
-  --print(#bumptiles);
   print(love.getVersion());
 
   gdqsworld.changemapConditionsMet = 0;
   gdqsworld.go_to = "test"
 
-  gradient = gdshader:constructGradient({["r"]=gdshader:toOneBase(100),["g"]=gdshader:toOneBase(190),["b"]=gdshader:toOneBase(43)},{["r"]=gdshader:toOneBase(233),["g"]=gdshader:toOneBase(0),["b"]=gdshader:toOneBase(234)})
+  gradient = gdshader:constructGradient({["r"]=gdshader:toOneBase(255),["g"]=gdshader:toOneBase(255),["b"]=gdshader:toOneBase(255)},{["r"]=gdshader:toOneBase(0),["g"]=gdshader:toOneBase(0),["b"]=gdshader:toOneBase(0)})
   shader = gdshader:gradShader(gradient)
 
   player = require "modules/player_module";
   baseenemy = require "modules/enemy_module";
+  eastman_boss = require "modules/eastman_boss";
   trigger = require "modules/trigger_module";
   dynamiteClass = require "modules/dynamite_module"
+  ammoboxclass = require "modules/ammobox"
   json = require "modules/json"
   wu = require("modules/worldupdate")
-  --TownSpawnList = json.decode("assets/spawntable.json")
 
   spawnlist = {
     {name = "Enemy1",x = 600, y=550,image = "enemybase", class=baseenemy, world = bumpWorld},
@@ -32,17 +32,21 @@ function gdqsworld:load()
     {name = "Enemy3",x = 450, y=700,image = "enemybase", class=baseenemy, world = bumpWorld},
     {name = "Enemy4",x = 400, y=350,image = "enemybase", class=baseenemy, world = bumpWorld}
   };
+  items = {
+    {name = "Ammo1",x = 450, y=700, class=ammoboxclass, world = bumpWorld}
+  }
   triggerlist = {
 
   }
+
+  bosses = {name = "east",x = 600, y=700,image = "east", class=eastman_boss, world = bumpWorld}
 
   DynamiteList = {
     {x = 300, y = 300, sprite = "dynamite"},
     {x = 300, y = 335, sprite = "dynamite"}
   }
 
-  --{id = "Test 2", x = 100, y = 0, imgs = {OTTriggerF,OTTriggerT}, state = 0, btype = "ONCE", linkedto={nil}}
-  player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window = wu:init(spawnlist,DynamiteList,triggerlist,350,300,currentmap)
+  player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window,bosses,item = wu:init(spawnlist,DynamiteList,triggerlist,350,300,currentmap,bosses,items)
 end
 
 function gdqsworld:shoot(body,x,y,coordspace)
@@ -60,11 +64,11 @@ function bool_to_number(value)
 end
 
 function gdqsworld:update(dt)
-  wu:update(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg)
+  wu:update(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,bosses,item)
 end
 
 function gdqsworld:draw()
-  wu:draw(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,crosshair, window,shader)
+  wu:draw(bosses,player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,crosshair, window,shader,item)
 end
 
 function gdqsworld:canChange()
