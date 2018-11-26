@@ -16,7 +16,7 @@ function self:init(ico, jsondat, x, y, world, map)
   self.frames[1] = love.graphics.newQuad(32,0,32,32,self.icon:getDimensions())
   self.x = x;
   self.y = y;
-  self.speed = 120;
+  self.speed = 150;
   self.maxammo = 6;
   self.ammo = self.maxammo;
   self.rechargelimit = 1;

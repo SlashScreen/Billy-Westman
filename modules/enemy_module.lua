@@ -38,7 +38,7 @@ function enemy:init(ico,x,y, id, world)
   self.origy = y
   self.x = x;
   self.y = y;
-  self.speed = 100;
+  self.speed = 90;
   self.id = id;
   self.shoottimer = 0.0;
   self.shootmax = 1;
