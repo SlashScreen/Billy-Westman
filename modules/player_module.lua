@@ -16,7 +16,7 @@ function self:init(ico, jsondat, x, y, world, map)
   self.frames[1] = love.graphics.newQuad(32,0,32,32,self.icon:getDimensions())
   self.x = x;
   self.y = y;
-  self.speed = 2;
+  self.speed = 120;
   self.maxammo = 6;
   self.ammo = self.maxammo;
   self.rechargelimit = 1;
@@ -45,7 +45,7 @@ end
 
 function self:changeammo(i)
   self.ammo = self.ammo + i
-end 
+end
 
 function self:calcShadowed() --is shadowed?
   tx, ty = self.map:convertPixelToTile(self.x,self.y)
@@ -63,9 +63,9 @@ function self:die() --TODO: make matter
   self.alive = false;
 end
 
-function self:decideMovement(x,y) --Recieve input
-  self.x = self.x + (x*self.speed);
-  self.y = self.y - (y*self.speed);
+function self:decideMovement(x,y,dt) --Recieve input
+  self.x = self.x + (x*self.speed*dt);
+  self.y = self.y - (y*self.speed*dt);
   local ax, ay, cols, len = self.World:move(self, self.x, self.y)
     self.x = ax
     self.y = ay

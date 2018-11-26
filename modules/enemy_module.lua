@@ -38,7 +38,7 @@ function enemy:init(ico,x,y, id, world)
   self.origy = y
   self.x = x;
   self.y = y;
-  self.speed = 1;
+  self.speed = 100;
   self.id = id;
   self.shoottimer = 0.0;
   self.shootmax = 1;
@@ -126,8 +126,8 @@ function enemy:decideMovement(playerx,playery,dt)
     deltay = -1;
   end
 
-  self.x = self.x + (deltax * self.speed); --make it so it moves delta every second, not frame
-  self.y = self.y + (deltay * self.speed);
+  self.x = self.x + (deltax * self.speed *dt); --make it so it moves delta every second, not frame
+  self.y = self.y + (deltay * self.speed *dt);
   local ax, ay, cols, len = self.World:move(self, self.x, self.y) --interface with bumpmap
   self.x = ax
   self.y = ay

@@ -230,16 +230,16 @@ for i=1, #dynamite do
   end
 --CONTROL
 if love.keyboard.isDown("w") then
-  player:decideMovement(0,1);
+  player:decideMovement(0,1,dt);
 end
 if love.keyboard.isDown("s") then
-  player:decideMovement(0,-1);
+  player:decideMovement(0,-1,dt);
 end
 if love.keyboard.isDown("a") then
-  player:decideMovement(-1,0);
+  player:decideMovement(-1,0,dt);
 end
 if love.keyboard.isDown("d") then
-  player:decideMovement(1,0);
+  player:decideMovement(1,0,dt);
 end
 
 if not love.mouse.isDown(1) then
