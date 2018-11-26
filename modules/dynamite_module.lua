@@ -38,23 +38,19 @@ function dynamite:explode(enemies, player, dynamite,x,y) --explode enemies
       if enemies[i].alive == 1 then
         enemies[i]:hurt();
       end
-
     end
-
   end
   for i=1, #dynamite do --Loop for chain reactions. Much easier than blick flicker lmao
     if findDist(self.x,dynamite[i].x,self.y,dynamite[i].y) <= self.explosiondist then
       if dynamite[i].intact == 1 then
         dynamite[i]:explode(enemies, player, dynamite,x,y);
       end
-
     end
+  end
 
-end
-
-if findDist(self.x,player.x,self.y,player.y) <= self.explosiondist then --explode player
-  player:hurt();
-end
+  if findDist(self.x,player.x,self.y,player.y) <= self.explosiondist then --explode player
+    player:hurt();
+  end
 end
 
 function dynamite:update(bullets,enemies, player, dynamite,bx,by,dt)
@@ -66,8 +62,6 @@ function dynamite:update(bullets,enemies, player, dynamite,bx,by,dt)
       end
     end
   end
-
-
 end
 
 return dynamite;
