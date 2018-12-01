@@ -42,7 +42,7 @@ function gdqsworld:load()
     {x = 300, y = 335, sprite = "dynamite"}
   }
 
-  player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses = wu:init(spawnlist,DynamiteList,triggerlist,350,300,currentmap,bosses,items,bumpworld)
+  player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses = wu:init(350,300,currentmap,bosses,bumpWorld)
   utils:printTable(item)
 end
 

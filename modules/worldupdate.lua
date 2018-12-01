@@ -3,7 +3,7 @@ worldupdate = {}
 local inspect = require('modules/inspect')
 local utils = require('modules/utils')
 
-function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,items,world)
+function worldupdate:init(px,py,map,bosses,world)
   bosses = bosses or {}
   local sti = require ("modules/sti");
   local bump = require ("modules/bump");
@@ -15,7 +15,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
   window.x = love.graphics:getWidth();
   window.y = love.graphics:getHeight();
 
-  player:init(love.graphics.newImage("assets/player.png"), nil, px, py, bumpWorld,map);
+  player:init(love.graphics.newImage("assets/player.png"), nil, px, py, world,map);
   billywestmanimg = love.graphics.newImage("assets/player.png");
   ammoboximg = love.graphics.newImage("assets/ammoboxsprite.png");
   enemyimg = love.graphics.newImage("assets/enemy.png");
@@ -34,16 +34,11 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
   dynamiteClass = require "modules/dynamite_module"
   ammoboxclass = require "modules/ammobox"
 
-  --#LISTS AND MAKEOBJ#
+  --#LISTS AND utils:makeObj#
   triggers = {};
   enemies = {};
   dynamite = {};
   item = {};
-  local function makeObj(class)
-    local mt = { __index = class }
-    local obj = setmetatable({}, mt)
-    return obj;
-  end
 
   --#NEW STI METHOD#
 
@@ -60,23 +55,23 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
       object[key] = value
     end
     print("TYPE--",object["type"])
-    if object["type"] == "base_enemy" then
-      newobj = makeObj(baseenemy)
+    if object["type"] == "basic_enemy" then
+      newobj = utils:makeObj(baseenemy)
       newobj:init(enemyimg,object["x"],object["y"],object["name"],world)
       enemies[#enemies+1] = newobj;
       print("made enemy",#enemies)
     elseif object["type"] == "dynamite" then
-      newobj = makeObj(dynamiteClass)
+      newobj = utils:makeObj(dynamiteClass)
       newobj:init(object["x"],object["y"],DynamiteImg)
       dynamite[#dynamite+1] = newobj;
       print("made dynamite",#dynamite)
     elseif object["type"] == "ammo" then
-      newobj = makeObj(ammoboxclass)
+      newobj = utils:makeObj(ammoboxclass)
       newobj:init(ammoboximg,object["x"],object["y"],object["name"],world)
       item[#item+1] = newobj;
       print("made item",#item)
     elseif object["type"] == "trigger" then -- finish implementing
-      newobj = makeObj(trigger)
+      newobj = utils:makeObj(trigger)
       newobj:init(object["x"],object["y"],true,"OT",OTTriggerF,object["name"],nil,world)
       triggers[#triggers+1] = newobj;
       print("made trigger",#triggers)
@@ -93,14 +88,14 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
     elseif spawnlist[i].image == "enemybase" then
       spawnlist[i].image = enemyimg
     end
-    enemies[i] = makeObj(spawnlist[i].class);
+    enemies[i] = utils:makeObj(spawnlist[i].class);
     enemies[i]:init(spawnlist[i].image,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name,spawnlist[i].world);
   end
   --#ITEMS#
   --items is the list, item is the item objects
   for i=1, #items do
     print(items[i].name)
-    item[i] = makeObj(items[i].class);
+    item[i] = utils:makeObj(items[i].class);
     item[i]:init(ammoboximg,items[i].x,items[i].y,items[i].name,items[i].world);
   end
   --#BOSS#
@@ -109,7 +104,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
   if bosses.image == "east" then
     bosses.image = EastImg
   end
-  boss = makeObj(bosses.class);
+  boss = utils:makeObj(bosses.class);
   print(bosses.image,bosses.x,bosses.y,bosses.name,bosses.world,"boss")
   boss:init(bosses.image,bosses.x,bosses.y,bosses.name,bosses.world);
 
@@ -119,7 +114,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
     if DynamiteList[i].sprite == "dynamite" then
       DynamiteList[i].sprite = DynamiteImg
     end
-    dynamite[i] = makeObj(dynamiteClass);
+    dynamite[i] = utils:makeObj(dynamiteClass);
     dynamite[i]:init(DynamiteList[i].x,DynamiteList[i].y,DynamiteList[i].sprite);
   end
   for i=1, #triggerlist do
@@ -130,7 +125,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
       triggerlist[i].imgs = {OTTriggerF,OTTriggerT}
     end
 
-    triggers[i] = makeObj(trigger);
+    triggers[i] = utils:makeObj(trigger);
     triggers[i]:init(triggerlist[i].x,triggerlist[i].y,triggerlist[i].state,triggerlist[i].btype,triggerlist[i].imgs,triggerlist[i].id,triggerlist[i].linkedto,triggerlist[i].world);
   end
   --]]

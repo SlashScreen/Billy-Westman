@@ -10,4 +10,11 @@ function utils:printTable(table)
     end
   end
 end
+
+function utils:makeObj(class)
+  local mt = { __index = class }
+  local obj = setmetatable({}, mt)
+  return obj;
+end
+
 return utils
