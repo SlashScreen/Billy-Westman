@@ -60,35 +60,31 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
   objlayer = map.layers["objs"].objects
   print("Incoming")
   --inspect(objlayer)
-  i = 1
+  --i = 0
+
   for key,value in pairs(objlayer) do
+    --print(i)
     object = {}
     for key,value in pairs(value) do
     --  print(key,value)
       object[key] = value
     end
-    for key,value in pairs(object) do
-      print(key,value)
-    end
     print("TYPE--",object["type"])
     if object["type"] == "base_enemy" then
       print("made enemy")
-      enemies[i] = makeObj(baseenemy);
-      enemies[i]:init(enemyimg,object["x"],object["y"],object["name"],world);
+      table.insert(enemies,(makeObj(baseenemy):init(enemyimg,object["x"],object["y"],object["name"],world))); --make one liner
+      print("len",#enemies)
     elseif object["type"] == "dynamite" then
       print("made dynamite")
-      dynamite[i] = makeObj(dynamiteClass);
-      dynamite[i]:init(object["x"],object["y"],DynamiteImg);
+      table.insert(dynamite, (makeObj(dynamiteClass):init(object["x"],object["y"],DynamiteImg)));
     elseif object["type"] == "ammo" then
       print("made ammo")
-      dynamite[i] = makeObj(ammoboxclass);
-      dynamite[i]:init(ammoboximg,object["x"],object["y"],object["name"],world);
+      table.insert(item, (makeObj(ammoboxclass):init(ammoboximg,object["x"],object["y"],object["name"],world)));
     elseif object["type"] == "trigger" then -- finish implementing
       print("made trigger")
-      triggers[i] = makeObj(trigger);
-      triggers[i]:init(object["x"],object["y"],true,"OT",OTTriggerF,object["name"],nil,world);
+      table.insert(triggers, (makeObj(trigger):init(object["x"],object["y"],true,"OT",OTTriggerF,object["name"],nil,world)));
     end
-    i = i+1
+    --i = i+1
   end
   print("end")
   --#ENEMIES#
@@ -197,14 +193,14 @@ function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamit
   if player.playerWalkTimer > .5 then
     player:animate("walk");
 
-    for i = 1, #enemies do
+    for i = 0, #enemies do
       enemies[i]:animate("walk");
     end
 
     player.playerWalkTimer = 0;
   end
-  for i = 1, #item do
-    item[i]:animate("float",dt);
+  for i in item do
+    i:animate("float",dt);
   end
 detected = false
 if bosses.alive == 1 then --if the enemy isn't dead
@@ -225,7 +221,7 @@ if bosses.alive == 1 then --if the enemy isn't dead
   end
 end
 --ENEMIES
-for i = 1, #enemies do -- main interaction IG w enemies
+for i = 0, #enemies do -- main interaction IG w enemies
     if enemies[i].alive == 1 then --if the enemy isn't dead
       if enemies[i].detectedplayer then --If any of them detected the player the player is detected now
         detected = true
@@ -253,7 +249,7 @@ else
   player.substate = "UNDETECTED"
 end
 --TRIGGERS
-  for i = 1, #triggers do -- main interaction for Triggers
+  for i = 0, #triggers do -- main interaction for Triggers
     if triggers[i].id == "Test 1" then --hardcoded: change
       world:setChange("westham");
     end
@@ -282,7 +278,7 @@ for i,v in ipairs(bullets) do --bullet script
 --printTable(dynamite)
 --print(BulletImg,bullets,enemies,dt,player)
 --print(player)
-for i=1, #dynamite do
+for i=0, #dynamite do
     --print(dynamite[i],i)
     dynamite[i]:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight(),dt);
   end
@@ -308,7 +304,7 @@ if not love.mouse.isDown(1) then
   player.state = "PLAY";
 end
 --ITEMS
-for i = 1, #item do
+for i = 0, #item do
   if item[i].type == "ammo" then
     if not item[i].taken then
       if item[i]:iscolliding(player.x,player.y,32,32) then
@@ -338,7 +334,7 @@ function worldupdate:draw(bosses, player, enemies, playerWalkTimer,dt,triggers,d
   --PLAYER
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0);
   --ENEMIES
-  for i = 1, #enemies do
+  for i = 0, #enemies do
     if enemies[i].alive == 1 then --if alive then
       love.graphics.draw(enemies[i].icon,enemies[i].frames[enemies[i].increment],(enemies[i].x-16-player.x+window.x/2-sx),(enemies[i].y-16-player.y+window.y/2-sy),0,zoom); --draw enemies
     end
@@ -348,11 +344,11 @@ function worldupdate:draw(bosses, player, enemies, playerWalkTimer,dt,triggers,d
     love.graphics.draw(bosses.icon,bosses.frames[bosses.increment],(bosses.x-16-player.x+window.x/2-sx),(bosses.y-16-player.y+window.y/2-sy),0,zoom); --draw bosses
   end
   --TRIGGERS
-  for i = 1, #triggers do
+  for i = 0, #triggers do
     love.graphics.draw(triggers[i].imgs[bool_to_number(triggers[i].state) + 1],(triggers[i].x-16-player.x+window.x/2-sx),(triggers[i].y-16-player.y+window.y/2-sy),0,zoom); --draw triggers
   end
   --ITEMS
-  for i = 1, #item do
+  for i = 0, #item do
     if item[i].type == "ammo" then
       if not item[i].taken then
 
@@ -361,7 +357,7 @@ function worldupdate:draw(bosses, player, enemies, playerWalkTimer,dt,triggers,d
     end
   end
   --DYNAMITE
-  for i=1, #dynamite do
+  for i=0, #dynamite do
     if dynamite[i].intact == 1 then
       love.graphics.draw(dynamite[i].sprite,(dynamite[i].x-player.x+window.x/2-sx),(dynamite[i].y-player.y+window.y/2-sy),0,zoom*2); --draw dynamite
       love.graphics.draw(dynamite[i].explosionParticles, (dynamite[i].x-player.x+window.x/2-sx), (dynamite[i].y-player.y+window.y/2-sy),0,0,20,20)
