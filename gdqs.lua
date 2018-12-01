@@ -18,11 +18,6 @@ function gdqsworld:load()
   shader = gdshader:gradShader(gradient)
 
   player = require "modules/player_module";
-  baseenemy = require "modules/enemy_module";
-  eastman_boss = require "modules/eastman_boss";
-  trigger = require "modules/trigger_module";
-  dynamiteClass = require "modules/dynamite_module"
-  ammoboxclass = require "modules/ammobox"
   json = require "modules/json"
   wu = require("modules/worldupdate")
 
@@ -46,7 +41,7 @@ function gdqsworld:load()
     {x = 300, y = 335, sprite = "dynamite"}
   }
 
-  player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window,bosses,item = wu:init(spawnlist,DynamiteList,triggerlist,350,300,currentmap,bosses,items)
+  player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window,bosses,item = wu:init(spawnlist,DynamiteList,triggerlist,350,300,currentmap,bosses,items,bumpworld)
 end
 
 function gdqsworld:shoot(body,x,y,coordspace)

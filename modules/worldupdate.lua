@@ -1,7 +1,19 @@
 --worldupdate.lua
 worldupdate = {}
+local inspect = require('modules/inspect')
 
-function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,items)
+function printTable(table)
+  for key,value in pairs(table) do
+    if type(value) == "table" then
+      print(key)
+      printTable(value)
+    else
+      print(key,value)
+    end
+  end
+end
+
+function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,items,world)
   bosses = bosses or {}
   local sti = require ("modules/sti");
   local bump = require ("modules/bump");
@@ -26,6 +38,13 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
   EastImg = love.graphics.newImage("assets/eman.png");
   DynamiteImg:setFilter("nearest","nearest");
 
+  baseenemy = require "modules/enemy_module";
+  eastman_boss = require "modules/eastman_boss";
+  trigger = require "modules/trigger_module";
+  dynamiteClass = require "modules/dynamite_module"
+  ammoboxclass = require "modules/ammobox"
+
+  --#LISTS AND MAKEOBJ#
   triggers = {};
   enemies = {};
   dynamite = {};
@@ -35,7 +54,45 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
     local obj = setmetatable({}, mt)
     return obj;
   end
+
+  --#NEW STI METHOD#
+
+  objlayer = map.layers["objs"].objects
+  print("Incoming")
+  --inspect(objlayer)
+  i = 1
+  for key,value in pairs(objlayer) do
+    object = {}
+    for key,value in pairs(value) do
+    --  print(key,value)
+      object[key] = value
+    end
+    for key,value in pairs(object) do
+      print(key,value)
+    end
+    print("TYPE--",object["type"])
+    if object["type"] == "base_enemy" then
+      print("made enemy")
+      enemies[i] = makeObj(baseenemy);
+      enemies[i]:init(enemyimg,object["x"],object["y"],object["name"],world);
+    elseif object["type"] == "dynamite" then
+      print("made dynamite")
+      dynamite[i] = makeObj(dynamiteClass);
+      dynamite[i]:init(object["x"],object["y"],DynamiteImg);
+    elseif object["type"] == "ammo" then
+      print("made ammo")
+      dynamite[i] = makeObj(ammoboxclass);
+      dynamite[i]:init(ammoboximg,object["x"],object["y"],object["name"],world);
+    elseif object["type"] == "trigger" then -- finish implementing
+      print("made trigger")
+      triggers[i] = makeObj(trigger);
+      triggers[i]:init(object["x"],object["y"],true,"OT",OTTriggerF,object["name"],nil,world);
+    end
+    i = i+1
+  end
+  print("end")
   --#ENEMIES#
+  --[[
   for i=1, #spawnlist do
     print(i)
     if spawnlist[i].image == "billyimage" then
@@ -54,12 +111,16 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
     item[i]:init(ammoboximg,items[i].x,items[i].y,items[i].name,items[i].world);
   end
   --#BOSS#
+
+
   if bosses.image == "east" then
     bosses.image = EastImg
   end
   boss = makeObj(bosses.class);
   print(bosses.image,bosses.x,bosses.y,bosses.name,bosses.world,"boss")
   boss:init(bosses.image,bosses.x,bosses.y,bosses.name,bosses.world);
+
+
   --#DYNAMITE#
   for i=1, #DynamiteList do
     if DynamiteList[i].sprite == "dynamite" then
@@ -79,6 +140,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
     triggers[i] = makeObj(trigger);
     triggers[i]:init(triggerlist[i].x,triggerlist[i].y,triggerlist[i].state,triggerlist[i].btype,triggerlist[i].imgs,triggerlist[i].id,triggerlist[i].linkedto,triggerlist[i].world);
   end
+  --]]
   crosshair = love.graphics.newImage("assets/crosshair.png");
   bulletSpeed = 300
 	bullets = {}
@@ -217,11 +279,11 @@ for i,v in ipairs(bullets) do --bullet script
 
 	end
 --DYNAMITE
- for i=1, #dynamite do
-
-  end
-
+--printTable(dynamite)
+--print(BulletImg,bullets,enemies,dt,player)
+--print(player)
 for i=1, #dynamite do
+    --print(dynamite[i],i)
     dynamite[i]:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight(),dt);
   end
 
