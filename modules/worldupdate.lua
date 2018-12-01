@@ -208,7 +208,7 @@ if bosses.alive == 1 then --if the enemy isn't dead
     if bosses:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) or player:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
       print("hit",v.x,v.y);
       table.remove(bullets,o);
-      table.remove(bullets,i);
+      --table.remove(bullets,i);
       math.randomseed(player.x);
       world:shakescreen(10);
     end
@@ -227,7 +227,7 @@ for key,i in pairs(enemies) do -- main interaction IG w enemies
         if i:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) or player:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
           table.remove(bullets,o);
-          table.remove(bullets,i);
+        --  table.remove(bullets,i);
           math.randomseed(player.x);
           world:shakescreen(10);
         end
