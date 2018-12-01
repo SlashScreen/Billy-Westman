@@ -41,7 +41,7 @@ function gdqsworld:load()
     {x = 300, y = 335, sprite = "dynamite"}
   }
 
-  player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window,bosses,item = wu:init(spawnlist,DynamiteList,triggerlist,350,300,currentmap,bosses,items,bumpworld)
+  player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses = wu:init(spawnlist,DynamiteList,triggerlist,350,300,currentmap,bosses,items,bumpworld)
 end
 
 function gdqsworld:shoot(body,x,y,coordspace)
@@ -59,11 +59,11 @@ function bool_to_number(value)
 end
 
 function gdqsworld:update(dt)
-  wu:update(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,bosses,item)
+  wu:update(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,gdqsworld,shader,dt)
 end
 
 function gdqsworld:draw()
-  wu:draw(bosses,player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,crosshair, window,shader,item)
+  wu:draw(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,gdqsworld,shader)
 end
 
 function gdqsworld:canChange()

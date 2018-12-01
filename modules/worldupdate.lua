@@ -144,7 +144,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
   zoom = 1;
   sx = 0;
   sy = 0;
-  return player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window,bosses,item
+  return player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses
 end
 
 
@@ -174,7 +174,9 @@ function worldupdate:shoot(body,x,y,coordspace,player,window,bullets)
     return bullets,player
 end
 
-function worldupdate:update(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg,bosses,item)
+
+
+function worldupdate:update(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,world,shader,dt)
   map:update(dt)
   --SHAKESCREEN
   if math.abs(sx) > 0 then
@@ -326,7 +328,10 @@ if player.state == "PLAY" and player.substate == "UNDETECTED" and player.ammo < 
   end
 end
 
-function worldupdate:draw(bosses, player, enemies, playerWalkTimer,dt,triggers,dynamite,map,world,BulletImg,crosshair, window,shader,item)
+
+
+
+function worldupdate:draw(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,world,shader)
   --SHADER
   love.graphics.setShader(shader)
   --MAP
