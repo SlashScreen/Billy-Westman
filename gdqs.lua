@@ -1,5 +1,6 @@
 --gdjs.lua - test demo
 local gdshader = require "modules/shader"
+local utils = require('modules/utils')
 gdqsworld= {};
 
 function gdqsworld:load()
@@ -42,6 +43,7 @@ function gdqsworld:load()
   }
 
   player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses = wu:init(spawnlist,DynamiteList,triggerlist,350,300,currentmap,bosses,items,bumpworld)
+  utils:printTable(item)
 end
 
 function gdqsworld:shoot(body,x,y,coordspace)

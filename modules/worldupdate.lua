@@ -1,17 +1,7 @@
 --worldupdate.lua
 worldupdate = {}
 local inspect = require('modules/inspect')
-
-function printTable(table)
-  for key,value in pairs(table) do
-    if type(value) == "table" then
-      print(key)
-      printTable(value)
-    else
-      print(key,value)
-    end
-  end
-end
+local utils = require('modules/utils')
 
 function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,items,world)
   bosses = bosses or {}
@@ -71,18 +61,25 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
     end
     print("TYPE--",object["type"])
     if object["type"] == "base_enemy" then
-      print("made enemy")
-      table.insert(enemies,(makeObj(baseenemy):init(enemyimg,object["x"],object["y"],object["name"],world))); --make one liner
-      print("len",#enemies)
+      newobj = makeObj(baseenemy)
+      newobj:init(enemyimg,object["x"],object["y"],object["name"],world)
+      enemies[#enemies+1] = newobj; --make one liner
+      print("made enemy",#enemies)
     elseif object["type"] == "dynamite" then
-      print("made dynamite")
-      table.insert(dynamite, (makeObj(dynamiteClass):init(object["x"],object["y"],DynamiteImg)));
+      newobj = makeObj(dynamiteClass)
+      newobj:init(object["x"],object["y"],DynamiteImg)
+      dynamite[#dynamite+1] = newobj;
+      print("made dynamite",#dynamite)
     elseif object["type"] == "ammo" then
-      print("made ammo")
-      table.insert(item, (makeObj(ammoboxclass):init(ammoboximg,object["x"],object["y"],object["name"],world)));
+      newobj = makeObj(ammoboxclass)
+      newobj:init(ammoboximg,object["x"],object["y"],object["name"],world)
+      item[#item+1] = newobj;
+      print("made item",#item)
     elseif object["type"] == "trigger" then -- finish implementing
-      print("made trigger")
-      table.insert(triggers, (makeObj(trigger):init(object["x"],object["y"],true,"OT",OTTriggerF,object["name"],nil,world)));
+      newobj = makeObj(trigger)
+      newobj:init(object["x"],object["y"],true,"OT",OTTriggerF,object["name"],nil,world)
+      triggers[#triggers+1] = newobj;
+      print("made trigger",#triggers)
     end
     --i = i+1
   end
@@ -144,6 +141,9 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
   zoom = 1;
   sx = 0;
   sy = 0;
+  print("init_item------")
+  utils:printTable(item)
+  print("end init_item------")
   return player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses
 end
 
@@ -178,6 +178,10 @@ end
 
 function worldupdate:update(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,world,shader,dt)
   map:update(dt)
+  print("------item------")
+  print(item)
+  utils:printTable(item)
+  print("------end item------")
   --SHAKESCREEN
   if math.abs(sx) > 0 then
     sx,sy = -sx+sx/2,-sy+sy/2;
@@ -277,7 +281,7 @@ for i,v in ipairs(bullets) do --bullet script
 
 	end
 --DYNAMITE
---printTable(dynamite)
+--utils:printTable(dynamite)
 --print(BulletImg,bullets,enemies,dt,player)
 --print(player)
 for i=0, #dynamite do
