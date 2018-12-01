@@ -63,7 +63,7 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
     if object["type"] == "base_enemy" then
       newobj = makeObj(baseenemy)
       newobj:init(enemyimg,object["x"],object["y"],object["name"],world)
-      enemies[#enemies+1] = newobj; --make one liner
+      enemies[#enemies+1] = newobj;
       print("made enemy",#enemies)
     elseif object["type"] == "dynamite" then
       newobj = makeObj(dynamiteClass)
@@ -141,9 +141,6 @@ function worldupdate:init(spawnlist,DynamiteList,triggerlist,px,py,map,bosses,it
   zoom = 1;
   sx = 0;
   sy = 0;
-  print("init_item------")
-  utils:printTable(item)
-  print("end init_item------")
   return player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses
 end
 
@@ -178,10 +175,6 @@ end
 
 function worldupdate:update(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,world,shader,dt)
   map:update(dt)
-  print("------item------")
-  print(item)
-  utils:printTable(item)
-  print("------end item------")
   --SHAKESCREEN
   if math.abs(sx) > 0 then
     sx,sy = -sx+sx/2,-sy+sy/2;
@@ -199,14 +192,14 @@ function worldupdate:update(player,BulletImg,triggers,enemies,dynamite,item,cros
   if player.playerWalkTimer > .5 then
     player:animate("walk");
 
-    for i = 0, #enemies do
-      enemies[i]:animate("walk");
+    for key,i in pairs(enemies) do
+      i:animate("walk");
     end
 
     player.playerWalkTimer = 0;
   end
-  for i in item do
-    i:animate("float",dt);
+  for key,value in pairs(item) do
+    value:animate("float",dt);
   end
 detected = false
 if bosses.alive == 1 then --if the enemy isn't dead
@@ -227,16 +220,16 @@ if bosses.alive == 1 then --if the enemy isn't dead
   end
 end
 --ENEMIES
-for i = 0, #enemies do -- main interaction IG w enemies
-    if enemies[i].alive == 1 then --if the enemy isn't dead
-      if enemies[i].detectedplayer then --If any of them detected the player the player is detected now
+for key,i in pairs(enemies) do -- main interaction IG w enemies
+    if i.alive == 1 then --if the enemy isn't dead
+      if i.detectedplayer then --If any of them detected the player the player is detected now
         detected = true
       end
-      enemies[i]:update(player.x,player.y,dt)
-      enemies[i]:decideMovement(player.x,player.y,dt); --walk
-      enemies[i]:shoot(player,world,dt) --do shoot calcculations
+      i:update(player.x,player.y,dt)
+      i:decideMovement(player.x,player.y,dt); --walk
+      i:shoot(player,world,dt) --do shoot calcculations
       for o,v in ipairs(bullets) do -- is hit by bullets?
-        if enemies[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) or player:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
+        if i:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) or player:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
           table.remove(bullets,o);
           table.remove(bullets,i);
@@ -255,13 +248,13 @@ else
   player.substate = "UNDETECTED"
 end
 --TRIGGERS
-  for i = 0, #triggers do -- main interaction for Triggers
-    if triggers[i].id == "Test 1" then --hardcoded: change
+  for key,i in pairs(triggers) do -- main interaction for Triggers
+    if i.id == "Test 1" then --hardcoded: change
       world:setChange("westham");
     end
 
       for o,v in ipairs(bullets) do --is hit
-        if triggers[i]:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
+        if i:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
           table.remove(bullets,o);
           math.randomseed(player.x);
@@ -284,9 +277,9 @@ for i,v in ipairs(bullets) do --bullet script
 --utils:printTable(dynamite)
 --print(BulletImg,bullets,enemies,dt,player)
 --print(player)
-for i=0, #dynamite do
+for key,i in pairs(dynamite) do
     --print(dynamite[i],i)
-    dynamite[i]:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight(),dt);
+    i:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight(),dt);
   end
 
   if player.state == "FIRE" then
@@ -310,12 +303,12 @@ if not love.mouse.isDown(1) then
   player.state = "PLAY";
 end
 --ITEMS
-for i = 0, #item do
-  if item[i].type == "ammo" then
-    if not item[i].taken then
-      if item[i]:iscolliding(player.x,player.y,32,32) then
+for key,i in pairs(item) do
+  if i.type == "ammo" then
+    if not i.taken then
+      if i:iscolliding(player.x,player.y,32,32) then
         player:instantRefill()
-        item[i]:take()
+        i:take()
       end
   end
   end
@@ -343,9 +336,9 @@ function worldupdate:draw(player,BulletImg,triggers,enemies,dynamite,item,crossh
   --PLAYER
   love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0);
   --ENEMIES
-  for i = 0, #enemies do
-    if enemies[i].alive == 1 then --if alive then
-      love.graphics.draw(enemies[i].icon,enemies[i].frames[enemies[i].increment],(enemies[i].x-16-player.x+window.x/2-sx),(enemies[i].y-16-player.y+window.y/2-sy),0,zoom); --draw enemies
+  for key,i in pairs(enemies) do
+    if i.alive == 1 then --if alive then
+      love.graphics.draw(i.icon,i.frames[i.increment],(i.x-16-player.x+window.x/2-sx),(i.y-16-player.y+window.y/2-sy),0,zoom); --draw enemies
     end
   end
   --BOSS
@@ -353,23 +346,23 @@ function worldupdate:draw(player,BulletImg,triggers,enemies,dynamite,item,crossh
     love.graphics.draw(bosses.icon,bosses.frames[bosses.increment],(bosses.x-16-player.x+window.x/2-sx),(bosses.y-16-player.y+window.y/2-sy),0,zoom); --draw bosses
   end
   --TRIGGERS
-  for i = 0, #triggers do
-    love.graphics.draw(triggers[i].imgs[bool_to_number(triggers[i].state) + 1],(triggers[i].x-16-player.x+window.x/2-sx),(triggers[i].y-16-player.y+window.y/2-sy),0,zoom); --draw triggers
+  for key,i in pairs(triggers) do
+    love.graphics.draw(i.imgs[bool_to_number(i.state) + 1],(i.x-16-player.x+window.x/2-sx),(i.y-16-player.y+window.y/2-sy),0,zoom); --draw triggers
   end
   --ITEMS
-  for i = 0, #item do
-    if item[i].type == "ammo" then
-      if not item[i].taken then
+  for key,i in pairs(item) do
+    if i.type == "ammo" then
+      if not i.taken then
 
-        love.graphics.draw(item[i].img,item[i].frames[item[i].increment],(item[i].x-16-player.x+window.x/2-sx),(item[i].y-16-player.y+window.y/2-sy),0,zoom); --draw items
+        love.graphics.draw(i.img,i.frames[i.increment],(i.x-16-player.x+window.x/2-sx),(i.y-16-player.y+window.y/2-sy),0,zoom); --draw items
       end
     end
   end
   --DYNAMITE
-  for i=0, #dynamite do
-    if dynamite[i].intact == 1 then
-      love.graphics.draw(dynamite[i].sprite,(dynamite[i].x-player.x+window.x/2-sx),(dynamite[i].y-player.y+window.y/2-sy),0,zoom*2); --draw dynamite
-      love.graphics.draw(dynamite[i].explosionParticles, (dynamite[i].x-player.x+window.x/2-sx), (dynamite[i].y-player.y+window.y/2-sy),0,0,20,20)
+  for key,i in pairs(dynamite) do
+    if i.intact == 1 then
+      love.graphics.draw(i.sprite,(i.x-player.x+window.x/2-sx),(i.y-player.y+window.y/2-sy),0,zoom*2); --draw dynamite
+      love.graphics.draw(i.explosionParticles, (i.x-player.x+window.x/2-sx), (i.y-player.y+window.y/2-sy),0,0,20,20)
     end
   end
   --BULLETS
