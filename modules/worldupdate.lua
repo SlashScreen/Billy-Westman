@@ -15,7 +15,7 @@ function worldupdate:init(px,py,map,bosses,world)
   window.x = love.graphics:getWidth();
   window.y = love.graphics:getHeight();
 
-  player:init(love.graphics.newImage("assets/player.png"), nil, px, py, world,map);
+
   billywestmanimg = love.graphics.newImage("assets/player.png");
   ammoboximg = love.graphics.newImage("assets/ammoboxsprite.png");
   enemyimg = love.graphics.newImage("assets/enemy.png");
@@ -75,60 +75,12 @@ function worldupdate:init(px,py,map,bosses,world)
       newobj:init(object["x"],object["y"],true,"OT",OTTriggerF,object["name"],nil,world)
       triggers[#triggers+1] = newobj;
       print("made trigger",#triggers)
+    elseif object["type"] == "spawn" then
+      player:init(love.graphics.newImage("assets/player.png"), nil, object["x"], object["y"], world,map);
     end
     --i = i+1
   end
   print("end")
-  --#ENEMIES#
-  --[[
-  for i=1, #spawnlist do
-    print(i)
-    if spawnlist[i].image == "billyimage" then
-      spawnlist[i].image = billywestmanimg
-    elseif spawnlist[i].image == "enemybase" then
-      spawnlist[i].image = enemyimg
-    end
-    enemies[i] = utils:makeObj(spawnlist[i].class);
-    enemies[i]:init(spawnlist[i].image,spawnlist[i].x,spawnlist[i].y,spawnlist[i].name,spawnlist[i].world);
-  end
-  --#ITEMS#
-  --items is the list, item is the item objects
-  for i=1, #items do
-    print(items[i].name)
-    item[i] = utils:makeObj(items[i].class);
-    item[i]:init(ammoboximg,items[i].x,items[i].y,items[i].name,items[i].world);
-  end
-  --#BOSS#
-
-
-  if bosses.image == "east" then
-    bosses.image = EastImg
-  end
-  boss = utils:makeObj(bosses.class);
-  print(bosses.image,bosses.x,bosses.y,bosses.name,bosses.world,"boss")
-  boss:init(bosses.image,bosses.x,bosses.y,bosses.name,bosses.world);
-
-
-  --#DYNAMITE#
-  for i=1, #DynamiteList do
-    if DynamiteList[i].sprite == "dynamite" then
-      DynamiteList[i].sprite = DynamiteImg
-    end
-    dynamite[i] = utils:makeObj(dynamiteClass);
-    dynamite[i]:init(DynamiteList[i].x,DynamiteList[i].y,DynamiteList[i].sprite);
-  end
-  for i=1, #triggerlist do
-
-    if triggerlist[i].imgs == "TT" then
-      triggerlist[i].imgs = {TTriggerF,TTriggerT}
-    elseif triggerlist[i].imgs == "OT" then
-      triggerlist[i].imgs = {OTTriggerF,OTTriggerT}
-    end
-
-    triggers[i] = utils:makeObj(trigger);
-    triggers[i]:init(triggerlist[i].x,triggerlist[i].y,triggerlist[i].state,triggerlist[i].btype,triggerlist[i].imgs,triggerlist[i].id,triggerlist[i].linkedto,triggerlist[i].world);
-  end
-  --]]
   crosshair = love.graphics.newImage("assets/crosshair.png");
   bulletSpeed = 300
 	bullets = {}

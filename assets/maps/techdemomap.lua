@@ -9,7 +9,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 5,
-  nextobjectid = 7,
+  nextobjectid = 8,
   properties = {},
   tilesets = {
     {
@@ -335,6 +335,19 @@ return {
           shape = "point",
           x = 234,
           y = 653,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 7,
+          name = "spawn",
+          type = "spawn",
+          shape = "point",
+          x = 590,
+          y = 814,
           width = 0,
           height = 0,
           rotation = 0,
