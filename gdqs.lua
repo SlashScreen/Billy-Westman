@@ -1,5 +1,6 @@
 --gdjs.lua - test demo
 local gdshader = require "modules/shader"
+local utils = require('modules/utils')
 gdqsworld= {};
 
 function gdqsworld:load()
@@ -18,11 +19,6 @@ function gdqsworld:load()
   shader = gdshader:gradShader(gradient)
 
   player = require "modules/player_module";
-  baseenemy = require "modules/enemy_module";
-  eastman_boss = require "modules/eastman_boss";
-  trigger = require "modules/trigger_module";
-  dynamiteClass = require "modules/dynamite_module"
-  ammoboxclass = require "modules/ammobox"
   json = require "modules/json"
   wu = require("modules/worldupdate")
 
@@ -46,7 +42,8 @@ function gdqsworld:load()
     {x = 300, y = 335, sprite = "dynamite"}
   }
 
-  player, billywestmanimg,BulletImg,OTTriggerF,OTTriggerT,TTriggerF,TTriggerT,DynamiteImg,trig,enemies,dynamite,crosshair,zoom,sx,sy,window,bosses,item = wu:init(spawnlist,DynamiteList,triggerlist,350,300,currentmap,bosses,items)
+  player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses = wu:init(350,300,currentmap,bosses,bumpWorld)
+  utils:printTable(item)
 end
 
 function gdqsworld:shoot(body,x,y,coordspace)
@@ -64,11 +61,11 @@ function bool_to_number(value)
 end
 
 function gdqsworld:update(dt)
-  wu:update(player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,bosses,item)
+  wu:update(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,gdqsworld,shader,dt)
 end
 
 function gdqsworld:draw()
-  wu:draw(bosses,player, enemies, playerWalkTimer,dt,triggers,dynamite,map,gdqsworld,BulletImg,crosshair, window,shader,item)
+  wu:draw(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,gdqsworld,shader)
 end
 
 function gdqsworld:canChange()
