@@ -38,10 +38,10 @@ function enemy:init(ico,x,y, id, world)
   self.origy = y
   self.x = x;
   self.y = y;
-  self.speed = 90;
+  self.speed = 45;
   self.id = id;
   self.shoottimer = 0.0;
-  self.shootmax = 1;
+  self.shootmax = 3;
   self.ammo = 10;
   self.World:add(self, self.x, self.y, 32, 32);
   self.detectedplayer = false

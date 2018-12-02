@@ -37,6 +37,17 @@ function self:hurt() --health. TODO: Die properly
   end
 end
 
+function self:update(dt)
+  if self.state == "PLAY" and self.substate == "UNDETECTED" and self.ammo < self.maxammo then
+    self.rechargetimer = self.rechargetimer + dt;
+    if self.rechargetimer > self.rechargelimit then
+      self:changeammo(1)
+      print(self.ammo,"ammorecharge", self.rechargetimer);
+      self.rechargetimer = 0;
+    end
+  end
+end
+
 function self:changeammo(i)
   self.ammo = self.ammo + i
 end

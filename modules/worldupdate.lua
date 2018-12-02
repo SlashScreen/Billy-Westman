@@ -43,45 +43,35 @@ function worldupdate:init(px,py,map,bosses,world)
 
   --#NEW STI METHOD#
 
-  objlayer = map.layers["objs"].objects
-  print("Incoming")
+  objlayer = map.layers["objs"].objects --get object layer
 
-  for key,value in pairs(objlayer) do
-    object = {}
-    for key,value in pairs(value) do
-      object[key] = value
-    end
-    print("TYPE--",object["type"])
-    if object["type"] == "basic_enemy" then
-      newobj = utils:makeObj(baseenemy)
+  for key,value in pairs(objlayer) do --loop through object layer
+    object = value -- added this so I don't have to retype 5 billion things
+    if object["type"] == "basic_enemy" then --Add basic enemy
+      newobj = utils:makeObj(baseenemy) --make the object
+      newobj:init(enemyimg,object["x"],object["y"],object["name"],world) --init the object
+      enemies[#enemies+1] = newobj; --add it to the table
+      --others below are the same, just with inits tailored to the object
+    elseif object["type"] == "spread_enemy" then --spead enemy
+      newobj = utils:makeObj(spreadenemy)
       newobj:init(enemyimg,object["x"],object["y"],object["name"],world)
       enemies[#enemies+1] = newobj;
-      print("made enemy",#enemies)
-    elseif object["type"] == "spread_enemy" then
-        newobj = utils:makeObj(spreadenemy)
-        newobj:init(enemyimg,object["x"],object["y"],object["name"],world)
-        enemies[#enemies+1] = newobj;
-        print("made enemy",#enemies)
-    elseif object["type"] == "dynamite" then
+    elseif object["type"] == "dynamite" then --dynamite
       newobj = utils:makeObj(dynamiteClass)
       newobj:init(object["x"],object["y"],DynamiteImg)
       dynamite[#dynamite+1] = newobj;
-      print("made dynamite",#dynamite)
-    elseif object["type"] == "ammo" then
+    elseif object["type"] == "ammo" then --ammo box
       newobj = utils:makeObj(ammoboxclass)
       newobj:init(ammoboximg,object["x"],object["y"],object["name"],world)
       item[#item+1] = newobj;
-      print("made item",#item)
-    elseif object["type"] == "trigger" then -- finish implementing
+    elseif object["type"] == "trigger" then -- trigger: finish implementing
       newobj = utils:makeObj(trigger)
       newobj:init(object["x"],object["y"],true,"OT",OTTriggerF,object["name"],nil,world)
-      triggers[#triggers+1] = newobj;
       print("made trigger",#triggers)
-    elseif object["type"] == "spawn" then
-      player:init(love.graphics.newImage("assets/player.png"), nil, object["x"], object["y"], world,map);
+    elseif object["type"] == "spawn" then --spawn point
+      player:init(love.graphics.newImage("assets/player.png"), nil, object["x"], object["y"], world,map); --init player at x and y of object
     end
   end
-  print("end")
   crosshair = love.graphics.newImage("assets/crosshair.png");
   bulletSpeed = 300
 	bullets = {}
@@ -91,7 +81,6 @@ function worldupdate:init(px,py,map,bosses,world)
   sy = 0;
   return player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses
 end
-
 
 
 
@@ -115,7 +104,6 @@ function worldupdate:shoot(body,x,y,coordspace,player,window,bullets,playershoot
 		local bulletDy = bulletSpeed * math.sin(angle)
     local bulletTime = 3;
 		table.insert(bullets, {x = startX, y = startY, dx = bulletDx, dy = bulletDy, t = bulletTime})
-
     return bullets,player
 end
 
@@ -123,9 +111,10 @@ end
 
 function worldupdate:update(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,world,shader,dt)
   map:update(dt)
+  player:update(dt)
   --SHAKESCREEN
   if math.abs(sx) > 0 then
-    sx,sy = -sx+sx/2,-sy+sy/2;
+    sx,sy = -sx+sx/2,-sy+sy/2; --tried to do some sort of wiggle thing
     if sx < .1 then
       sx,sy=0,0
     end
@@ -136,18 +125,17 @@ function worldupdate:update(player,BulletImg,triggers,enemies,dynamite,item,cros
   end
 
   player:calcShadowed()
-  player.playerWalkTimer = player.playerWalkTimer + dt
+  player.playerWalkTimer = player.playerWalkTimer + dt --increment walk timer by dt; don't be like fallout 76 lmao
   if player.playerWalkTimer > .5 then
-    player:animate("walk");
-
+    player:animate("walk"); --animate walk
     for key,i in pairs(enemies) do
-      i:animate("walk");
+      i:animate("walk"); --walk enemies by iter through them
     end
 
     player.playerWalkTimer = 0;
   end
   for key,value in pairs(item) do
-    value:animate("float",dt);
+    value:animate("float",dt); --walk items by iter through them
   end
 detected = false
 if bosses.alive == 1 then --if the enemy isn't dead
@@ -172,7 +160,7 @@ for key,i in pairs(enemies) do -- main interaction IG w enemies
       if i.detectedplayer then --If any of them detected the player the player is detected now
         detected = true
       end
-      i:update(player.x,player.y,dt)
+      i:update(player.x,player.y,dt) --update
       i:decideMovement(player.x,player.y,dt); --walk
 
       i:shoot(player,world,dt) --do shoot calcculations
@@ -210,9 +198,9 @@ end
   end
 --BULLETS
 for i,v in ipairs(bullets) do --bullet script
-    v.t = v.t-dt;
-		v.x = v.x + (v.dx * dt)
-		v.y = v.y + (v.dy * dt)
+    v.t = v.t-dt; --timer decrement
+		v.x = v.x + (v.dx * dt) --move x
+		v.y = v.y + (v.dy * dt) --move y
     if v.t < 0 then --if timer ran out then remove bullet
       table.remove(bullets,i);
     end
@@ -220,10 +208,10 @@ for i,v in ipairs(bullets) do --bullet script
 	end
 --DYNAMITE
 for key,i in pairs(dynamite) do
-    i:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight(),dt);
+    i:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight(),dt); --update
   end
 
-  if player.state == "FIRE" then
+  if player.state == "FIRE" then --reset recharge timer while shooting
     player.rechargetimer = 0;
   end
 --CONTROL
@@ -250,29 +238,16 @@ function love.mousepressed(x, y, button)
 end
 --ITEMS
 for key,i in pairs(item) do
-  if i.type == "ammo" then
-    if not i.taken then
-      if i:iscolliding(player.x,player.y,32,32) then
-        player:instantRefill()
-        i:take()
+  if i.type == "ammo" then --if ammo
+    if not i.taken then --if not taken already
+      if i:iscolliding(player.x,player.y,32,32) then --is colliding?
+        player:instantRefill() --refill ammo
+        i:take() --make item taken
       end
-  end
-  end
-end
-
---RECHARGE
-if player.state == "PLAY" and player.substate == "UNDETECTED" and player.ammo < player.maxammo then
-    player.rechargetimer = player.rechargetimer + dt;
-    if player.rechargetimer > player.rechargelimit then
-        player:changeammo(1)
-        print(player.ammo,"ammorecharge", player.rechargetimer);
-        player.rechargetimer = 0;
     end
   end
 end
-
-
-
+end
 
 function worldupdate:draw(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,world,shader)
   --SHADER
@@ -298,8 +273,7 @@ function worldupdate:draw(player,BulletImg,triggers,enemies,dynamite,item,crossh
   --ITEMS
   for key,i in pairs(item) do
     if i.type == "ammo" then
-      if not i.taken then
-
+      if not i.taken then --if not taken
         love.graphics.draw(i.img,i.frames[i.increment],(i.x-16-player.x+window.x/2-sx),(i.y-16-player.y+window.y/2-sy),0,zoom); --draw items
       end
     end
