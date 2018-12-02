@@ -44,14 +44,10 @@ function worldupdate:init(px,py,map,bosses,world)
 
   objlayer = map.layers["objs"].objects
   print("Incoming")
-  --inspect(objlayer)
-  --i = 0
 
   for key,value in pairs(objlayer) do
-    --print(i)
     object = {}
     for key,value in pairs(value) do
-    --  print(key,value)
       object[key] = value
     end
     print("TYPE--",object["type"])
@@ -78,7 +74,6 @@ function worldupdate:init(px,py,map,bosses,world)
     elseif object["type"] == "spawn" then
       player:init(love.graphics.newImage("assets/player.png"), nil, object["x"], object["y"], world,map);
     end
-    --i = i+1
   end
   print("end")
   crosshair = love.graphics.newImage("assets/crosshair.png");
@@ -94,7 +89,8 @@ end
 
 
 
-function worldupdate:shoot(body,x,y,coordspace,player,window,bullets)
+function worldupdate:shoot(body,x,y,coordspace,player,window,bullets,playershooting)
+  print("shoot",debug.traceback())
   player.state = "FIRE";
 		local startX = body.x
 		local startY = body.y
@@ -113,8 +109,7 @@ function worldupdate:shoot(body,x,y,coordspace,player,window,bullets)
 		local bulletDy = bulletSpeed * math.sin(angle)
     local bulletTime = 3;
 		table.insert(bullets, {x = startX, y = startY, dx = bulletDx, dy = bulletDy, t = bulletTime})
-    player.ammo = player.ammo - 1;
-    print(player.ammo,"ammo");
+
     return bullets,player
 end
 
@@ -160,7 +155,6 @@ if bosses.alive == 1 then --if the enemy isn't dead
     if bosses:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) or player:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
       print("hit",v.x,v.y);
       table.remove(bullets,o);
-      --table.remove(bullets,i);
       math.randomseed(player.x);
       world:shakescreen(10);
     end
@@ -174,18 +168,16 @@ for key,i in pairs(enemies) do -- main interaction IG w enemies
       end
       i:update(player.x,player.y,dt)
       i:decideMovement(player.x,player.y,dt); --walk
+
       i:shoot(player,world,dt) --do shoot calcculations
       for o,v in ipairs(bullets) do -- is hit by bullets?
         if i:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) or player:isHit(v.x, v.y, player.x, player.y, window.x, window.y,BulletImg:getWidth(),BulletImg:getHeight()) then
           print("hit",v.x,v.y);
           table.remove(bullets,o);
-        --  table.remove(bullets,i);
           math.randomseed(player.x);
           world:shakescreen(10);
         end
       end
-
-
   end
 end
 --DETECTED
@@ -221,11 +213,7 @@ for i,v in ipairs(bullets) do --bullet script
 
 	end
 --DYNAMITE
---utils:printTable(dynamite)
---print(BulletImg,bullets,enemies,dt,player)
---print(player)
 for key,i in pairs(dynamite) do
-    --print(dynamite[i],i)
     i:update(bullets,enemies,player,dynamite,BulletImg:getWidth(),BulletImg:getHeight(),dt);
   end
 
@@ -248,6 +236,11 @@ end
 
 if not love.mouse.isDown(1) then
   player.state = "PLAY";
+end
+function love.mousepressed(x, y, button)
+	if button == 1 and player.ammo > 0 then
+    player:shoot(player,world,dt,x,y,player,window,bullets)
+  end
 end
 --ITEMS
 for key,i in pairs(item) do

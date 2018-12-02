@@ -22,25 +22,7 @@ function gdqsworld:load()
   json = require "modules/json"
   wu = require("modules/worldupdate")
 
-  spawnlist = {
-    {name = "Enemy1",x = 600, y=550,image = "enemybase", class=baseenemy, world = bumpWorld},
-    {name = "Enemy2",x = 550, y=400,image = "enemybase", class=baseenemy, world = bumpWorld},
-    {name = "Enemy3",x = 450, y=700,image = "enemybase", class=baseenemy, world = bumpWorld},
-    {name = "Enemy4",x = 400, y=350,image = "enemybase", class=baseenemy, world = bumpWorld}
-  };
-  items = {
-    {name = "Ammo1",x = 450, y=700, class=ammoboxclass, world = bumpWorld}
-  }
-  triggerlist = {
-
-  }
-
   bosses = {name = "east",x = 600, y=700,image = "east", class=eastman_boss, world = bumpWorld}
-
-  DynamiteList = {
-    {x = 300, y = 300, sprite = "dynamite"},
-    {x = 300, y = 335, sprite = "dynamite"}
-  }
 
   player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses = wu:init(350,300,currentmap,bosses,bumpWorld)
   utils:printTable(item)
@@ -48,7 +30,7 @@ end
 
 function gdqsworld:shoot(body,x,y,coordspace)
   bullets, player = wu:shoot(body,x,y,coordspace,player,window,bullets)
-  end
+end
 
 
 function gdqsworld:shakescreen(val)

@@ -37,14 +37,22 @@ function self:hurt() --health. TODO: Die properly
   end
 end
 
+function self:changeammo(i)
+  self.ammo = self.ammo + i
+end
+
+function self:shoot(player,world,dt,x,y,player,window,bullets) --interface with world shoot function
+  self:changeammo(-1)
+  print(self.ammo,"ammo");
+  if self.ammo > 0 then
+    world:shoot(self,x,y,0,player,window,bullets,true); --shoot
+  end
+end
+
 function self:instantRefill()
   print("instant")
   self.ammo = self.maxammo;
   print(self.ammo)
-end
-
-function self:changeammo(i)
-  self.ammo = self.ammo + i
 end
 
 function self:calcShadowed() --is shadowed?
