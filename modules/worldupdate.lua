@@ -29,6 +29,7 @@ function worldupdate:init(px,py,map,bosses,world)
   DynamiteImg:setFilter("nearest","nearest");
 
   baseenemy = require "modules/enemy_module";
+  spreadenemy = require "modules/spread_enemy_module";
   eastman_boss = require "modules/eastman_boss";
   trigger = require "modules/trigger_module";
   dynamiteClass = require "modules/dynamite_module"
@@ -56,6 +57,11 @@ function worldupdate:init(px,py,map,bosses,world)
       newobj:init(enemyimg,object["x"],object["y"],object["name"],world)
       enemies[#enemies+1] = newobj;
       print("made enemy",#enemies)
+    elseif object["type"] == "spread_enemy" then
+        newobj = utils:makeObj(spreadenemy)
+        newobj:init(enemyimg,object["x"],object["y"],object["name"],world)
+        enemies[#enemies+1] = newobj;
+        print("made enemy",#enemies)
     elseif object["type"] == "dynamite" then
       newobj = utils:makeObj(dynamiteClass)
       newobj:init(object["x"],object["y"],DynamiteImg)

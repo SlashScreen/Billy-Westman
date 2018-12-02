@@ -9,7 +9,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 5,
-  nextobjectid = 8,
+  nextobjectid = 9,
   properties = {},
   tilesets = {
     {
@@ -348,6 +348,19 @@ return {
           shape = "point",
           x = 590,
           y = 814,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 8,
+          name = "Spread1",
+          type = "spread_enemy",
+          shape = "point",
+          x = 753,
+          y = 547,
           width = 0,
           height = 0,
           rotation = 0,
