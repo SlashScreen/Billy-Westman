@@ -34,8 +34,11 @@ end
 
 
 function gdqsworld:shakescreen(val)
-  sx = math.random(-val,val);
-  sy = math.random(-val,val);
+  xdirection = utils:round((math.random(-1,1)))
+  ydirection = utils:round((math.random(-1,1)))
+  print(xdirection,ydirection,"shaking screen")
+  sx = val*xdirection;
+  sy = val*ydirection;
 end
 
 function bool_to_number(value)
@@ -47,8 +50,8 @@ function gdqsworld:update(dt)
 --  print(sx,sy)
   if math.abs(sx) > 0 then
     print(sx,sy,"shake greater than 0")
-    sx = -sx+(2*sx*dt)
-    sy = -sy+(2*sy*dt) --tried to do some sort of wiggle thing
+    sx = -sx+dt/(2*sx)
+    sy = -sy+dt/(2*sy) --tried to do some sort of wiggle thing
     if sx < .1 then
       sx,sy=0,0
     end
