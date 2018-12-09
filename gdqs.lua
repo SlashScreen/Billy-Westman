@@ -34,7 +34,18 @@ end
 
 
 function gdqsworld:shakescreen(val)
-  xdirection = utils:round((math.random(-1,1)))
+  if utils:round((math.random(-1,1))) < 0 then
+    xdirection = -1
+  else
+    xdirection = 1
+  end
+  
+  if utils:round((math.random(-1,1))) < 0 then
+    ydirection = -1
+  else
+    ydirection = 1
+  end
+
   ydirection = utils:round((math.random(-1,1)))
   print(xdirection,ydirection,"shaking screen")
   sx = val*xdirection;
