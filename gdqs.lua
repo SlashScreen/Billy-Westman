@@ -43,7 +43,16 @@ function bool_to_number(value)
 end
 
 function gdqsworld:update(dt)
-  sx,sy = wu:update(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,gdqsworld,shader,dt)
+  --SHAKESCREEN
+  if math.abs(sx) > 0 then
+    print(sx,sy,"shake greater than 0")
+    sx = -sx+sx*(5*dt)
+    sy = -sy+sy*(5*dt) --tried to do some sort of wiggle thing
+    if sx < .1 then
+      sx,sy=0,0
+    end
+  end
+  wu:update(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,gdqsworld,shader,dt)
 end
 
 function gdqsworld:draw()

@@ -112,16 +112,7 @@ end
 function worldupdate:update(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,world,shader,dt)
   map:update(dt)
   player:update(dt)
-  --SHAKESCREEN
---  print(sx,sy,"shake")
-  if math.abs(sx) > 0 then
-    print(sx,sy,"shake greater than 0")
-    sx = sx/(5*dt)
-    sy = sy/(5*dt) --tried to do some sort of wiggle thing
-    if sx < .1 then
-      sx,sy=0,0
-    end
-  end
+
   --PLAYER
   if not player.alive then
     main:reset()
