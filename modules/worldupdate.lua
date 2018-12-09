@@ -163,7 +163,7 @@ for key,i in pairs(enemies) do -- main interaction IG w enemies
           print("hit",v.x,v.y);
           table.remove(bullets,o);
           math.randomseed(player.x);
-          world:shakescreen(10);
+          world:shakescreen(50);
         end
       end
   end
@@ -185,7 +185,7 @@ end
           print("hit",v.x,v.y);
           table.remove(bullets,o);
           math.randomseed(player.x);
-          world:shakescreen(10);
+          world:shakescreen(30);
           --print(sx,sy);
         end
       end

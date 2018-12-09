@@ -30,7 +30,7 @@ function dynamite:init(x,y,sprite)
 end
 
 function dynamite:explode(enemies, player, dynamite,x,y) --explode enemies
-  testworld:shakescreen(40);
+  testworld:shakescreen(100);
   self.explosionParticles:emit(32)
   self.intact = 0;
   for i=1, #enemies do
