@@ -44,10 +44,11 @@ end
 
 function gdqsworld:update(dt)
   --SHAKESCREEN
+--  print(sx,sy)
   if math.abs(sx) > 0 then
     print(sx,sy,"shake greater than 0")
-    sx = -sx+sx*(5*dt)
-    sy = -sy+sy*(5*dt) --tried to do some sort of wiggle thing
+    sx = -sx+(2*sx*dt)
+    sy = -sy+(2*sy*dt) --tried to do some sort of wiggle thing
     if sx < .1 then
       sx,sy=0,0
     end
