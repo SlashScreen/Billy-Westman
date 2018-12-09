@@ -43,7 +43,7 @@ function bool_to_number(value)
 end
 
 function gdqsworld:update(dt)
-  wu:update(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,gdqsworld,shader,dt)
+  sx,sy = wu:update(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,gdqsworld,shader,dt)
 end
 
 function gdqsworld:draw()
