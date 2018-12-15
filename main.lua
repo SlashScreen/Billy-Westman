@@ -2,7 +2,8 @@
 function love.load()
   testworld = require "testworld"
   gdqs = require "gdqs"
-  currentworld = gdqs;
+  west = require "westham-map"
+  currentworld = west;
   currentworld:load();
   love.mouse.setVisible(false);
 end

@@ -1,4 +1,4 @@
---gdjs.lua - test demo
+--westham.lua - game 1
 local gdshader = require "modules/shader"
 local utils = require('modules/utils')
 gdqsworld= {};
@@ -6,7 +6,10 @@ gdqsworld= {};
 function gdqsworld:load()
   local sti = require ("modules/sti");
   local bump = require ("modules/bump");
-  map = sti("assets/maps/techdemomap.lua", {"bump"});
+  print("start")
+  print(utils:file_exists("assets/maps/westham.lua"))
+  map = sti("assets/maps/westham.lua", {"bump"});
+  print("sti")
   currentmap = map;
   bumpWorld = bump.newWorld();
   bumptiles = map:bump_init(bumpWorld);

@@ -16,6 +16,11 @@ function utils:round(num, numDecimalPlaces)
   return math.floor(num * mult + 0.5) / mult
 end
 
+function utils:file_exists(name)
+   local f=io.open(name,"r")
+   if f~=nil then io.close(f) return true else return false end
+end
+
 function utils:makeObj(class)
   local mt = { __index = class }
   local obj = setmetatable({}, mt)
