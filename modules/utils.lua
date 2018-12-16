@@ -27,4 +27,11 @@ function utils:makeObj(class)
   return obj;
 end
 
+function utils:pickPointInRadius(ox,oy,r)
+  math.randomseed(os.time())
+  x = ox + math.random(-r, r)
+  y = oy + math.random(-r, r)
+  return x,y
+end
+
 return utils

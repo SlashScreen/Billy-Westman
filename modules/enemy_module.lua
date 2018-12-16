@@ -1,6 +1,7 @@
 --enemy_module--player_module
 enemy = {};
 json = require("modules/json");
+utils = require('modules/utils')
 
 function lookat(x1,y1,x2,y2)
   local ygo = (y2-y1)/(x2-x1);
@@ -47,10 +48,10 @@ function enemy:init(ico,x,y, id, world)
   self.detectedplayer = false
   self.state = 0
   maxsearch = 5
-  self.goalx = 0
-  self.goaly = 0
+  self.goalx = self.origx
+  self.goaly = self.origy
   self.searchtimer = maxsearch
-  self.fidget = 0.0
+  self.fidget = .25
   self.lost = false
 end
 
@@ -106,9 +107,7 @@ function enemy:decideMovement(playerx,playery,dt)
   end
   descision = math.random()
   if self.state == 0 and descision < self.fidget or self.state == 2 and descision < self.fidget then --function for random wandering. bind to fidget variable for future searching state?
-    math.randomseed(os.time())
-    self.goalx = self.goalx + math.random(-20, 20)
-    self.goaly = self.goaly + math.random(-20, 20)
+    self.goalx,self.goaly = utils:pickPointInRadius(self.origx,self.origy,30) --wander around
   elseif self.state == 0 and descision < .15 and descision > .2 then
     self.goalx = self.origx
     self.goaly = self.origy
