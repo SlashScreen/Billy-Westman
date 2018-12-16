@@ -124,9 +124,13 @@ function enemy:decideMovement(playerx,playery,dt)
   elseif (self.y > self.goaly) then
     deltay = -1;
   end
-
-  self.x = self.x + (deltax * self.speed *dt); --make it so it moves delta every second, not frame
-  self.y = self.y + (deltay * self.speed *dt);
+  if self.x >= self.goalx-1 and self.x <= self.goalx+1 and self.y >= self.goaly-1 and self.y <= self.goaly+1 then
+    self.x = self.goalx
+    self.y = self.goaly
+  else
+    self.x = self.x + (deltax * self.speed *dt); --make it so it moves delta every second, not frame
+    self.y = self.y + (deltay * self.speed *dt);
+  end
   local ax, ay, cols, len = self.World:move(self, self.x, self.y) --interface with bumpmap
   self.x = ax
   self.y = ay
