@@ -9,7 +9,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 14,
-  nextobjectid = 34,
+  nextobjectid = 35,
   properties = {},
   tilesets = {
     {
@@ -675,6 +675,19 @@ return {
           y = 248,
           width = 0,
           height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 34,
+          name = "Level Change Volume",
+          type = "changevolume",
+          shape = "rectangle",
+          x = 414,
+          y = 2062,
+          width = 250,
+          height = 322,
           rotation = 0,
           visible = true,
           properties = {}
