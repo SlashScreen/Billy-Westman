@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object name="Level Change Volume" type="changevolume" width="250" height="322"/>
+</template>
