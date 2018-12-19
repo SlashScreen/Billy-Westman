@@ -32,6 +32,7 @@ function worldupdate:init(px,py,map,bosses,world)
   spreadenemy = require "modules/spread_enemy_module";
   eastman_boss = require "modules/eastman_boss";
   trigger = require "modules/trigger_module";
+  lchangeobj = require "modules/changevolume";
   dynamiteClass = require "modules/dynamite_module"
   ammoboxclass = require "modules/ammobox"
 
@@ -40,7 +41,7 @@ function worldupdate:init(px,py,map,bosses,world)
   enemies = {};
   dynamite = {};
   item = {};
-
+  lchange = {};
   --#NEW STI METHOD#
 
   objlayer = map.layers["objs"].objects --get object layer
@@ -67,7 +68,11 @@ function worldupdate:init(px,py,map,bosses,world)
     elseif object["type"] == "trigger" then -- trigger: finish implementing
       newobj = utils:makeObj(trigger)
       newobj:init(object["x"],object["y"],true,"OT",OTTriggerF,object["name"],nil,world)
-      print("made trigger",#triggers)
+      triggers[#triggers+1] = newobj;
+    elseif object["type"] == "changevolume" then -- trigger: finish implementing
+      newobj = utils:makeObj(lchangeobj)
+      newobj:init(object["x"],object["y"],object["width"],object["height"],object["name"])
+      lchange[#lchange+1] = newobj;
     elseif object["type"] == "spawn" then --spawn point
       player:init(love.graphics.newImage("assets/player.png"), nil, object["x"], object["y"], world,map); --init player at x and y of object
     end

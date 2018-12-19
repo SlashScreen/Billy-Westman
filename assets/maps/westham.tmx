@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2018.11.29" orientation="orthogonal" renderorder="right-down" width="64" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="34">
+<map version="1.2" tiledversion="2018.11.29" orientation="orthogonal" renderorder="right-down" width="64" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="35">
  <tileset firstgid="1" source="westham_test_dirt.tsx"/>
  <tileset firstgid="2" source="saloonv1.tsx"/>
  <tileset firstgid="22" source="rocksv1.tsx"/>
@@ -74,5 +74,6 @@
   <object id="31" template="spread.tx" x="538" y="1670"/>
   <object id="32" template="ammobox.tx" x="778" y="810"/>
   <object id="33" template="ammobox.tx" x="590" y="248"/>
+  <object id="34" template="CHANGEVOLUME.tx" name="mines" x="414" y="2062"/>
  </objectgroup>
 </map>
