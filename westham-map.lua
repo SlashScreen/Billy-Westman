@@ -1,15 +1,12 @@
 --westham.lua - game 1
 local gdshader = require "modules/shader"
 local utils = require('modules/utils')
+local sti = require ("modules/sti");
+local bump = require ("modules/bump");
 gdqsworld= {};
 
 function gdqsworld:load()
-  local sti = require ("modules/sti");
-  local bump = require ("modules/bump");
-  print("start")
-  print(utils:file_exists("assets/maps/westham.lua"))
   map = sti("assets/maps/westham.lua", {"bump"});
-  print("sti")
   currentmap = map;
   bumpWorld = bump.newWorld();
   bumptiles = map:bump_init(bumpWorld);
@@ -28,7 +25,6 @@ function gdqsworld:load()
   bosses = {name = "east",x = 600, y=700,image = "east", class=eastman_boss, world = bumpWorld}
 
   player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses = wu:init(350,300,currentmap,bosses,bumpWorld)
-  utils:printTable(item)
 end
 
 function gdqsworld:shoot(body,x,y,coordspace)
@@ -59,8 +55,6 @@ function bool_to_number(value)
 end
 
 function gdqsworld:update(dt)
-  --SHAKESCREEN
---  print(sx,sy)
   if math.abs(sx) > 0 then
     print(sx,sy,"shake greater than 0")
     sx = -sx+dt/(2*sx)

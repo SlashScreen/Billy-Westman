@@ -16,7 +16,7 @@ function main:changeLevel(lvl)
   if lvl == "west" then
     currentworld = west
   elseif lvl == "mines" then
-    currentworld = gdqs
+    currentworld = gdqs --change to mines when mines level is done 
   end
   main:reset()
 end
