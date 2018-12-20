@@ -12,6 +12,16 @@ function main:reset()
   currentworld:load();
 end
 
+function main:changeLevel(lvl)
+  if lvl == "west" then
+    currentworld = west
+  elseif lvl == "mines" then
+    currentworld = gdqs
+  end
+  main:reset()
+end
+
+
 function love.update(dt)
   currentworld:update(dt);
   canchange, goToMap = currentworld:canChange();

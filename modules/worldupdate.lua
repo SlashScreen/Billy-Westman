@@ -175,7 +175,7 @@ for key,i in pairs(enemies) do -- main interaction IG w enemies
 end
 --CHANGE VOLUME
 for key,i in pairs(lchange) do
-  i:update(player,world)
+  i:update(player,main)
 end
 --DETECTED
 if detected then -- followup to player detection
