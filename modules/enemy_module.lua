@@ -8,13 +8,6 @@ function lookat(x1,y1,x2,y2)
   return ygo;
 end
 
-function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
-  return x1 < x2+w2 and
-         x2 < x1+w1 and
-         y1 < y2+h2 and
-         y2 < y1+h1
-end
-
 function enemy:create (o)
   o = o or {}   -- create object if user does not provide one
       setmetatable(o, self)
@@ -170,7 +163,7 @@ function enemy:animate(action) --the animation cycle
 end
 
 function enemy:isHit(x,y,ox,oy,wx,wy,bw,bh) --check if hit by bullet
-  if CheckCollision(self.x,self.y,32, 32,x,y,bw,bh) then
+  if utils:CheckCollision(self.x,self.y,32, 32,x,y,bw,bh) then
     self:die();
     return true;
   else
