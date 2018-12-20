@@ -681,7 +681,7 @@ return {
         },
         {
           id = 34,
-          name = "Level Change Volume",
+          name = "mines",
           type = "changevolume",
           shape = "rectangle",
           x = 414,
@@ -689,7 +689,7 @@ return {
           width = 250,
           height = 322,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {}
         }
       }

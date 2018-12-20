@@ -74,6 +74,6 @@
   <object id="31" template="spread.tx" x="538" y="1670"/>
   <object id="32" template="ammobox.tx" x="778" y="810"/>
   <object id="33" template="ammobox.tx" x="590" y="248"/>
-  <object id="34" template="CHANGEVOLUME.tx" name="mines" x="414" y="2062"/>
+  <object id="34" template="CHANGEVOLUME.tx" name="mines" x="414" y="2062" visible="0"/>
  </objectgroup>
 </map>
