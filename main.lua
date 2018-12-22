@@ -3,7 +3,9 @@ function love.load()
   testworld = require "testworld"
   gdqs = require "gdqs"
   west = require "westham-map"
+  loadingscreen = require "modules/loadscreen"
   currentworld = west;
+  loadingscreen:load("assets/loadingscreenv1.png")
   currentworld:load();
   love.mouse.setVisible(false);
 end
@@ -16,7 +18,7 @@ function main:changeLevel(lvl)
   if lvl == "west" then
     currentworld = west
   elseif lvl == "mines" then
-    currentworld = gdqs --change to mines when mines level is done 
+    currentworld = gdqs --change to mines when mines level is done
   end
   main:reset()
 end
@@ -25,6 +27,7 @@ end
 function love.update(dt)
   currentworld:update(dt);
   canchange, goToMap = currentworld:canChange();
+  loadingscreen:update()
   if canchange then
     currentworld.changemapConditionsMet = 0;
     if goToMap == "test" then
@@ -42,6 +45,7 @@ end
 
 
 function love.draw()
+  loadingscreen:draw()
   currentworld:draw();
 end
 
