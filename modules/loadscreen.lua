@@ -11,60 +11,40 @@ function loadscreen:load(json,img)
   --TODO: FIGURE OUT JSON AND STOP HARDCODING THIS. maybe utils function?
   self.frames = utils:getQuads(json,img)
   self.currentframe = 0
-  utils:printTable(self.frames)
   --0 idle,1 intro,2 load,3 outro
   timer = 0
-  tmax = .1
+  tmax = .5
 end
 
 function loadscreen:loadscreen(dest)
-  print("loadscreen")
+  --print("loadscreen")
   self.destination = dest --must me world object
   self.state = 1
   print(self.state)
 end
 
 function loadscreen:update(dt)
-  --print(self.state)
   if self.state ~= 0 then
     timer = timer+dt
-    print(timer)
-    print(self.state)
+    --print(self.state)
   end
   --STATE 1
   if self.state == 1 then
-    print("hit")
     if timer >= tmax then
       timer = 0
       self.currentframe = self.currentframe + 1
+      print(self.currentframe)
     end
     if self.currentframe == 4 then
-      self.state = 2
+      self.destination:load()
+      main:setWorld(self.destination)
+      main:reset()
     end
-  end
-  --STATE 2
-  if self.state == 2 then
-    self.destination:load()
-    main:setWorld(self.destination)
-    main:reset()
-    self.state = 3
-  end
-  --STATE 3
-  if self.state == 3 then
-    if self.currentframe ~= #self.frames-1 then
-      if timer >= tmax then
-        timer = 0
-        self.currentframe = self.currentframe + 1
-      end
-    else
+    if self.currentframe == #self.frames then
       self.currentframe = 0
       self.state = 0
     end
   end
-  if not self.currentframe == 0 then
-    print(self.currentframe)
-  end
-
 end
 
 function loadscreen:draw()

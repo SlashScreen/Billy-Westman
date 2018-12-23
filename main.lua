@@ -15,7 +15,7 @@ function main:reset()
 end
 
 function main:changeLevel(lvl)
-  print("changelevel")
+  --print("changelevel")
   print(lvl)
   if lvl == "westham" then
     loadingscreen:loadscreen(west)

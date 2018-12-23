@@ -18,18 +18,14 @@ end
 function utils:getQuads(jsonfile,image)
   f = assert(io.open(jsonfile, "r")):read("*all")
   aes_tbl=json.decode (f)
-  --utils:printTable(aes_tbl)
   frames = {}
   i=0
   img = love.graphics.newImage(image)
   for key,frame in pairs(aes_tbl["frames"]) do
-    --utils:printTable(frame)
-    print(i)
     c = frame["frame"]
+    i = c["x"]/c["w"]
     frames[i] = love.graphics.newQuad(c["x"],c["y"],c["w"],c["h"],img:getDimensions())
-    i = i+1
   end
-  --utils:printTable(frames)
   return frames
 end
 
