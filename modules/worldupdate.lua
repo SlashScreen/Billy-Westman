@@ -50,7 +50,7 @@ function worldupdate:init(px,py,map,bosses,world)
     object = value -- added this so I don't have to retype 5 billion things
     if object["type"] == "basic_enemy" then --Add basic enemy
       newobj = utils:makeObj(baseenemy) --make the object
-      newobj:init(enemyimg,object["x"],object["y"],object["name"],world) --init the object
+      newobj:init("assets/enemy.png","assets/enemy.json",object["x"],object["y"],object["name"],world) --init the object
       enemies[#enemies+1] = newobj; --add it to the table
       --others below are the same, just with inits tailored to the object
     elseif object["type"] == "spread_enemy" then --spead enemy

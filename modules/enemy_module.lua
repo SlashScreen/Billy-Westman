@@ -1,6 +1,5 @@
 --enemy_module--player_module
 enemy = {};
-json = require("modules/json");
 utils = require('modules/utils')
 
 function lookat(x1,y1,x2,y2)
@@ -15,19 +14,17 @@ function enemy:create (o)
       return o
     end
 
-function enemy:init(ico,x,y, id, world)
+function enemy:init(ico,json,x,y, id, world)
   if id == nil then
     self.alive = 0
     return
   else
     self.alive = 1;
   end
-  self.icon = ico;
+  self.icon = love.graphics.newImage(ico);
   self.World = world;
   self.increment = 0;
-  self.frames = {};
-  self.frames[0] = love.graphics.newQuad(0,0,32,32,self.icon:getDimensions())
-  self.frames[1] = love.graphics.newQuad(32,0,32,32,self.icon:getDimensions())
+  self.frames = utils:getQuads(json,ico)
   self.origx = x
   self.origy = y
   self.x = x;

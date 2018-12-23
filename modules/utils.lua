@@ -29,6 +29,7 @@ function utils:getQuads(jsonfile,image)
     frames[i] = love.graphics.newQuad(c["x"],c["y"],c["w"],c["h"],img:getDimensions())
     i = i+1
   end
+  --utils:printTable(frames)
   return frames
 end
 
