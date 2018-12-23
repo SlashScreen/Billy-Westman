@@ -1,17 +1,22 @@
 --mainmenu.lua
 mainmenu = {}
 bclass = require "modules/buttonclass"
+utils = require "modules/utils"
 main = require ("main");
 
 function mainmenu:load()
-  self.pbutton = bclass:init(10,10,30,15,"play","assets/textbox.png","play")
+  buttons = {}
+  self.pbutton = bclass:init(100,100,75,50,"play","assets/textbox.png","play")
+  newobj = utils:makeObj(bclass) --make the object
+  newobj:init(10,10,30,15,"play","assets/textbox.png","play") --init the object
+  buttons[#buttons+1] = newobj;
 end
 
 function mainmenu:update()
 
   function love.mousepressed(x, y, button)
     if button == 1 then
-      for b in pairs(buttons) do
+      for n,b in pairs(buttons) do
         if b:clicked(x,y) then
           --do event
           ev = b:getEvent()
@@ -26,7 +31,8 @@ function mainmenu:update()
 end
 
 function mainmenu:draw()
-  for b in pairs(buttons) do
+  for n,b in pairs(buttons) do
     b:draw()
   end
 end
+return mainmenu
