@@ -3,7 +3,7 @@ local json = require("modules/dkjson")
 
 function utils:printTable(table,depth)
   if depth == nil then
-    depth = 1
+    depth = 0
   end
   for key,value in pairs(table) do
     if type(value) == "table" then
@@ -15,6 +15,10 @@ function utils:printTable(table,depth)
   end
 end
 
+function utils:getRatio(r,g)
+  return r/g
+end
+
 function utils:getQuads(jsonfile,image)
   f = assert(io.open(jsonfile, "r")):read("*all")
   aes_tbl=json.decode (f)
@@ -23,7 +27,7 @@ function utils:getQuads(jsonfile,image)
   img = love.graphics.newImage(image)
   for key,frame in pairs(aes_tbl["frames"]) do
     c = frame["frame"]
-    i = c["x"]/c["w"]
+    i = c["x"]/c["w"] --figure out orger based on width
     frames[i] = love.graphics.newQuad(c["x"],c["y"],c["w"],c["h"],img:getDimensions())
   end
   return frames

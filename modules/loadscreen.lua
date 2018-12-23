@@ -11,14 +11,13 @@ function loadscreen:load(json,img)
   --TODO: FIGURE OUT JSON AND STOP HARDCODING THIS. maybe utils function?
   self.frames = utils:getQuads(json,img)
   self.currentframe = 0
-  --0 idle,1 intro,2 load,3 outro
+  --0 idle,1 going
   timer = 0
   tmax = .5
 end
 
 function loadscreen:loadscreen(dest)
-  --print("loadscreen")
-  self.destination = dest --must me world object
+  self.destination = dest --must be world object
   self.state = 1
   print(self.state)
 end
@@ -26,7 +25,6 @@ end
 function loadscreen:update(dt)
   if self.state ~= 0 then
     timer = timer+dt
-    --print(self.state)
   end
   --STATE 1
   if self.state == 1 then
@@ -48,7 +46,6 @@ function loadscreen:update(dt)
 end
 
 function loadscreen:draw()
-  --print(self.currentframe)
   love.graphics.draw(self.img,self.frames[self.currentframe],0,0)
 end
 
