@@ -10,6 +10,7 @@ function mainmenu:load()
   newobj = utils:makeObj(bclass) --make the object
   newobj:init(10,10,30,15,"play","assets/textbox.png","play") --init the object
   buttons[#buttons+1] = newobj;
+  --love.mouse.setVisible(true);
 end
 
 function mainmenu:update()
