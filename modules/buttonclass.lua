@@ -19,6 +19,10 @@ function button:findScale()
   return sx,sy
 end
 
+function button:getEvent()
+  return self.event
+end
+
 function button:clicked(mx,my)
   return mx > self.x and  mx < self.x+self.w and my > self.y and my < self.y+self.h
 end

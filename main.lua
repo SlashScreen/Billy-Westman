@@ -3,6 +3,7 @@ function love.load()
   testworld = require "testworld"
   gdqs = require "gdqs"
   west = require "westham-map"
+  menu = require "mainmenu"
   loadingscreen = require "modules/loadscreen"
   currentworld = gdqs;
   loadingscreen:load("assets/loadingscreenv1.json","assets/loadingscreenv1.png")
