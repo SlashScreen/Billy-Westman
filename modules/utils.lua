@@ -1,28 +1,35 @@
 utils = {}
 local json = require("modules/dkjson")
 
-function utils:getQuads(jsonfile,img)
-  local f = io.open(jsonfile, "rb")
+function utils:printTable(table,depth)
+  if depth == nil then
+    depth = 1
+  end
+  for key,value in pairs(table) do
+    if type(value) == "table" then
+      print(string.rep("   ",depth)..key)
+      utils:printTable(value,depth+1)
+    else
+      print(string.rep("   ",depth)..key,value)
+    end
+  end
+end
+
+function utils:getQuads(jsonfile,image)
+  f = assert(io.open(jsonfile, "r")):read("*all")
   aes_tbl=json.decode (f)
+  --utils:printTable(aes_tbl)
   frames = {}
   i=0
-  for frame in pairs(aes_tbl) do
+  img = love.graphics.newImage(image)
+  for key,frame in pairs(aes_tbl["frames"]) do
+    --utils:printTable(frame)
+    print(i)
     c = frame["frame"]
-    frames[1] = love.graphics.newQuad(c["x"],c["y"],c["w"],c["h"],img:getDimensions())
+    frames[i] = love.graphics.newQuad(c["x"],c["y"],c["w"],c["h"],img:getDimensions())
     i = i+1
   end
   return frames
-end
-
-function utils:printTable(table)
-  for key,value in pairs(table) do
-    if type(value) == "table" then
-      print(key)
-      utils:printTable(value)
-    else
-      print(key,value)
-    end
-  end
 end
 
 function utils:round(num, numDecimalPlaces)

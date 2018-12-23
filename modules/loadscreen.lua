@@ -1,22 +1,16 @@
 --loadscreen.lua
 loadscreen = {}
+local utils = require ("modules/utils");
 
-function loadscreen:load(img)
+function loadscreen:load(json,img)
   self.state = 0
   main = require ("main");
   self.img = love.graphics.newImage(img); --fix later with actual path here
   self.destination = nil
   self.currentframe = 0
   --TODO: FIGURE OUT JSON AND STOP HARDCODING THIS. maybe utils function?
-  self.frames = {}
-  self.frames[0] = love.graphics.newQuad(0,0,800,600,self.img:getDimensions())
-  self.frames[1] = love.graphics.newQuad(800,0,800,600,self.img:getDimensions())
-  self.frames[2] = love.graphics.newQuad(800*2,0,800,600,self.img:getDimensions())
-  self.frames[3] = love.graphics.newQuad(800*3,0,800,600,self.img:getDimensions())
-  self.frames[4] = love.graphics.newQuad(800*4,0,800,600,self.img:getDimensions())
-  self.frames[5] = love.graphics.newQuad(800*5,0,800,600,self.img:getDimensions())
-  self.frames[6] = love.graphics.newQuad(800*6,0,800,600,self.img:getDimensions())
-  self.frames[7] = love.graphics.newQuad(800*7,0,800,600,self.img:getDimensions())
+  self.frames = utils:getQuads(json,img)
+  utils:printTable(self.frames)
   --0 idle,1 intro,2 load,3 outro
   timer = 0
   tmax = 1
@@ -67,6 +61,7 @@ function loadscreen:update(dt)
 end
 
 function loadscreen:draw()
+  --print(self.currentframe)
   love.graphics.draw(self.img,self.frames[self.currentframe],0,0)
 end
 

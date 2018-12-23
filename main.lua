@@ -5,7 +5,7 @@ function love.load()
   west = require "westham-map"
   loadingscreen = require "modules/loadscreen"
   currentworld = gdqs;
-  loadingscreen:load("assets/loadingscreenv1.png")
+  loadingscreen:load("assets/loadingscreenv1.json","assets/loadingscreenv1.png")
   currentworld:load();
   love.mouse.setVisible(false);
 end
@@ -45,8 +45,8 @@ end
 
 
 function love.draw()
-  loadingscreen:draw()
   currentworld:draw();
+  loadingscreen:draw()
 end
 
 return main
