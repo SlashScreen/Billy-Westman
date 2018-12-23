@@ -90,7 +90,7 @@ end
 
 
 function worldupdate:shoot(body,x,y,coordspace,player,window,bullets,playershooting)
-  print("shoot",debug.traceback())
+  --print("shoot",debug.traceback())
   player.state = "FIRE";
 		local startX = body.x
 		local startY = body.y

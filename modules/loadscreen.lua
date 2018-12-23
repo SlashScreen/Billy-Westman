@@ -3,7 +3,7 @@ loadscreen = {}
 
 function loadscreen:load(img)
   self.state = 0
-  main = require ("../main");
+  main = require ("main");
   self.img = love.graphics.newImage(img); --fix later with actual path here
   self.destination = nil
   self.currentframe = 0
@@ -18,17 +18,26 @@ function loadscreen:load(img)
   self.frames[6] = love.graphics.newQuad(800*6,0,800,600,self.img:getDimensions())
   self.frames[7] = love.graphics.newQuad(800*7,0,800,600,self.img:getDimensions())
   --0 idle,1 intro,2 load,3 outro
+  timer = 0
+  tmax = 1
 end
 
 function loadscreen:loadscreen(dest)
+  print("loadscreen")
   self.destination = dest --must me world object
   self.state = 1
+  print(self.state)
 end
 
-function loadscreen:update()
+function loadscreen:update(dt)
+  timer = timer+dt
+
   --STATE 1
   if self.state == 1 then
-    self.currentframe = self.currentframe +1
+    if timer == tmax then
+      timer = 0
+      self.currentframe = self.currentframe +1
+    end
     if self.currentframe == 4 then
       self.state = 2
     end
@@ -42,10 +51,17 @@ function loadscreen:update()
   --STATE 3
   if self.state == 3 then
     if not self.state == #self.frames-1 then
-      self.currentframe = self.currentframe +1
+      if timer == tmax then
+        timer = 0
+        self.currentframe = self.currentframe +1
+      end
     else
       self.currentframe = 0
+      self.state = 0
     end
+  end
+  if not self.currentframe == 0 then
+    print(self.currentframe)
   end
 
 end

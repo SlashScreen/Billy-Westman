@@ -25,7 +25,7 @@ function gdqsworld:load()
   bosses = {name = "east",x = 600, y=700,image = "east", class=eastman_boss, world = bumpWorld}
 
   player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses = wu:init(350,300,currentmap,bosses,bumpWorld)
-  utils:printTable(item)
+  --utils:printTable(item)
 end
 
 function gdqsworld:shoot(body,x,y,coordspace)

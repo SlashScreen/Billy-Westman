@@ -1,7 +1,6 @@
 --player_module
 self = {};
 json = require("modules/json");
-local inspect = require('modules/inspect')
 
 function self:init(ico, jsondat, x, y, world, map)
   self.map = map
@@ -26,7 +25,7 @@ function self:init(ico, jsondat, x, y, world, map)
   self.playerWalkTimer = 0
   self.substate = "UNDETECTED"
   self.shadowed = false
-  print("shadowdata: ",inspect(self.map.tiles))
+  --print("shadowdata: ",inspect(self.map.tiles))
 end
 
 function self:hurt() --health. TODO: Die properly

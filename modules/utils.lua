@@ -1,4 +1,18 @@
 utils = {}
+local json = require("modules/dkjson")
+
+function utils:getQuads(jsonfile,img)
+  local f = io.open(jsonfile, "rb")
+  aes_tbl=json.decode (f)
+  frames = {}
+  i=0
+  for frame in pairs(aes_tbl) do
+    c = frame["frame"]
+    frames[1] = love.graphics.newQuad(c["x"],c["y"],c["w"],c["h"],img:getDimensions())
+    i = i+1
+  end
+  return frames
+end
 
 function utils:printTable(table)
   for key,value in pairs(table) do

@@ -9,7 +9,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 5,
-  nextobjectid = 9,
+  nextobjectid = 11,
   properties = {},
   tilesets = {
     {
@@ -256,7 +256,7 @@ return {
       type = "objectgroup",
       id = 4,
       name = "objs",
-      visible = true,
+      visible = false,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -363,6 +363,19 @@ return {
           y = 547,
           width = 0,
           height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 10,
+          name = "westham",
+          type = "changevolume",
+          shape = "rectangle",
+          x = 332,
+          y = 40,
+          width = 250,
+          height = 82,
           rotation = 0,
           visible = true,
           properties = {}
