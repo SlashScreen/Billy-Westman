@@ -45,7 +45,7 @@ function loadscreen:update(dt)
   --STATE 2
   if self.state == 2 then
     self.destination:load()
-    main.currentworld = self.destination
+    main:setWorld(self.destination)
     main:reset()
     self.state = 3
   end

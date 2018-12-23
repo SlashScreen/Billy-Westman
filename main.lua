@@ -25,6 +25,9 @@ function main:changeLevel(lvl)
   --main:reset()
 end
 
+function main:setWorld(lvl)
+  currentworld = lvl;
+end
 
 function love.update(dt)
   currentworld:update(dt);
