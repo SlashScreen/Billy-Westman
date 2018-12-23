@@ -9,11 +9,12 @@ function button:init(x,y,w,h,text,bg,ev)
   self.h = h
   self.text = text
   self.event = ev
-  self.bg = love.graphics.newImage(bg)
-  self.rect = love.graphics.rectangle("fill",x,y,w,h)
+  self.bg = bg
+  --self.rect = love.graphics.rectangle("fill",x,y,w,h)
 end
 
 function button:findScale()
+  --print(self.bg)
   dx,dy = self.bg:getDimensions()
   sx,sy = utils:getRatio(self.w,dx),utils:getRatio(self.y,dy)
   return sx,sy
