@@ -15,12 +15,14 @@ function main:reset()
 end
 
 function main:changeLevel(lvl)
+  print("changelevel")
+  print(lvl)
   if lvl == "westham" then
     loadingscreen:loadscreen(west)
   elseif lvl == "mines" then
     loadingscreen:loadscreen(gdqs)
   end
-  main:reset()
+  --main:reset()
 end
 
 
