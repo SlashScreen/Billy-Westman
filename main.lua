@@ -8,7 +8,7 @@ function love.load()
   currentworld = menu;
   loadingscreen:load("assets/loadingscreenv1.json","assets/loadingscreenv1.png")
   currentworld:load();
-  love.mouse.setVisible(false);
+  
 end
 main = {}
 function main:reset()

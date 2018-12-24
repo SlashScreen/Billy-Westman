@@ -14,6 +14,7 @@ function worldupdate:init(px,py,map,bosses,world)
   window = {}
   window.x = love.graphics:getWidth();
   window.y = love.graphics:getHeight();
+  love.mouse.setVisible(false);
 
 
   billywestmanimg = love.graphics.newImage("assets/player.png");
