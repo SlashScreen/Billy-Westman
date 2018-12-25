@@ -56,7 +56,7 @@ function worldupdate:init(px,py,map,bosses,world)
       --others below are the same, just with inits tailored to the object
     elseif object["type"] == "spread_enemy" then --spead enemy
       newobj = utils:makeObj(spreadenemy)
-      newobj:init(enemyimg,object["x"],object["y"],object["name"],world)
+      newobj:init("assets/enemy.png","assets/enemy.json",object["x"],object["y"],object["name"],world)
       enemies[#enemies+1] = newobj;
     elseif object["type"] == "dynamite" then --dynamite
       newobj = utils:makeObj(dynamiteClass)
