@@ -14,7 +14,7 @@ function button:init(x,y,w,h,text,bg,ev)
 end
 
 function button:findScale()
-  --print(self.bg)
+  --print(self.x,self.bg)
   dx,dy = self.bg:getDimensions()
   sx,sy = utils:getRatio(self.w,dx),utils:getRatio(self.y,dy)
   return sx,sy
@@ -29,7 +29,7 @@ function button:clicked(mx,my)
 end
 
 function button:draw()
-  love.graphics.draw(self.bg, self.x, self.y, 0, button:findScale())
+  love.graphics.draw(self.bg, self.x, self.y, 0, self:findScale())
   --draw text
 end
 

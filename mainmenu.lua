@@ -5,19 +5,20 @@ utils = require "modules/utils"
 main = require ("main");
 
 function mainmenu:load()
-  buttons = {}
+  self.buttons = {}
   bg = love.graphics.newImage("assets/textbox.png")
-  self.pbutton = bclass:init(100,100,75,50,"play",bg,"play")
   newobj = utils:makeObj(bclass) --make the object
-  newobj:init(100,100,75,50,"play",bg,"play") --init the object
-  buttons[#buttons+1] = newobj;
+  newobj:init(100,100,75,50,"play",love.graphics.newImage("assets/textbox.png"),"play") --init the object
+  --utils:printTable(newobj)
+  self.buttons[#self.buttons+1] = newobj--bclass:init(100,100,75,50,"play",bg,"play");
   love.mouse.setVisible(true);
 end
 
 function mainmenu:update()
   function love.mousepressed(x, y, button)
     if button == 1 then
-      for n,b in pairs(buttons) do
+      for n,b in pairs(self.buttons) do
+        --print(n,b)
         if b:clicked(x,y) then
           --do event
           ev = b:getEvent()
@@ -31,7 +32,8 @@ function mainmenu:update()
 end
 
 function mainmenu:draw()
-  for n,b in pairs(buttons) do
+  for n,b in pairs(self.buttons) do
+    --utils:printTable(b)
     b:draw()
   end
 end
