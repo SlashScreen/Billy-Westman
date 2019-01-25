@@ -20,7 +20,7 @@ function utils:getRatio(r,g)
 end
 
 function utils:getQuads(jsonfile,image)
-  f = assert(io.open(jsonfile, "r")):read("*all")
+  f = assert(love.filesystem.read(jsonfile))
   aes_tbl=json.decode (f)
   frames = {}
   i=0
@@ -39,8 +39,7 @@ function utils:round(num, numDecimalPlaces)
 end
 
 function utils:file_exists(name)
-   local f=io.open(name,"r")
-   if f~=nil then io.close(f) return true else return false end
+   return love.filesystem.exists(name)
 end
 
 function utils:makeObj(class)
