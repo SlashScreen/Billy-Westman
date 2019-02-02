@@ -45,7 +45,7 @@ function gdqsworld:shakescreen(val)
     ydirection = 1
   end
 
-  ydirection = utils:round((math.random(-1,1)))
+  --ydirection = utils:round((math.random(-1,1)))
   print(xdirection,ydirection,"shaking screen")
   sx = val*xdirection;
   sy = val*ydirection;
@@ -59,10 +59,12 @@ function gdqsworld:update(dt)
   --SHAKESCREEN
 --  print(sx,sy)
   if math.abs(sx) > 0 then
+    print(sx,sy,"shake vals")
     print(sx,sy,"shake greater than 0")
-    sx = -sx+dt/(2*sx)
-    sy = -sy+dt/(2*sy) --tried to do some sort of wiggle thing
-    if sx < .1 then
+    sx = -sx+(dt)
+    sy = -sy+(dt) --tried to do some sort of wiggle thing
+    if sx < .01 then
+      print("shake reset")
       sx,sy=0,0
     end
   end

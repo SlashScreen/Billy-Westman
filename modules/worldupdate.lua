@@ -116,6 +116,7 @@ end
 
 
 function worldupdate:update(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,world,shader,dt)
+  --your comments and code structure sucks my guy, do better next game, like fight game
   map:update(dt)
   player:update(dt)
 
