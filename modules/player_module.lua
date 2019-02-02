@@ -45,6 +45,18 @@ function self:update(dt)
       self.rechargetimer = 0;
     end
   end
+  if love.keyboard.isDown("w") then
+    self:decideMovement(0,1,dt);
+  end
+  if love.keyboard.isDown("s") then
+    self:decideMovement(0,-1,dt);
+  end
+  if love.keyboard.isDown("a") then
+    self:decideMovement(-1,0,dt);
+  end
+  if love.keyboard.isDown("d") then
+    self:decideMovement(1,0,dt);
+  end
 end
 
 function self:changeammo(i)
