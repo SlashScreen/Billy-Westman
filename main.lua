@@ -3,11 +3,12 @@ function love.load()
   testworld = require "testworld"
   gdqs = require "gdqs"
   west = require "westham-map"
+  menu = require "mainmenu"
   loadingscreen = require "modules/loadscreen"
-  currentworld = gdqs;
+  currentworld = menu;
   loadingscreen:load("assets/loadingscreenv1.json","assets/loadingscreenv1.png")
   currentworld:load();
-  love.mouse.setVisible(false);
+  
 end
 main = {}
 function main:reset()
@@ -31,21 +32,7 @@ end
 
 function love.update(dt)
   currentworld:update(dt);
-  canchange, goToMap = currentworld:canChange();
   loadingscreen:update(dt)
-  if canchange then
-    currentworld.changemapConditionsMet = 0;
-    if goToMap == "test" then
-      currentworld = testworld;
-    elseif goToMap == "westham" then
-      print("westham");
-    elseif goToMap == "mines" then
-      print("mines");
-    elseif goToMap == "gulch" then
-      print("gulch");
-    end
-
-  end
 end
 
 
