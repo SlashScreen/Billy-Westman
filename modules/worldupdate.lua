@@ -249,7 +249,8 @@ function worldupdate:draw(player,BulletImg,triggers,enemies,dynamite,item,crossh
   --MAP
   map:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
   --PLAYER
-  love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0);
+  player:draw()
+  --love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0);
   --ENEMIES
   for key,i in pairs(enemies) do
     if i.alive == 1 then --if alive then
