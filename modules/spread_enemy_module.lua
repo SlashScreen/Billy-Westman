@@ -1,5 +1,5 @@
---enemy_module--player_module
-enemy = {};
+--spread_module--player_module
+spread = {};
 json = require("modules/json");
 
 function lookat(x1,y1,x2,y2)
@@ -14,26 +14,25 @@ function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
          y2 < y1+h1
 end
 
-function enemy:create (o)
+function spread:create (o)
   o = o or {}   -- create object if user does not provide one
       setmetatable(o, self)
       o.__index = self
       return o
     end
 
-function enemy:init(ico,x,y, id, world)
+function spread:init(ico,json,x,y, id, world)
+  print (ico,json,x,y, id, world)
   if id == nil then
     self.alive = 0
     return
   else
     self.alive = 1;
   end
-  self.icon = ico;
+  self.icon = love.graphics.newImage(ico);
   self.World = world;
   self.increment = 0;
-  self.frames = {};
-  self.frames[0] = love.graphics.newQuad(0,0,32,32,self.icon:getDimensions())
-  self.frames[1] = love.graphics.newQuad(32,0,32,32,self.icon:getDimensions())
+  self.frames = utils:getQuads(json,ico)
   self.origx = x
   self.origy = y
   self.x = x;
@@ -54,7 +53,7 @@ function enemy:init(ico,x,y, id, world)
   self.lost = false
 end
 
-function enemy:shoot(player,world,dt) --interface with world shoot function
+function spread:shoot(player,world,dt) --interface with world shoot function
   sd = 7
   if self.detectedplayer then
     self.shoottimer = self.shoottimer+dt --cooldown
@@ -71,12 +70,12 @@ function enemy:shoot(player,world,dt) --interface with world shoot function
 end
 
 
-function enemy:die() --enemy die
+function spread:die() --spread die
   self.alive = 0;
   self.World:remove(self);
 end
 
-function enemy:hurt() --hurt; right now redirects to die but is helpful for future tougher enemies
+function spread:hurt() --hurt; right now redirects to die but is helpful for future tougher enemies
   self:die();
 end
 
@@ -85,17 +84,17 @@ function lerp (a,b,t) --lerp, might be deprecated
   return a + (b - a) * t;
 end
 
-function enemy:pointDetectable(px,py,sx,sy,shadowed) --is point visible to enemy?
+function spread:pointDetectable(px,py,sx,sy,shadowed) --is point visible to spread?
   local dist = 0
   if (shadowed) then
     dist = 10 --if shadowed, raadius is lower
   else
     dist = 100 --else higher
   end
-  return math.sqrt(math.pow(sx-px,2)+math.pow(sy-py,2))< dist --is pythag from enemy to point less than distance?
+  return math.sqrt(math.pow(sx-px,2)+math.pow(sy-py,2))< dist --is pythag from spread to point less than distance?
 end
 
-function enemy:decideMovement(playerx,playery,dt)
+function spread:decideMovement(playerx,playery,dt)
   local deltax = 0;
   local deltay = 0;
   --states: 0 is idle, 1 is persue
@@ -137,7 +136,7 @@ function enemy:decideMovement(playerx,playery,dt)
   self.World:update(self, self.x, self.y,32,32); --update world
 end
 
-function enemy:update(playerx,playery,dt)
+function spread:update(playerx,playery,dt)
   --Search timer function where they "lose" you; same as yellow state in MGS
   if self.state == 1 and not self.pointDetectable(0,playerx,playery,self.x,self.y,player.shadowed) then
     self.lost = true
@@ -159,7 +158,7 @@ function enemy:update(playerx,playery,dt)
   end
 end
 
-function enemy:animate(action) --the animation cycle
+function spread:animate(action) --the animation cycle
   if action == "walk" then
     if self.increment == 1 then
       self.increment = 0;
@@ -169,7 +168,7 @@ function enemy:animate(action) --the animation cycle
   end
 end
 
-function enemy:isHit(x,y,ox,oy,wx,wy,bw,bh) --check if hit by bullet
+function spread:isHit(x,y,ox,oy,wx,wy,bw,bh) --check if hit by bullet
   if CheckCollision(self.x,self.y,32, 32,x,y,bw,bh) then
     self:die();
     return true;
@@ -178,4 +177,4 @@ function enemy:isHit(x,y,ox,oy,wx,wy,bw,bh) --check if hit by bullet
     end
 end
 
-return enemy;
+return spread;

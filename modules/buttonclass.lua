@@ -9,14 +9,19 @@ function button:init(x,y,w,h,text,bg,ev)
   self.h = h
   self.text = text
   self.event = ev
-  self.bg = love.graphics.newImage(bg)
-  self.rect = love.graphics.rectangle("fill",x,y,w,h)
+  self.bg = bg
+  --self.rect = love.graphics.rectangle("fill",x,y,w,h)
 end
 
 function button:findScale()
+  --print(self.x,self.bg)
   dx,dy = self.bg:getDimensions()
   sx,sy = utils:getRatio(self.w,dx),utils:getRatio(self.y,dy)
   return sx,sy
+end
+
+function button:getEvent()
+  return self.event
 end
 
 function button:clicked(mx,my)
@@ -24,7 +29,7 @@ function button:clicked(mx,my)
 end
 
 function button:draw()
-  love.graphics.draw(self.bg, self.x, self.y, 0, button:findScale())
+  love.graphics.draw(self.bg, self.x, self.y, 0, self:findScale())
   --draw text
 end
 

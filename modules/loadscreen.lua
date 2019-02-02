@@ -13,7 +13,7 @@ function loadscreen:load(json,img)
   self.currentframe = 0
   --0 idle,1 going
   timer = 0
-  tmax = .5
+  tmax = .1
 end
 
 function loadscreen:loadscreen(dest)
