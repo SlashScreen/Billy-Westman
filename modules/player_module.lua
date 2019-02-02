@@ -127,4 +127,11 @@ function self:animate(action) --animation cycle
     end
   end
 end
+
+function self.draw()
+  wx = love.graphics:getWidth();
+  wy = love.graphics:getHeight();
+  utils:draw(self.x,self.y,wx,wy,self.x,self.y,self.icon,self.frames[self.increment])
+end
+
 return self

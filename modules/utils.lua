@@ -1,6 +1,11 @@
 utils = {}
 local json = require("modules/dkjson")
 
+function utils:draw(x,y,wx,wy,px,py,src,drawable,z) --TODO: add screen shake
+  ---16-player.x+window.x/2-sx
+  love.draw(src,drawable,x-16-px+(wx/2),y-16-py+(wy/2),0,z)
+end
+
 function utils:printTable(table,depth)
   if depth == nil then
     depth = 0

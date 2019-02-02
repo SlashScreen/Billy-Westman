@@ -220,18 +220,6 @@ for key,i in pairs(dynamite) do
     player.rechargetimer = 0;
   end
 --CONTROL
-if love.keyboard.isDown("w") then
-  player:decideMovement(0,1,dt);
-end
-if love.keyboard.isDown("s") then
-  player:decideMovement(0,-1,dt);
-end
-if love.keyboard.isDown("a") then
-  player:decideMovement(-1,0,dt);
-end
-if love.keyboard.isDown("d") then
-  player:decideMovement(1,0,dt);
-end
 
 if not love.mouse.isDown(1) then
   player.state = "PLAY";
