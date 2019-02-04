@@ -36,6 +36,8 @@ function worldupdate:init(px,py,map,bosses,world)
   lchangeobj = require "modules/changevolume";
   dynamiteClass = require "modules/dynamite_module"
   ammoboxclass = require "modules/ammobox"
+  pclass = require "modules/player_module"
+  player = utils:create(pclass)
 
   --#LISTS AND utils:makeObj#
   triggers = {};
@@ -75,7 +77,7 @@ function worldupdate:init(px,py,map,bosses,world)
       newobj:init(object["x"],object["y"],object["width"],object["height"],object["name"])
       lchange[#lchange+1] = newobj;
     elseif object["type"] == "spawn" then --spawn point
-      player:init(love.graphics.newImage("assets/player.png"), nil, object["x"], object["y"], world,map); --init player at x and y of object
+      player:init("assets/player.png", "assets/player.json", object["x"], object["y"], world,map); --init player at x and y of object
     end
   end
   crosshair = love.graphics.newImage("assets/crosshair.png");
@@ -244,12 +246,16 @@ return sx,sy
 end
 
 function worldupdate:draw(player,BulletImg,triggers,enemies,dynamite,item,crosshair,zoom,sx,sy,window,bosses,map,world,shader)
+  sx=0
+  sy=0
   --SHADER
   love.graphics.setShader(shader)
   --MAP
   map:draw(window.x/2-player.x-sx-16,window.y/2-player.y-sy-16);
   --PLAYER
-  player:draw()
+  --print(player:draw()==nil)
+  --utils:printTable(player)
+  player:dr_p() --PROBLEM: No draw fucntion
   --love.graphics.draw(player.icon,player.frames[player.increment],window.x/2-16-sx,window.y/2-16-sy,0);
   --ENEMIES
   for key,i in pairs(enemies) do

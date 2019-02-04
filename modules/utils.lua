@@ -20,6 +20,29 @@ function utils:printTable(table,depth)
   end
 end
 
+function utils:create (o)
+  o = o or {}   -- create object if user does not provide one
+  setmetatable(o, self)
+  o.__index = self
+  return o
+end
+
+function utils:deepCopy(orig)
+    print("deepcopy")
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in next, orig, nil do
+            copy[utils:deepCopy(orig_key)] = utils:deepCopy(orig_value)
+        end
+        setmetatable(copy, utils:deepCopy(getmetatable(orig)))
+    else -- number, string, boolean, etc
+        copy = orig
+    end
+    return copy
+end
+
 function utils:getRatio(r,g)
   return r/g
 end

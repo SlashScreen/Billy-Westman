@@ -5,17 +5,17 @@ json = require("modules/json");
 function self:init(ico, jsondat, x, y, world, map)
   self.map = map
   self.World = world;
-  self.icon = ico;
+  self.icon = love.graphics.newImage(ico);
   self.json = jsondat;
   self.health = 10;
   self.alive = true;
   self.increment = 0;
   self.frames = {};
-  self.frames[0] = love.graphics.newQuad(0,0,32,32,self.icon:getDimensions())
-  self.frames[1] = love.graphics.newQuad(32,0,32,32,self.icon:getDimensions())
+  self.frames = utils:getQuads(jsondat,ico)
+  print(#self.frames,"len(self.frames)")
   self.x = x;
   self.y = y;
-  self.speed = 70;
+  self.speed = 100;
   self.maxammo = 6;
   self.ammo = self.maxammo;
   self.rechargelimit = 1;
@@ -118,8 +118,19 @@ function self:isHit(x,y,ox,oy,wx,wy,bw,bh) --check if hit by bullet
     end
 end
 
+function self:dr_p()
+  --print("draw")
+  wx = love.graphics:getWidth();
+  wy = love.graphics:getHeight();
+  --print(self.frames,self.increment)
+  love.graphics.draw(self.icon,self.frames[self.increment],wx/2-16,wy/2-16)
+  --utils:draw(self.x,self.y,wx,wy,self.x,self.y,self.icon,self.frames[self.increment])
+  return "drew"
+end
+
 function self:animate(action) --animation cycle
   if action == "walk" then
+    --print("walk")
     if self.increment == 1 then
       self.increment = 0;
     else
@@ -128,10 +139,6 @@ function self:animate(action) --animation cycle
   end
 end
 
-function self.draw()
-  wx = love.graphics:getWidth();
-  wy = love.graphics:getHeight();
-  utils:draw(self.x,self.y,wx,wy,self.x,self.y,self.icon,self.frames[self.increment])
-end
+
 
 return self
